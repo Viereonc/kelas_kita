@@ -13,7 +13,7 @@ class MyApp extends GetMaterialApp {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Kelas Kita',
-      initialRoute: AppPages.INITIAL,
+      initialRoute: AppPages.HOME,
       getPages: AppPages.routes,
     );
   }
