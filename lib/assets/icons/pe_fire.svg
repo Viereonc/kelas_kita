@@ -1,0 +1,27 @@
+<svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_331_1026)">
+<path d="M6.05625 6.68208C5.96718 7.67958 5.90468 9.44489 6.46562 10.1963C6.46562 10.1963 6.20156 8.25708 8.56875 5.82403C9.52187 4.84458 9.74218 3.51239 9.40937 2.51325C9.22031 1.94724 8.875 1.47966 8.575 1.15318C8.4 0.961222 8.53437 0.644581 8.78906 0.656066C10.3297 0.728253 12.8266 1.17778 13.8875 3.97341C14.3531 5.2006 14.3875 6.4688 14.1656 7.75833C14.025 8.58193 13.525 10.4129 14.6656 10.6376C15.4797 10.7984 15.8734 10.1192 16.05 9.63028C16.1234 9.42685 16.3781 9.37599 16.5156 9.53841C17.8906 11.1807 18.0078 13.115 17.7234 14.7802C17.1734 17.9991 14.0687 20.3419 10.9844 20.3419C7.13125 20.3419 4.06406 18.027 3.26875 13.8368C2.94843 12.1454 3.11093 8.79849 5.59531 6.43599C5.77968 6.2588 6.08125 6.4163 6.05625 6.68208Z" fill="url(#paint0_radial_331_1026)"/>
+<path d="M12.3922 12.7015C10.9719 10.782 11.6078 8.59177 11.9562 7.71895C12.0031 7.60411 11.8781 7.49583 11.7797 7.56637C11.1687 8.00278 9.91717 9.02981 9.33436 10.4752C8.5453 12.4292 8.60155 13.3857 9.06873 14.5538C9.34998 15.2576 9.02342 15.4069 8.85936 15.4332C8.69998 15.4594 8.55311 15.3479 8.43592 15.2314C8.09879 14.8915 7.85855 14.4598 7.74217 13.9845C7.71717 13.8828 7.59061 13.8549 7.5328 13.9386C7.0953 14.5735 6.86873 15.5923 6.8578 16.3125C6.82342 18.5389 8.57498 20.3436 10.6937 20.3436C13.364 20.3436 15.3094 17.2428 13.775 14.6506C13.3297 13.8959 12.9109 13.4021 12.3922 12.7015Z" fill="url(#paint1_radial_331_1026)"/>
+</g>
+<defs>
+<radialGradient id="paint0_radial_331_1026" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(10.2212 20.3929) rotate(-179.739) scale(11.0293 19.0017)">
+<stop offset="0.314" stop-color="#FF9800"/>
+<stop offset="0.662" stop-color="#FF6D00"/>
+<stop offset="0.972" stop-color="#F44336"/>
+</radialGradient>
+<radialGradient id="paint1_radial_331_1026" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(10.8406 8.86877) rotate(90.5512) scale(12.117 8.6848)">
+<stop offset="0.214" stop-color="#FFF176"/>
+<stop offset="0.328" stop-color="#FFF27D"/>
+<stop offset="0.487" stop-color="#FFF48F"/>
+<stop offset="0.672" stop-color="#FFF7AD"/>
+<stop offset="0.793" stop-color="#FFF9C4"/>
+<stop offset="0.822" stop-color="#FFF8BD" stop-opacity="0.804"/>
+<stop offset="0.863" stop-color="#FFF6AB" stop-opacity="0.529"/>
+<stop offset="0.91" stop-color="#FFF38D" stop-opacity="0.209"/>
+<stop offset="0.941" stop-color="#FFF176" stop-opacity="0"/>
+</radialGradient>
+<clipPath id="clip0_331_1026">
+<rect width="20" height="21" fill="white" transform="translate(0.5)"/>
+</clipPath>
+</defs>
+</svg>
