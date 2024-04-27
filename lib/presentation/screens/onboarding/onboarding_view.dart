@@ -26,20 +26,14 @@ class OnboardingScreen extends StatelessWidget {
             image: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('data', style: TextStyle(color: Colors.white),),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () {_introKey.currentState?.skipToEnd();},
-                        child: const Text('Skip', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
-                      ),
-                    ),
-                  ],
+                Align(
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    onPressed: () {_introKey.currentState?.skipToEnd();},
+                    child: const Text('Skip', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
+                  ),
                 ),
-                Image.asset('assets/images/ob_welcome.png', width: 400,),
+                Image.asset('lib/assets/images/ob_welcome.png', width: screenWidth * 0.58,),
               ],
             ),
           ),
@@ -50,20 +44,14 @@ class OnboardingScreen extends StatelessWidget {
             image: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('data', style: TextStyle(color: Colors.white),),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () {_introKey.currentState?.skipToEnd();},
-                        child: const Text('Skip', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
-                      ),
-                    ),
-                  ],
+                Align(
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    onPressed: () {_introKey.currentState?.skipToEnd();},
+                    child: const Text('Skip', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
+                  ),
                 ),
-                Image.asset('assets/images/ob_welcome.png', width: 400,),
+                Image.asset('lib/assets/images/ob_benefit_kelaskita.png', width: screenWidth * 0.7,),
               ],
             ),
           ),
@@ -74,20 +62,14 @@ class OnboardingScreen extends StatelessWidget {
             image: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('data', style: TextStyle(color: Colors.white),),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () {_introKey.currentState?.skipToEnd();},
-                        child: const Text('Skip', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
-                      ),
-                    ),
-                  ],
+                Align(
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    onPressed: () {_introKey.currentState?.skipToEnd();},
+                    child: const Text('Skip', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
+                  ),
                 ),
-                Image.asset('assets/images/ob_welcome.png', width: 400,),
+                Image.asset('lib/assets/images/ob_benefit_for_students.png', width: screenWidth * 0.7,),
               ],
             ),
           ),
@@ -95,7 +77,7 @@ class OnboardingScreen extends StatelessWidget {
               title: 'Keamanan yang Terpercaya',
               body: 'Keamanan yang teruji dan terpercaya \n serta privasi yang terjamin',
               decoration: PageDecoration(titleTextStyle: tsHeader2(), bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300)),
-              image: Image.asset('assets/onboarding.png'),
+              image: Image.asset('lib/assets/images/ob_security.png', width: screenWidth * 1,),
               footer: Column(
                 children: [
                   CustomButton(label: 'Login', onPressed: () {}, textColor: Colors.white, backgroundColor: primeryColorMedium, textStyle: tsHeader3(), side: BorderSide.none,),
