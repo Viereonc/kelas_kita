@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                       color: Colors.grey,
                       width: screenWidth * 0.003,
                     ),
-                  ),
+                  ),    
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
