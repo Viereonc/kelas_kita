@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
@@ -42,9 +43,11 @@ class OnboardingScreen extends StatelessWidget {
                             fontWeight: FontWeight.w600)),
                   ),
                 ),
-                Image.asset(
-                  'lib/assets/images/ob_welcome.png',
-                  width: screenWidth * 0.58,
+                Expanded(
+                  child: Image.asset(
+                    'lib/assets/images/ob_welcome.png',
+                    width: screenWidth * 0.58,
+                  ),
                 ),
               ],
             ),
@@ -122,14 +125,14 @@ class OnboardingScreen extends StatelessWidget {
               ),
               footer: Column(
                 children: [
-                  CustomButton(
+                  ButtonLoginRegister(
                     label: 'Login',
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                LoginView()), // Navigasi ke halaman home_view.dart
+                                LoginView()),
                       );
                     },
                     textColor: Colors.white,
@@ -140,7 +143,7 @@ class OnboardingScreen extends StatelessWidget {
                   SizedBox(
                     height: 25,
                   ),
-                  CustomButton(
+                  ButtonLoginRegister(
                     label: 'Register',
                     onPressed: () {},
                     textColor: primeryColorMedium,
