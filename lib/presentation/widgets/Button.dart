@@ -26,24 +26,21 @@ class ButtonLoginRegister extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Padding(
-      padding: EdgeInsets.only(left: screenWidth * 0.1, right: screenWidth * 0.1),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          surfaceTintColor: Colors.white,
-          backgroundColor: backgroundColor,
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01, vertical: screenHeight * 0.02),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-            side: side,
-          )
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: TextStyle(color: textColor, fontSize: 20),
-          ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        surfaceTintColor: Colors.white,
+        backgroundColor: backgroundColor,
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1, vertical: screenHeight * 0.015),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+          side: side,
+        )
+      ),
+      child: Center(
+        child: Text(
+          label,
+          style: tsSubHeader4(color: textColor),
         ),
       ),
     );
