@@ -15,6 +15,7 @@ class AppPages{
   static const LOGIN = Route.LOGINVIEW_PAGE;
   static const REGISTER = Route.REGISTERVIEW_PAGE;
   static const HOME = Route.HOMESCREEN_PAGE;
+  static const NOTIFICATION = Route.NOTIFICATION_PAGE;
   static const STRUKTURKELAS = Route.STRUKTURKELAS_PAGE;
   static const PROFILE = Route.PROFILE_PAGE;
 
@@ -46,6 +47,10 @@ class AppPages{
         transition: Transition.noTransition
     ),
     GetPage(
+        name: Path.NOTIFICATION_PAGE,
+        page: () => NotificationPage(),
+        transition: Transition.noTransition
+    ),
         name: Path.STRUKTURKELAS_PAGE,
         page: () => StrukturKelasScreen(),
         transition: Transition.noTransition
