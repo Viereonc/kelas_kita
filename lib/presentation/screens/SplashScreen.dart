@@ -9,7 +9,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    
+
     return Scaffold(
       body: Center(
         child: TweenAnimationBuilder(
@@ -26,6 +26,8 @@ class SplashScreen extends StatelessWidget {
                 width: screenWidth * 0.3,
                 'lib/assets/icons/logo.png',
                 fit: BoxFit.cover,
+                width: screenWidth * 0.02, 
+                height: screenWidth * 0.02, 
               ),
             );
           },
