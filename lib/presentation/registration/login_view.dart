@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kelas_kita/presentation/registration/register_view.dart';
+import 'package:kelas_kita/presentation/registration/form_biografi.dart';
+import 'package:kelas_kita/presentation/screens/home/home_view.dart';
+
 
 class LoginView extends StatelessWidget {
   @override
@@ -121,7 +124,12 @@ class LoginView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => BiografiView()),
+                        );
+                      },
                       child: Text(
                         'Login',
                         style: GoogleFonts.manrope(

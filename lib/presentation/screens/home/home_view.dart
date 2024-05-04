@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
-
+import 'package:kelas_kita/presentation/screens/pembukuan/Pembukuan_view.dart';
 import '../../themes/FontsStyle.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -64,7 +64,15 @@ class HomeScreen extends StatelessWidget {
                               style: tsParagraft3(),
                               textAlign: TextAlign.center,
                             ),
-                            IconButton(onPressed: () {}, icon: Icon(Icons.arrow_circle_right_rounded, size: 30, color: primeryColorDark,))
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => PembukuanView()),
+                                );
+                              },
+                              icon: Icon(Icons.arrow_circle_right_rounded, size: 30, color: primeryColorDark),
+                            )
                           ],
                         ),
                       ),
