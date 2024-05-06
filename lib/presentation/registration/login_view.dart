@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kelas_kita/presentation/registration/register_view.dart';
+import 'package:kelas_kita/presentation/registration/form_biografi.dart';
+import 'package:kelas_kita/presentation/screens/home/home_view.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';

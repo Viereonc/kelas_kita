@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
+import 'package:kelas_kita/presentation/screens/pembukuan/Pembukuan_view.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
-
 import '../../themes/FontsStyle.dart';
 
 class HomeScreen extends StatelessWidget {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kelas_kita/presentation/registration/login_view.dart';    
 import 'package:kelas_kita/presentation/registration/register_view.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
 import 'package:kelas_kita/presentation/widgets/TextFormField.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
-
 
 class RegisterView extends StatelessWidget {
   @override
