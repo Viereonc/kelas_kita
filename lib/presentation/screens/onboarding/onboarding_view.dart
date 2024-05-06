@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/widgets.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
-import 'package:kelas_kita/presentation/screens/registration/login_view.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -144,7 +141,7 @@ class OnboardingScreen extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(bottom: screenHeight * 0.03, left: screenWidth * 0.1, right: screenWidth * 0.1),
                     child: Container(
-                      child: CustomButton(
+                      child: Button(
                         label: 'Login',
                         onPressed: () {
                           Get.toNamed(Path.LOGINVIEW_PAGE);
@@ -158,7 +155,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   Container(
                     margin: EdgeInsets.only(bottom: screenHeight * 0.03, left: screenWidth * 0.1, right: screenWidth * 0.1),
-                    child: CustomButton(
+                    child: Button(
                       label: 'Register',
                       onPressed: () {
                         Get.toNamed(Path.REGISTERVIEW_PAGE);

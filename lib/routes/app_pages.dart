@@ -5,6 +5,7 @@ import 'package:kelas_kita/presentation/screens/onboarding/onboarding_view.dart'
 import 'package:kelas_kita/presentation/registration/login_view.dart';
 import 'package:kelas_kita/presentation/registration/register_view.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
+import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 
@@ -51,6 +52,7 @@ class AppPages{
         page: () => NotificationPage(),
         transition: Transition.noTransition
     ),
+    GetPage(
         name: Path.STRUKTURKELAS_PAGE,
         page: () => StrukturKelasScreen(),
         transition: Transition.noTransition

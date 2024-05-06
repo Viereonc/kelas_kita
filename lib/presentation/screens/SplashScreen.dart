@@ -26,8 +26,6 @@ class SplashScreen extends StatelessWidget {
                 width: screenWidth * 0.3,
                 'lib/assets/icons/logo.png',
                 fit: BoxFit.cover,
-                width: screenWidth * 0.02, 
-                height: screenWidth * 0.02, 
               ),
             );
           },

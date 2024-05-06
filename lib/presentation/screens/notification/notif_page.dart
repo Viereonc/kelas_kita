@@ -1,96 +1,134 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
+import 'package:kelas_kita/presentation/themes/Colors.dart';
 
-class NotificationPage extends StatefulWidget {
-  const NotificationPage({Key? key}) : super(key: key);
+import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 
-  @override
-  State<NotificationPage> createState() => _NotificationPageState();
-}
+class NotificationPage extends StatelessWidget {
+  const NotificationPage({super.key});
 
-class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Notification',
-          style: TextStyle(fontSize: 24.0), // Set font size to 24.0
-        ),
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset(
-              "lib/assets/icons/adjusments.svg",
-              width: 30.0,
-              height: 30.0,
-            ),
-            onPressed: () {
-              // Tambahkan logika yang ingin Anda jalankan saat ikon ditekan
-            },
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 8.0),
-            child: Container(
-              color: Colors.grey,
-              height: 1.0,
-            ),
-          ),
-        ),
-      ),
-      body: ListView.builder(
-        padding: const EdgeInsets.only(top: 8.0), // Add space at the top of the ListView
-        itemCount: 1,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0), // Add margin from the sides
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: const Color(0xFFF2F2F2), // Set border color to F2F2F2
-                  width: 1.0,
-                ),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: screenHeight * 0.05),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    "lib/assets/icons/task.svg",
-                    width: 40.0, // Set width to 32.0
-                    height: 40.0, // Set height to 32.0
+                  Text(
+                    'Notification',
+                    style: tsParagraft1(
+                      fontWeight: FontWeight.w600
+                    )
                   ),
-                  SizedBox(width: 8.0), // Add some space between icon and text
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Tugas CRUD',
-                          style: TextStyle(
-                            fontSize: 16.0, // Set font size to 16.0
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          'Tugas Laravel CRUD dari Fahmi sudah lewat deadline',
-                          style: const TextStyle(fontSize: 14.0), // Set font size to 14.0
-                        ),
-                      ],
-                    ),
+                  SvgPicture.asset(
+                    "lib/assets/icons/adjusments.svg",
+                    width: screenWidth * 0.08,
+                    height: screenWidth * 0.08
                   ),
                 ],
               ),
             ),
-          );
-        },
+            Divider(
+              color: Colors.grey,
+              thickness: 0.5,
+            ),
+            Container(
+              width: screenWidth,
+              height: screenHeight * 0.75,
+              child: ListView.builder(
+                itemCount: 1000,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(right: screenWidth * 0.03),
+                                  child: SvgPicture.asset(
+                                    "lib/assets/icons/task.svg",
+                                    width: screenWidth * 0.12,
+                                    height: screenWidth * 0.12
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: screenWidth * 0.5,
+                                      child: Text(
+                                        'Tugas CRUD',
+                                        style: tsParagraft3(
+                                          fontWeight: FontWeight.w600
+                                        )
+                                      ),
+                                    ),
+                                    Container(
+                                      width: screenWidth * 0.5,
+                                      child: Text(
+                                        'Tugas Laravel CRUD dari Fahmi sudah lewat deadline',
+                                        style: tsParagraft5()
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Text(
+                              '2 hari lalu',
+                              style: tsParagraft5()
+                            ),
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                        thickness: 0.5,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(top: 30),
+        height: 64,
+        width: 64,
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: primeryColorMedium,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(width: 3, color: Colors.white),
+            borderRadius: BorderRadius.circular(30)
+          ),
+          child: Icon(
+            Icons.qr_code,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavbar(),
     );
   }
 }
-

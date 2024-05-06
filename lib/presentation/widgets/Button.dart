@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
-class ButtonLoginRegister extends StatelessWidget {
+class Button extends StatelessWidget {
   final String label;
   final Color textColor;
   final TextStyle textStyle;
@@ -10,7 +10,7 @@ class ButtonLoginRegister extends StatelessWidget {
   final BorderSide side;
   final VoidCallback onPressed;
 
-  const ButtonLoginRegister({
+  const Button({
     Key? key,
     required this.label,
     required this.textStyle,

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:kelas_kita/presentation/registration/register_view.dart';
+import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
+import 'package:kelas_kita/presentation/themes/Colors.dart';
+import 'package:kelas_kita/presentation/widgets/Button.dart';
+import 'package:kelas_kita/presentation/widgets/TextFormField.dart';
+import 'package:kelas_kita/routes/app_routes.dart';
 
 class LoginView extends StatelessWidget {
   @override
@@ -9,229 +13,153 @@ class LoginView extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.only(top: 48.0, left: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Selamat Datang',
-                    style: GoogleFonts.manrope(
-                      textStyle: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: screenHeight * 0.05),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Selamat Datang',
+                      style: tsSubHeader1(),
                     ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Login to continue',
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black
-                            .withOpacity(0.3), 
-                      ),
+                    Text(
+                      'Login untuk melanjutkan',
+                      style: tsSubHeader4(),
                     ),
-                  ),
-                ],
+                  ],
+                )
               ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: EdgeInsets.only(top: 128.0),
-              child: Image.asset(
-                'lib/assets/images/lr_login.png',
-                width: screenWidth * 0.80,
+              Center(
+                child: Image.asset(
+                  'lib/assets/images/lr_login.png',
+                  width: screenWidth * 0.80,
+                ),
               ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: 360.0,
-                  left: 40.0,
-                  right: 40.0), 
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                      height:
-                          24),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Email',
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 10.0),
-                    ),
-                    textInputAction: TextInputAction
-                        .next, 
-                    onEditingComplete: () => FocusScope.of(context)
-                        .nextFocus(),
-                  ),
-                  SizedBox(
-                      height:
-                          24), 
-                  TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 10.0),
-                    ),
-                    textInputAction: TextInputAction
-                        .done,
-                    onEditingComplete: () => FocusScope.of(context)
-                        .unfocus(), 
-                  ),
-                  SizedBox(
-                      height:
-                          30), 
-                  GestureDetector(
-                    onTap: () {
-                    },
-                    child: Text(
-                      'Forgot Password?',
-                      style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF387ADF),
-                        ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                      child: textFormField(
+                        label: "Email", 
+                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3)),
+                        height: screenHeight * 0.06
                       ),
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  Container(
-                    width: double.infinity,
-                    height: 45  ,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF387ADF),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Login',
-                        style: GoogleFonts.manrope(
-                          textStyle: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                      child: textFormField(
+                        label: "Password", 
+                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3)),
+                        height: screenHeight * 0.06
                       ),
                     ),
-                  ),
-                  SizedBox(
-                      height:
-                          24),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Divider(color: Colors.black, thickness: 1)),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          'atau login dengan',
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(bottom: screenHeight * 0.015),
+                            child: Text(
+                              "Forgot Password?",
+                              style: tsParagraft3(color: primeryColorMedium),
                             ),
                           ),
-                        ),
+                          Column(
+                            children: [
+                              Button(
+                                label: "Login", 
+                                textStyle: tsSubHeader4(), 
+                                textColor: Colors.white, 
+                                backgroundColor: primeryColorMedium, 
+                                side: BorderSide.none, 
+                                onPressed: () {
+                                  Get.offNamed(Path.HOMESCREEN_PAGE);
+                                }
+                              )
+                            ],
+                          )
+                        ],
                       ),
-                      Expanded(
-                          child: Divider(color: Colors.black, thickness: 1)),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          'lib/assets/images/logos_google-icon.png',
-                          width: 30,
-                        ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Divider(color: Colors.black, thickness: 1)),
+                            Container(
+                              margin: EdgeInsets.only(left: screenWidth * 0.05, right: screenWidth * 0.05),
+                              child: Text(
+                                'atau login dengan',
+                                style: tsParagraft3(),
+                              ),
+                            ),
+                          Expanded(
+                            child: Divider(color: Colors.black, thickness: 1)
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.facebook,
-                          size: 40,
-                          color: Colors
-                              .blue, 
-                        ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: screenWidth * 0.05),
+                            child: Image.asset(
+                              'lib/assets/images/logos_google-icon.png',
+                              width: screenWidth * 0.08,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: screenWidth * 0.05),
+                            child: Icon(
+                              Icons.facebook,
+                              size: screenWidth * 0.11,
+                              color: Colors.blue, 
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                      height:
-                          16),
-                  Center(
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: screenHeight * 0.03),
                       child: Text(
-                        'Tidak punya akun? Register disini',
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
+                        "Tidak punya akun? register disini",
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  SizedBox(height: 30),
-                  Center(
-                    child: SizedBox(
-                      width: 360,
-                      height: 44,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          // Aksi ketika tombol Register ditekan
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => RegisterView()),
-                          );
-                        },
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                            color: const Color(0xFF387ADF),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                        child: Text(
-                          'Register',
-                          style: TextStyle(
-                            color: const Color(0xFF387ADF),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: screenHeight * 0.04),
+                      child: Button(
+                      label: 'Register',
+                      onPressed: () {
+                        Get.offNamed(Path.REGISTERVIEW_PAGE);
+                      },
+                      textColor: primeryColorMedium,
+                      backgroundColor: Colors.white,
+                      textStyle: tsHeader3(),
+                      side: BorderSide(color: primeryColorMedium),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      )
     );
   }
 }
