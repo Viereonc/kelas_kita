@@ -6,7 +6,6 @@ import 'package:kelas_kita/presentation/widgets/Button.dart';
 import 'package:kelas_kita/presentation/widgets/TextFormField.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 
-
 class RegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
