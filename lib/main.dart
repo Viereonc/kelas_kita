@@ -1,4 +1,3 @@
-gitimport 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/routes/app_pages.dart';
