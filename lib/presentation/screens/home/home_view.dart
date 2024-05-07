@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/Pembukuan_view.dart';
@@ -161,25 +162,33 @@ class HomeScreen extends StatelessWidget {
                             )
                           ],
                         ),
-                        Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                              width: screenWidth * 0.15,
-                              height: screenWidth * 0.15,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(13),
-                                color: Color(0xFFFFBF43),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => AgendaScreen()),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                                width: screenWidth * 0.15,
+                                height: screenWidth * 0.15,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(13),
+                                  color: Color(0xFFFFBF43),
+                                ),
+                                child: Center(
+                                  child: SvgPicture.asset("lib/assets/icons/he_note.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
+                                ),
                               ),
-                              child: Center(
-                                child: SvgPicture.asset("lib/assets/icons/he_note.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
-                              ),
-                            ),
-                            Text(
-                              'Note',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold),
-                            )
-                          ],
+                              Text(
+                                'Note',
+                                style: tsSubHeader5(fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
                         ),
                         InkWell(
                           onTap: () {
