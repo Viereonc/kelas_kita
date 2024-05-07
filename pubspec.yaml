@@ -41,7 +41,6 @@ dependencies:
   introduction_screen:
   get: ^4.6.5
   dio:
-  flutter_svg: 2.0.10+1
 
 dev_dependencies:
   flutter_test:

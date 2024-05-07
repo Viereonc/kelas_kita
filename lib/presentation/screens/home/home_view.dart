@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
+import 'package:kelas_kita/presentation/screens/pembukuan/Pembukuan_view.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
-
 import '../../themes/FontsStyle.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,18 +18,20 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  left: screenWidth * 0.05,
-                  right: screenWidth * 0.05,
-                  top: screenHeight * 0.03,
-                  bottom: screenHeight * 0.03),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: screenHeight * 0.05),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Hello, Ammar Faris 👋', style: tsHeader3()),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 13)),
                   Container(
+                    margin: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.06),
+                    child: Text(
+                      'Hello, Ammar Faris 👋', 
+                      style: tsHeader3()
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                     height: screenHeight * 0.17,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -94,133 +96,135 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 13)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                            width: screenWidth * 0.14,
-                            height: screenHeight * 0.078,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(13),
-                              color: Color(0xFF41BEBE),
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset("lib/assets/icons/he_info_kelas.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
-                            ),
-                          ),
-                          Text(
-                            'Info Kelas',
-                            style: tsSubHeader5(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                            width: screenWidth * 0.14,
-                            height: screenHeight * 0.078,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(13),
-                              color: Color(0xFFFF844F),
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset("lib/assets/icons/he_info_tugas.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
-                            ),
-                          ),
-                          Text(
-                            'Info Tugas',
-                            style: tsSubHeader5(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                            width: screenWidth * 0.14,
-                            height: screenHeight * 0.078,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(13),
-                              color: Color(0xFF3EB67B),
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset("lib/assets/icons/he_kas.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
-                            ),
-                          ),
-                          Text(
-                            'Kas',
-                            style: tsSubHeader5(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                            width: screenWidth * 0.14,
-                            height: screenHeight * 0.078,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(13),
-                              color: Color(0xFFFFBF43),
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset("lib/assets/icons/he_note.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
-                            ),
-                          ),
-                          Text(
-                            'Note',
-                            style: tsSubHeader5(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => StrukturKelasScreen()),
-                          );
-                        },
-                        child: Column(
+                  Container(
+                    margin: EdgeInsets.only(right: screenWidth * 0.03, left: screenWidth * 0.03, top: screenHeight * 0.05),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
                           children: [
                             Container(
                               margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                              width: screenWidth * 0.14,
-                              height: screenHeight * 0.078,
+                              width: screenWidth * 0.15,
+                              height: screenWidth * 0.15,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(13),
-                                color: Color(0xFF5675E3),
+                                color: Color(0xFF41BEBE),
                               ),
                               child: Center(
-                                child: SvgPicture.asset("lib/assets/icons/he_struktur.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
+                                child: SvgPicture.asset("lib/assets/icons/he_info_kelas.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
                               ),
                             ),
                             Text(
-                              'Struktur',
+                              'Info Kelas',
                               style: tsSubHeader5(fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
-                      ),
-                    ],
+                        Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              width: screenWidth * 0.15,
+                              height: screenWidth * 0.15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(13),
+                                color: Color(0xFFFF844F),
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset("lib/assets/icons/he_info_tugas.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
+                              ),
+                            ),
+                            Text(
+                              'Info Tugas',
+                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              width: screenWidth * 0.15,
+                              height: screenWidth * 0.15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(13),
+                                color: Color(0xFF3EB67B),
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset("lib/assets/icons/he_kas.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
+                              ),
+                            ),
+                            Text(
+                              'Kas',
+                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              width: screenWidth * 0.15,
+                              height: screenWidth * 0.15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(13),
+                                color: Color(0xFFFFBF43),
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset("lib/assets/icons/he_note.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
+                              ),
+                            ),
+                            Text(
+                              'Note',
+                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => StrukturKelasScreen()),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                                width: screenWidth * 0.15,
+                                height: screenWidth * 0.15,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(13),
+                                  color: Color(0xFF5675E3),
+                                ),
+                                child: Center(
+                                  child: SvgPicture.asset("lib/assets/icons/he_struktur.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
+                                ),
+                              ),
+                              Text(
+                                'Struktur',
+                                style: tsSubHeader5(fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
             Container(
               width: double.infinity,
-              height: screenHeight * 0.55,
+              height: screenHeight * 0.386,
               decoration: BoxDecoration(
                   color: Color(0xFFF8F4F3),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(50),
                       topRight: Radius.circular(50))),
               child: Padding(
-                padding: EdgeInsets.all(25),
+                padding: EdgeInsets.all(screenWidth * 0.05),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -230,10 +234,10 @@ class HomeScreen extends StatelessWidget {
                         itemCount: 9,
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
+                            padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
                             child: Container(
                               padding: EdgeInsets.only(left: screenWidth * 0.05),
-                              height: screenHeight * 0.12,
+                              height: screenHeight * 0.11,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
@@ -241,7 +245,7 @@ class HomeScreen extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Container(
-                                    height: screenHeight * 0.07,
+                                    height: screenWidth * 0.12,
                                     width: screenWidth * 0.12,
                                     decoration: BoxDecoration(
                                         color: Color(0xFFEB4335),
@@ -250,7 +254,7 @@ class HomeScreen extends StatelessWidget {
                                       child: Icon(
                                         Icons.list_outlined,
                                         color: Colors.white,
-                                        size: 34,
+                                        size: screenWidth * 0.08,
                                       ),
                                     ),
                                   ),
