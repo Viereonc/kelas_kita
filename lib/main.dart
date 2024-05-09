@@ -14,7 +14,7 @@ class MyApp extends GetMaterialApp {
     return GetMaterialApp(
       title: 'Kelas Kita',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppPages.HOME,
+      initialRoute: AppPages.KAS,
       getPages: AppPages.routes,
     );
   }

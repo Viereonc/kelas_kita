@@ -35,8 +35,8 @@ class Button extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           side: side,
-        )
-      ),
+        ),
+      ).copyWith(mouseCursor: MaterialStateMouseCursor.clickable,),
       child: Center(
         child: Text(
           label,
