@@ -2,9 +2,11 @@ import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/SplashScreen.dart';
 import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
 import 'package:kelas_kita/presentation/screens/home/home_view.dart';
+import 'package:kelas_kita/presentation/screens/kas/kas_view.dart';
 import 'package:kelas_kita/presentation/screens/onboarding/onboarding_view.dart';
 import 'package:kelas_kita/presentation/registration/login_view.dart';
 import 'package:kelas_kita/presentation/registration/register_view.dart';
+import 'package:kelas_kita/presentation/screens/pembukuan/Pembukuan_view.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
 import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
@@ -19,6 +21,8 @@ class AppPages{
   static const HOME = Route.HOMESCREEN_PAGE;
   static const NOTIFICATION = Route.NOTIFICATION_PAGE;
   static const STRUKTURKELAS = Route.STRUKTURKELAS_PAGE;
+  static const PEMBUKUAN = Route.PEMBUKUAN_PAGE;
+  static const KAS = Route.KAS_PAGE;
   static const AGENDA = Route.AGENDA_PAGE;
   static const PROFILE = Route.PROFILE_PAGE;
 
@@ -60,8 +64,18 @@ class AppPages{
         transition: Transition.noTransition
     ),
     GetPage(
+        name: Path.PEMBUKUAN_PAGE,
+        page: () => PembukuanView(),
+        transition: Transition.noTransition
+    ),
+    GetPage(
         name: Path.AGENDA_PAGE,
         page: () => AgendaScreen(),
+        transition: Transition.noTransition
+    ),
+    GetPage(
+        name: Path.KAS_PAGE,
+        page: () => KasScreen(),
         transition: Transition.noTransition
     ),
     GetPage(
