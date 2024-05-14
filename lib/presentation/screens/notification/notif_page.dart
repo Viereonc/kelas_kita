@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
@@ -42,11 +43,9 @@ class NotificationPage extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
             ),
-            Container(
-              width: screenWidth,
-              height: screenHeight * 0.75,
+            Expanded(
               child: ListView.builder(
-                itemCount: 1000,
+                itemCount: 10,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
