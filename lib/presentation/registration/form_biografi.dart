@@ -246,7 +246,7 @@ class BiografiView extends StatelessWidget {
                       ),
                       SizedBox(height: 35),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Memusatkan tombol
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             width: 140,
@@ -281,12 +281,8 @@ class BiografiView extends StatelessWidget {
                               width: 140,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 56, 122, 223), // Warna biru
+                                color: Color.fromARGB(255, 56, 122, 223),
                                 borderRadius: BorderRadius.circular(5),
-                                // border: Border.all(
-                                //   color: Color.fromARGB(255, 56, 122, 223),
-                                //   width: 2,
-                                // ),
                               ),
                               child: Center(
                                 child: Text(
