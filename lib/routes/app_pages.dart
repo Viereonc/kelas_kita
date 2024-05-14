@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/registration/form_biografi.dart';
 import 'package:kelas_kita/presentation/screens/SplashScreen.dart';
 import 'package:kelas_kita/presentation/screens/home/home_view.dart';
 import 'package:kelas_kita/presentation/screens/onboarding/onboarding_view.dart';
@@ -40,6 +41,11 @@ class AppPages{
     GetPage(
         name: Path.REGISTERVIEW_PAGE,
         page: () => RegisterView(),
+        transition: Transition.noTransition
+    ),
+    GetPage(
+        name: Path.BIOGRAFIVIEW_PAGE,
+        page: () => BiografiView(),
         transition: Transition.noTransition
     ),
     GetPage(

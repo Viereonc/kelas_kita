@@ -82,7 +82,7 @@ class LoginView extends StatelessWidget {
                                 backgroundColor: primeryColorMedium, 
                                 side: BorderSide.none, 
                                 onPressed: () {
-                                  Get.offNamed(Path.HOMESCREEN_PAGE);
+                                  Get.offNamed(Path.BIOGRAFIVIEW_PAGE);
                                 }
                               )
                             ],
