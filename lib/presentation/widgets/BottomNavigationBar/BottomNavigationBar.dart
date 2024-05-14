@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:kelas_kita/presentation/screens/home/home_view.dart';
 import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
+import 'package:kelas_kita/presentation/screens/jadwal/jadwal_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 
 import 'NavbarController.dart';
@@ -63,7 +64,7 @@ class BottomNavbar extends StatelessWidget {
             Get.to(() => HomeScreen());
             break;
           case 1:
-            Get.to(() => HomeScreen());
+            Get.to(() => JadwalView());
             break;
           case 2:
             Get.to(() => NotificationPage());
