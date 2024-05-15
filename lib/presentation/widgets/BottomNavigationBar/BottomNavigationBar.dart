@@ -8,7 +8,7 @@ import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
 import 'package:kelas_kita/presentation/screens/jadwal/jadwal_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
-
+import 'package:kelas_kita/routes/app_routes.dart';
 import 'NavbarController.dart';
 
 class BottomNavbar extends StatelessWidget {
@@ -42,10 +42,26 @@ class BottomNavbar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  buildNavBarItem(0, "lib/assets/icons/nb_home.svg", "Home"),
-                  buildNavBarItem(1, "lib/assets/icons/nb_jadwal.svg", "Jadwal"),
-                  buildNavBarItem(2, "lib/assets/icons/nb_notification.svg", "Notification"),
-                  buildNavBarItem(3, "lib/assets/icons/nb_profile.svg", "Profile"),
+                  buildNavBarItem(
+                    0, 
+                    "lib/assets/icons/nb_home.svg", 
+                    "Home"
+                  ),
+                  buildNavBarItem(
+                    1, 
+                    "lib/assets/icons/nb_jadwal.svg", 
+                    "Jadwal"
+                  ),
+                  buildNavBarItem(
+                    2, 
+                    "lib/assets/icons/nb_notification.svg", 
+                    "Notification"
+                  ),
+                  buildNavBarItem(
+                    3, 
+                    "lib/assets/icons/nb_profile.svg", 
+                    "Profile"
+                  ),
                 ],
               ),
             ),
@@ -61,16 +77,16 @@ class BottomNavbar extends StatelessWidget {
         bottomNavBarController.changeTabIndex(index);
         switch (index) {
           case 0:
-            Get.to(() => HomeScreen());
+            Get.toNamed(Path.HOME_PAGE);
             break;
           case 1:
-            Get.to(() => JadwalView());
+            Get.toNamed(Path.JADWAL_PAGE);
             break;
           case 2:
-            Get.to(() => NotificationPage());
+            Get.toNamed(Path.NOTIFICATION_PAGE);
             break;
           case 3:
-            Get.to(() => ProfileScreen());
+            Get.toNamed(Path.PROFILE_PAGE);
             break;
           default:
             break;
@@ -83,9 +99,7 @@ class BottomNavbar extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              color: bottomNavBarController.selectedIndex.value == index
-                  ? Colors.white
-                  : Colors.white,
+              color: bottomNavBarController.selectedIndex.value == index ? Colors.white : Colors.white,
             ),
           ),
         ],

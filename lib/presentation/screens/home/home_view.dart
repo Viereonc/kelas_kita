@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
-import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
+import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
-import 'package:kelas_kita/presentation/screens/pembukuan/Pembukuan_view.dart';
+import 'package:kelas_kita/routes/app_routes.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 import '../../themes/FontsStyle.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                    height: screenHeight * 0.17,
+                    height: screenHeight * 0.15,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
@@ -56,12 +56,13 @@ class HomeScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              SvgPicture.asset("lib/assets/icons/he_cash.svg", width: screenWidth * 0.055, height: screenHeight * 0.055,),
+                              SvgPicture.asset("lib/assets/icons/he_cash.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('Total Kas Kelas 11 PPLG 2',
-                                      style: tsParagraft3()
+                                      style: tsParagraft4()
                                           .copyWith(color: Colors.white)),
                                   Padding(
                                       padding: EdgeInsets.only(
@@ -81,14 +82,14 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'Pembukuan \n Kas',
-                                style: tsParagraft3(),
+                                style: tsParagraft4(),
                                 textAlign: TextAlign.center,
                               ),
                               IconButton(
                                   onPressed: () {},
                                   icon: Icon(
                                     Icons.arrow_circle_right_rounded,
-                                    size: 30,
+                                    size: screenWidth * 0.08,
                                     color: primeryColorDark,
                                   ))
                             ],
@@ -113,7 +114,16 @@ class HomeScreen extends StatelessWidget {
                                 color: Color(0xFF41BEBE),
                               ),
                               child: Center(
-                                child: SvgPicture.asset("lib/assets/icons/he_info_kelas.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Path.STRUKTURKELAS_PAGE);
+                                  },
+                                  child: SvgPicture.asset(
+                                    "lib/assets/icons/he_info_kelas.svg", 
+                                    width: screenWidth * 0.05, 
+                                    height: screenHeight * 0.05,
+                                  )
+                                )
                               ),
                             ),
                             Text(
@@ -133,7 +143,16 @@ class HomeScreen extends StatelessWidget {
                                 color: Color(0xFFFF844F),
                               ),
                               child: Center(
-                                child: SvgPicture.asset("lib/assets/icons/he_info_tugas.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
+                                child: GestureDetector(
+                                  onTap: () {
+                 
+                                  },
+                                  child: SvgPicture.asset(
+                                    "lib/assets/icons/he_info_tugas.svg", 
+                                    width: screenWidth * 0.05, 
+                                    height: screenHeight * 0.05,
+                                  ),
+                                )
                               ),
                             ),
                             Text(
@@ -153,7 +172,16 @@ class HomeScreen extends StatelessWidget {
                                 color: Color(0xFF3EB67B),
                               ),
                               child: Center(
-                                child: SvgPicture.asset("lib/assets/icons/he_kas.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
+                                child: GestureDetector(
+                                  onTap: () => {
+                                    Get.toNamed(Path.KAS_PAGE)
+                                  },
+                                  child: SvgPicture.asset(
+                                    "lib/assets/icons/he_kas.svg", 
+                                    width: screenWidth * 0.05, 
+                                    height: screenHeight * 0.05,
+                                  ),
+                                )
                               ),
                             ),
                             Text(
@@ -162,61 +190,64 @@ class HomeScreen extends StatelessWidget {
                             )
                           ],
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => AgendaScreen()),
-                            );
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                                width: screenWidth * 0.15,
-                                height: screenWidth * 0.15,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(13),
-                                  color: Color(0xFFFFBF43),
-                                ),
-                                child: Center(
-                                  child: SvgPicture.asset("lib/assets/icons/he_note.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
-                                ),
+                        Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              width: screenWidth * 0.15,
+                              height: screenWidth * 0.15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(13),
+                                color: Color(0xFFFFBF43),
                               ),
-                              Text(
-                                'Note',
-                                style: tsSubHeader5(fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
+                              child: Center(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Path.AGENDA_PAGE);
+                                  },
+                                  child: SvgPicture.asset(
+                                    "lib/assets/icons/he_note.svg", 
+                                    width: screenWidth * 0.05, 
+                                    height: screenHeight * 0.05,
+                                  ),
+                                )
+                              ),
+                            ),
+                            Text(
+                              'Note',
+                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => StrukturKelasScreen()),
-                            );
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                                width: screenWidth * 0.15,
-                                height: screenWidth * 0.15,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(13),
-                                  color: Color(0xFF5675E3),
-                                ),
-                                child: Center(
-                                  child: SvgPicture.asset("lib/assets/icons/he_struktur.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,)
-                                ),
+                        Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              width: screenWidth * 0.15,
+                              height: screenWidth * 0.15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(13),
+                                color: Color(0xFF5675E3),
                               ),
-                              Text(
-                                'Struktur',
-                                style: tsSubHeader5(fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
+                              child: Center(
+                                child: GestureDetector(
+                                  onTap: () => {
+                                    Get.toNamed(Path.STRUKTURKELAS_PAGE)
+                                  
+                                  },
+                                  child: SvgPicture.asset(
+                                    "lib/assets/icons/he_struktur.svg", 
+                                    width: screenWidth * 0.05, 
+                                    height: screenHeight * 0.05,
+                                  ),
+                                )
+                              ),
+                            ),
+                            Text(
+                              'Struktur',
+                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
                       ],
                     ),

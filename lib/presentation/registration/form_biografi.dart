@@ -6,364 +6,265 @@ class BiografiView extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    Alignment textAlignment = Alignment.center;
+    double imageWidth = screenWidth * 0.4;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              color: Color.fromARGB(255, 56, 122, 223),
-              height: 200,
-              child: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                automaticallyImplyLeading: false,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 220,
-            left: 20,
-            right: 20,
-            child: Container(
-              width: screenWidth - 40,
-              height: screenHeight - 240,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  color: Colors.black.withOpacity(0.2),
-                  width: 1,
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  width: screenWidth,
+                  height: screenHeight * 0.20,
+                  color: Color.fromARGB(255, 56, 122, 223),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 2,
-                    offset: Offset(0, 3),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(left: screenWidth * 0.13),
+                    child: Image.asset(
+                      'lib/assets/images/lr_form.png',
+                      fit: BoxFit.fill,
+                      width: imageWidth,
+                      height: screenHeight * 0.2,
+                    ),
                   ),
-                ],
-              ),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: EdgeInsets.all(30.0),
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                      left: screenWidth * 0.54, top: screenHeight * 0.07),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Icon(Icons.person, size: 20),
-                          SizedBox(width: 5),
-                          Text(
-                            'Nama',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 17,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 400,
-                        height: 40,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'Nama',
-                            hintStyle: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: Colors.black.withOpacity(0.2),
-                            ),
-                            contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 8),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                  color: Colors.black.withOpacity(0.4)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
                       Text(
-                        'Isi dengan nama asli',
+                        'Isi form dengan',
                         style: TextStyle(
-                          fontFamily: 'Poppins',
+                          fontFamily: 'tsSubHeader5',
                           fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: Colors.black.withOpacity(0.4),
+                          fontSize: screenWidth * 0.0490,
+                          color: Colors.white,
                         ),
                       ),
-                      SizedBox(
-                          height: 10),
-                      Row(
-                        children: [
-                          Icon(Icons.school, size: 20),
-                          SizedBox(width: 5),
-                          Text(
-                            'Kelas',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 17,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 400,
-                        height: 40,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'Kelas',
-                            hintStyle: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: Colors.black.withOpacity(0.2),
-                            ),
-                            contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 8),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                  color: Colors.black.withOpacity(0.4)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
+                      SizedBox(height: screenHeight * 0.003),
                       Text(
-                        'Isi dengan kelas Anda',
+                        'data kalian',
                         style: TextStyle(
-                          fontFamily: 'Poppins',
+                          fontFamily: 'tsSubHeader5',
                           fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: Colors.black.withOpacity(0.4),
+                          fontSize: screenWidth * 0.0490,
+                          color: Colors.white,
                         ),
-                      ),
-                      SizedBox(
-                          height: 10),
-                      Row(
-                        children: [
-                          Icon(Icons.confirmation_number, size: 20),
-                          SizedBox(width: 5),
-                          Text(
-                            'NIS',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 17,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 400,
-                        height: 40,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'NIS',
-                            hintStyle: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: Colors.black.withOpacity(0.2),
-                            ),
-                            contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 8),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                  color: Colors.black.withOpacity(0.4)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        'Isi dengan NIS Anda',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: Colors.black.withOpacity(0.4),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Icon(Icons.location_on, size: 20),
-                          SizedBox(width: 5),
-                          Text(
-                            'Alamat',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 17,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Container(
-                        width: 400,
-                        height: 40,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'Alamat',
-                            hintStyle: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: Colors.black.withOpacity(0.2),
-                            ),
-                            contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 8),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                  color: Colors.black.withOpacity(0.4)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        'Isi dengan alamat Anda',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: Colors.black.withOpacity(0.4),
-                        ),
-                      ),
-                      SizedBox(height: 35),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 140,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                color: Colors.red,
-                                width: 2,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Back',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => HomeScreen()),
-                              );
-                            },
-                            child: Container(
-                              width: 140,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 56, 122, 223),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Submit',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 2,
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                screenWidth * 0.05,
+                screenWidth * 0.03,
+                screenWidth * 0.05,
+                screenHeight * 0.0,
+              ),
+              child: FractionallySizedBox(
+                widthFactor: 0.99,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                      color: Colors.black.withOpacity(0.2),
+                      width: 1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 2,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(screenWidth * 0.05),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildFormField(
+                          label: 'Nama',
+                          hint: 'Nama',
+                          hintDescription: 'Isi dengan nama asli',
+                          screenWidth: screenWidth,
+                        ),
+                        SizedBox(height: screenHeight * 0.025),
+                        buildFormField(
+                          label: 'Kelas',
+                          hint: 'Kelas',
+                          hintDescription: 'Isi dengan kelas Anda',
+                          screenWidth: screenWidth,
+                        ),
+                        SizedBox(height: screenHeight * 0.025),
+                        buildFormField(
+                          label: 'NIS',
+                          hint: 'NIS',
+                          hintDescription: 'Isi dengan NIS Anda',
+                          screenWidth: screenWidth,
+                        ),
+                        SizedBox(height: screenHeight * 0.025),
+                        buildFormField(
+                          label: 'Alamat',
+                          hint: 'Alamat',
+                          hintDescription: 'Isi dengan alamat Anda',
+                          screenWidth: screenWidth,
+                        ),
+                        SizedBox(height: screenHeight * 0.10),
+                      ],
+                    ),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(20),
               ),
             ),
-          ),
-          Positioned(
-            left: -30,
-            top: -45,
-            child: Transform.scale(
-              scale: 0.550,
-              child: Image.asset(
-                'lib/assets/images/lr_form.png',
-                fit: BoxFit.contain,
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.fromLTRB(
+          screenWidth * 0.06,
+          screenHeight * 0.025,
+          screenWidth * 0.06,
+          screenHeight * 0.050,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            buildButton(
+              text: 'Back',
+              color: Colors.white,
+              textColor: Colors.red,
+              borderColor: Colors.red,
+              screenWidth: screenWidth,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            buildButton(
+              text: 'Submit',
+              color: Color.fromARGB(255, 56, 122, 223),
+              textColor: Colors.white,
+              screenWidth: screenWidth,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildFormField({
+    required String label,
+    required String hint,
+    required String hintDescription,
+    required double screenWidth,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.person, size: screenWidth * 0.05),
+            SizedBox(width: screenWidth * 0.0125),
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'tsParagraft3',
+                fontWeight: FontWeight.w500,
+                fontSize: screenWidth * 0.04,
               ),
             ),
-          ),
-          Positioned(
-            left: 200,
-            top: 80,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                'Isi form dengan',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                  color: Colors.white,
+          ],
+        ),
+        SizedBox(height: screenWidth * 0.0125),
+        Container(
+          width: double.infinity,
+          height: screenWidth * 0.1,
+          child: TextFormField(
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: TextStyle(
+                fontFamily: 'tsParagraft3',
+                fontWeight: FontWeight.w500,
+                fontSize: screenWidth * 0.0375,
+                color: Colors.black.withOpacity(0.2),
+              ),
+              contentPadding: EdgeInsets.fromLTRB(
+                screenWidth * 0.03,
+                screenWidth * 0.05,
+                screenWidth * 0.03,
+                screenWidth * 0.02,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(
+                  color: Colors.black.withOpacity(0.4),
                 ),
               ),
             ),
           ),
-          Positioned(
-            left: 217,
-            top: 110,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Text(
-                'data kalian',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 19,
-                  color: Colors.white,
-                ),
-              ),
+        ),
+        SizedBox(height: screenWidth * 0.0125),
+        Text(
+          hintDescription,
+          style: TextStyle(
+            fontFamily: 'tsParagraft3',
+            fontWeight: FontWeight.w500,
+            fontSize: screenWidth * 0.0325,
+            color: Colors.black.withOpacity(0.4),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildButton({
+    required String text,
+    required Color color,
+    required Color textColor,
+    double? screenWidth,
+    Color? borderColor,
+    VoidCallback? onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: screenWidth! * 0.35,
+        height: screenWidth * 0.1,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(5),
+          border: borderColor != null
+              ? Border.all(color: borderColor, width: 2)
+              : null,
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: textColor,
+              fontSize: screenWidth * 0.04,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'tsParagraft3',
             ),
           ),
-        ],
+        ),
       ),
     );
   }
