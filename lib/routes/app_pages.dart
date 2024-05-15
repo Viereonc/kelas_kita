@@ -33,9 +33,9 @@ class AppPages{
   static final routes = [
 
     GetPage(
-      name: Path.SPLASHSCREEN_PAGE, 
-      page: () => SplashScreen(),
-      transition: Transition.noTransition
+        name: Path.SPLASHSCREEN_PAGE,
+        page: () => SplashScreen(),
+        transition: Transition.noTransition
     ),
     GetPage(
         name: Path.ONBOARDING_PAGE,

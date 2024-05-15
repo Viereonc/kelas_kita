@@ -3,15 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:kelas_kita/presentation/registration/login_view.dart';
+import 'package:kelas_kita/presentation/screens/profile/about_us/about_us.dart';
+import 'package:kelas_kita/presentation/screens/profile/detail_profile/detail_profile.dart';
+import 'package:kelas_kita/presentation/screens/profile/edit_profile/edit_profile.dart';
+import 'package:kelas_kita/presentation/screens/profile/privacy_policy/privacy_policy.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
 
 import '../../themes/Backdrop.dart';
+import 'edit_profile/edit_profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  ProfileScreen({Key? key}) : super(key: key);
+
+  final EditProfileController editProfileController = Get.put(EditProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +64,9 @@ class ProfileScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
                               image: DecorationImage(
-                                image: NetworkImage("https://picsum.photos/500/300"),
+                                image: editProfileController.selectedImagePath.value != null ?
+                                FileImage(editProfileController.selectedImagePath.value!) :
+                                NetworkImage("https://picsum.photos/500/300") as ImageProvider,
                                 fit: BoxFit.cover
                               )
                           ),
@@ -154,123 +166,155 @@ class ProfileScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: screenWidth * 0.04),
-                                      child: SvgPicture.asset(
-                                        "lib/assets/icons/pe_detail.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => DetailProfileScreen()),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(right: screenWidth * 0.04),
+                                        child: SvgPicture.asset(
+                                          "lib/assets/icons/pe_detail.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "Detail Profile", 
-                                      style: tsSubHeader4(fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_sharp,
-                                    size: screenWidth * 0.05,
+                                      Text(
+                                        "Detail Profile",
+                                        style: tsSubHeader4(fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
                                   ),
-                                )
-                              ],
+                                  Container(
+                                    margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_sharp,
+                                      size: screenWidth * 0.05,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                             Divider(
                               color: Colors.grey,
                               thickness: 0.5,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: screenWidth * 0.04),
-                                      child: SvgPicture.asset(
-                                        "lib/assets/icons/pe_edit.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(right: screenWidth * 0.04),
+                                        child: SvgPicture.asset(
+                                          "lib/assets/icons/pe_edit.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "Edit Profile", 
-                                      style: tsSubHeader4(fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_sharp,
-                                    size: screenWidth * 0.05,
+                                      Text(
+                                        "Edit Profile",
+                                        style: tsSubHeader4(fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_sharp,
+                                      size: screenWidth * 0.05,
+                                    )
                                   )
-                                )
-                              ],
+                                ],
+                              ),
                             ),
                             Divider(
                               color: Colors.grey,
                               thickness: 0.5,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: screenWidth * 0.04),
-                                      child: SvgPicture.asset(
-                                        "lib/assets/icons/pe_privacy.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(right: screenWidth * 0.04),
+                                        child: SvgPicture.asset(
+                                          "lib/assets/icons/pe_privacy.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "Privacy Policy", 
-                                      style: tsSubHeader4(fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_sharp,
-                                    size: screenWidth * 0.05,
+                                      Text(
+                                        "Privacy Policy",
+                                        style: tsSubHeader4(fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_sharp,
+                                      size: screenWidth * 0.05,
+                                    )
                                   )
-                                )
-                              ],
+                                ],
+                              ),
                             ),
                             Divider(
                               color: Colors.grey,
                               thickness: 0.5,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: screenWidth * 0.04),
-                                      child: SvgPicture.asset(
-                                        "lib/assets/icons/pe_about.svg", 
-                                        width: screenWidth * 0.04, 
-                                        height: screenHeight * 0.04,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => AboutUsScreen()),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(right: screenWidth * 0.04),
+                                        child: SvgPicture.asset(
+                                          "lib/assets/icons/pe_about.svg",
+                                          width: screenWidth * 0.04,
+                                          height: screenHeight * 0.04,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "About Us", 
-                                      style: tsSubHeader4(fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                               Container(
-                                  margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_sharp,
-                                    size: screenWidth * 0.05,
+                                      Text(
+                                        "About Us",
+                                        style: tsSubHeader4(fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                 Container(
+                                    margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_sharp,
+                                      size: screenWidth * 0.05,
+                                    )
                                   )
-                                )
-                              ],
+                                ],
+                              ),
                             ),
                             Divider(
                               color: Colors.grey,
@@ -287,7 +331,18 @@ class ProfileScreen extends StatelessWidget {
                           textColor: Colors.white, 
                           backgroundColor: Color(0xFFFF2D2D), 
                           side: BorderSide.none, 
-                          onPressed: () {}
+                          onPressed: () {
+                            showCupertinoDialog<void>(
+                                context: context, builder: (BuildContext context) => CupertinoAlertDialog(
+                                title: Text('Peringatan', style: tsParagraft2(),),
+                                content: Text('Apakah anda ingin Log Out?', style: tsParagraft5(),),
+                                actions: <CupertinoDialogAction>[
+                                  CupertinoDialogAction(child: Text('Tidak', style: tsSubHeader4().copyWith(color: Colors.red),), isDestructiveAction: true, onPressed: () {Navigator.pop(context);},),
+                                  CupertinoDialogAction(child: Text('Ya', style: tsSubHeader4(),), onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => LoginView()),);},),
+                                ],
+                              ),
+                            );
+                          }
                         ),
                       )
                     ],

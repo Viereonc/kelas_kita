@@ -126,12 +126,12 @@ class OnboardingScreen extends StatelessWidget {
               title: 'Keamanan yang Terpercaya',
               body: 'Keamanan yang teruji dan terpercaya \n serta privasi yang terjamin',
               decoration: PageDecoration(
-                  titleTextStyle: tsHeader2(),
-                  bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
-                  bodyAlignment: Alignment.bottomCenter,
-                  imageAlignment: Alignment.bottomCenter,
-                  imagePadding: EdgeInsets.only(top: screenHeight * 0),
-                  imageFlex: 2
+                titleTextStyle: tsHeader2(),
+                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
+                bodyAlignment: Alignment.bottomCenter,
+                imageAlignment: Alignment.bottomCenter,
+                imagePadding: EdgeInsets.only(top: screenHeight * 0),
+                imageFlex: 2
               ),
               image: Expanded(
                 child: Image.asset(
