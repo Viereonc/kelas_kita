@@ -20,6 +20,14 @@ class AppPages{
   static const ONBOARDING = Route.ONBOARDINGVIEW_PAGE;
   static const LOGIN = Route.LOGINVIEW_PAGE;
   static const REGISTER = Route.REGISTERVIEW_PAGE;
+  static const HOME = Route.HOMESCREEN_PAGE;
+  static const NOTIFICATION = Route.NOTIFICATION_PAGE;
+  static const STRUKTURKELAS = Route.STRUKTURKELAS_PAGE;
+  static const PEMBUKUAN = Route.PEMBUKUAN_PAGE;
+  static const KAS = Route.KAS_PAGE;
+  static const JADWAL = Route.JADWAL_PAGE;
+  static const AGENDA = Route.AGENDA_PAGE;
+  static const PROFILE = Route.PROFILE_PAGE;
   static const BIOGRAFI = Route.BIOGRAFIVIEW_PAGE;
   static const HOME = Route.HOMEVIEW_PAGE;
   static const NOTIFICATION = Route.NOTIFICATIONVIEW_PAGE;
@@ -85,6 +93,11 @@ class AppPages{
     GetPage(
         name: Path.KAS_PAGE,
         page: () => KasScreen(),
+        transition: Transition.noTransition
+    ),
+    GetPage(
+        name: Path.JADWAL_PAGE,
+        page: () => JadwalView(),
         transition: Transition.noTransition
     ),
     GetPage(

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-Widget textFormField ({
+Widget textFormField({
   required String label,
   required TextStyle labelStyle,
   required double height,
+  TextEditingController? controller,
 }) {
   return Container(
     height: height,
     child: TextFormField(
+      controller: controller,
       obscureText: label == "Password" ? true : false,
       decoration: InputDecoration(
         labelText: label,
