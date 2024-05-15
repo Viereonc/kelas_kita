@@ -41,8 +41,11 @@ class KasScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Center(
-                          child: Icon(Icons.arrow_back_ios_new,
-                              color: Colors.white)),
+                        child: Icon(
+                          Icons.arrow_back_ios_new,
+                          color: Colors.white
+                        )
+                      ),
                     ),
                   ),
                 ),
@@ -71,8 +74,14 @@ class KasScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Total Tunggakan Kas', style: tsParagraft4().copyWith(color: Colors.white),),
-                        Text('Rp 50.000', style: tsHeader2().copyWith(color: Colors.white),),
+                        Text(
+                          'Total Tunggakan Kas', 
+                          style: tsParagraft4().copyWith(color: Colors.white),
+                        ),
+                        Text(
+                          'Rp 50.000', 
+                          style: tsHeader2().copyWith(color: Colors.white),
+                        ),
                       ],
                     ),
                   ),
@@ -81,7 +90,10 @@ class KasScreen extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: screenWidth * 0.01),
-              child: Text("Riwayat Pembayaran Kas", style: tsSubHeader3(fontWeight: FontWeight.bold),),
+              child: Text(
+                "Riwayat Pembayaran Kas", 
+                style: tsSubHeader3(fontWeight: FontWeight.bold),
+              ),
             ),
             Expanded(
               child: Container(
@@ -99,13 +111,13 @@ class KasScreen extends StatelessWidget {
                             height: screenHeight * 0.05,
                             width: screenWidth * 0.25,
                             decoration: BoxDecoration(
-                                color : Color(0xFFE8E8E8),
-                                borderRadius: BorderRadius.circular(45)
+                              color : Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(45)
                             ),
                             child: Center(
                               child: Text(
-                                  month,
-                                  style: tsParagraft3(fontWeight: FontWeight.w600)
+                                month,
+                                style: tsParagraft3(fontWeight: FontWeight.w600)
                               ),
                             ),
                           ),
@@ -123,8 +135,8 @@ class KasScreen extends StatelessWidget {
                                       width: screenWidth * 0.1,
                                       height: screenHeight * 0.1,
                                       decoration: BoxDecoration(
-                                          color : Color(0xFF34A853),
-                                          shape: BoxShape.circle
+                                        color : Color(0xFF34A853),
+                                        shape: BoxShape.circle
                                       ),
                                       child: Icon(Icons.monetization_on_rounded, color: Colors.white,),
                                     ),
@@ -135,12 +147,20 @@ class KasScreen extends StatelessWidget {
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text("Kas Mingguan", style: tsParagraft3(fontWeight: FontWeight.bold),),
+                                            Text(
+                                              "Kas Mingguan", 
+                                              style: tsParagraft3(fontWeight: FontWeight.bold),
+                                            ),
                                             SizedBox(height: screenHeight * 0.005,),
-                                            Text(payment, style: tsParagraft5(fontWeight: FontWeight.w600).copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                            Text(
+                                              payment, 
+                                              style: tsParagraft5(fontWeight: FontWeight.w600).copyWith(color: Colors.grey.withOpacity(0.9)),
+                                            ),
                                           ],
                                         ),
-                                        Text("Rp10.000", style: tsParagraft3(fontWeight: FontWeight.bold).copyWith(color: Color(0xFF34A853),),)
+                                        Text(
+                                          "Rp10.000", style: tsParagraft3(fontWeight: FontWeight.bold).copyWith(color: Color(0xFF34A853)),
+                                        )
                                       ],
                                     ),
 
@@ -149,7 +169,10 @@ class KasScreen extends StatelessWidget {
                               },
                               separatorBuilder: (context, paymentIndex) => Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: screenHeight * 0.01),
-                                child: Divider(thickness: 2, color: Color(0xFFF2F2F2),),
+                                child: Divider(
+                                  thickness: 2, 
+                                  color: Color(0xFFF2F2F2),
+                                ),
                               ),
                             ),
                           ),
@@ -160,7 +183,14 @@ class KasScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Button(label: "Bayar Kas", textStyle: tsSubHeader4().copyWith(color: Colors.white), textColor: Colors.white, backgroundColor: primeryColorMedium, side: BorderSide.none, onPressed: () => kasController.openIconButtonpressed(context))
+            Button(
+              label: "Bayar Kas", 
+              textStyle: tsSubHeader4().copyWith(color: Colors.white), 
+              textColor: Colors.white, 
+              backgroundColor: primeryColorMedium, 
+              side: BorderSide.none, 
+              onPressed: () => kasController.openIconButtonpressed(context)
+            )
           ],
         ),
       ),

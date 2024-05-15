@@ -82,7 +82,7 @@ class LoginView extends StatelessWidget {
                                 backgroundColor: primeryColorMedium, 
                                 side: BorderSide.none, 
                                 onPressed: () {
-                                  Get.offNamed(Path.HOMESCREEN_PAGE);
+                                  Get.offNamed(Path.HOME_PAGE);
                                 }
                               )
                             ],
@@ -145,7 +145,7 @@ class LoginView extends StatelessWidget {
                       child: Button(
                       label: 'Register',
                       onPressed: () {
-                        Get.offNamed(Path.REGISTERVIEW_PAGE);
+                        Get.offNamed(Path.REGISTER_PAGE);
                       },
                       textColor: primeryColorMedium,
                       backgroundColor: Colors.white,

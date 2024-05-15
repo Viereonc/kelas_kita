@@ -221,7 +221,7 @@ class JadwalPiketView extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => JadwalView()),
+          MaterialPageRoute(builder: (context) => JadwalScreen()),
         );
       },
       child: Container(
