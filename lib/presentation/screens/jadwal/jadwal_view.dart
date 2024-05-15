@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kelas_kita/presentation/screens/jadwal/jadwal_piket_view.dart';
 
-class JadwalView extends StatelessWidget {
+class JadwalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

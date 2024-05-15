@@ -74,8 +74,10 @@ class OnboardingScreen extends StatelessWidget {
                         _introKey.currentState?.skipToEnd();
                       },
                       child: Container(
-                        child: Text('Skip',
-                            style: tsSubHeader3()),
+                        child: Text(
+                          'Skip',
+                          style: tsSubHeader3()
+                        ),
                       ),
                     ),
                   ),
@@ -144,7 +146,7 @@ class OnboardingScreen extends StatelessWidget {
                       child: Button(
                         label: 'Login',
                         onPressed: () {
-                          Get.toNamed(Path.LOGINVIEW_PAGE);
+                          Get.toNamed(Path.LOGIN_PAGE);
                         },
                         textColor: Colors.white,
                         backgroundColor: primeryColorMedium,
@@ -158,7 +160,7 @@ class OnboardingScreen extends StatelessWidget {
                     child: Button(
                       label: 'Register',
                       onPressed: () {
-                        Get.toNamed(Path.REGISTERVIEW_PAGE);
+                        Get.toNamed(Path.REGISTER_PAGE);
                       },
                       textColor: primeryColorMedium,
                       backgroundColor: Colors.white,
