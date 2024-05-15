@@ -43,7 +43,7 @@ class StrukturKelasScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        padding: EdgeInsets.only(left: screenWidth * 0.05, right: screenWidth * 0.05, bottom: screenHeight * 0.01),
         child: Column(
           children: [
             Divider(

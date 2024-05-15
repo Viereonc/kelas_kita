@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/SplashScreen.dart';
 import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
 import 'package:kelas_kita/presentation/screens/home/home_view.dart';
+import 'package:kelas_kita/presentation/screens/jadwal/jadwal_view.dart';
 import 'package:kelas_kita/presentation/screens/kas/kas_view.dart';
 import 'package:kelas_kita/presentation/screens/onboarding/onboarding_view.dart';
 import 'package:kelas_kita/presentation/registration/login_view.dart';
@@ -23,6 +24,7 @@ class AppPages{
   static const STRUKTURKELAS = Route.STRUKTURKELAS_PAGE;
   static const PEMBUKUAN = Route.PEMBUKUAN_PAGE;
   static const KAS = Route.KAS_PAGE;
+  static const JADWAL = Route.JADWAL_PAGE;
   static const AGENDA = Route.AGENDA_PAGE;
   static const PROFILE = Route.PROFILE_PAGE;
 
@@ -76,6 +78,11 @@ class AppPages{
     GetPage(
         name: Path.KAS_PAGE,
         page: () => KasScreen(),
+        transition: Transition.noTransition
+    ),
+    GetPage(
+        name: Path.JADWAL_PAGE,
+        page: () => JadwalView(),
         transition: Transition.noTransition
     ),
     GetPage(
