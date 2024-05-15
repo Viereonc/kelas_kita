@@ -93,7 +93,7 @@ class AppPages{
         transition: Transition.noTransition
     ),
     GetPage(
-        name: Path.PROFILE_PAGE,
+        name: Path.JADWAL_PAGE,
         page: () => JadwalScreen(),
         transition: Transition.noTransition
     ),
