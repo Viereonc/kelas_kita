@@ -48,6 +48,7 @@ class StrukturKelasScreen extends StatelessWidget {
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+
         child: Column(
           children: [
             Container(

@@ -34,7 +34,8 @@ class AppPages {
     GetPage(
         name: Path.SPLASHSCREEN_PAGE,
         page: () => SplashScreen(),
-        transition: Transition.noTransition),
+        transition: Transition.noTransition
+    ),
     GetPage(
         name: Path.ONBOARDING_PAGE,
         page: () => OnboardingScreen(),
