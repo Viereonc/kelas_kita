@@ -14,8 +14,7 @@ import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 
-class AppPages{
-
+class AppPages {
   static const INITIAL = Route.SPLASHSCREEN_PAGE;
   static const ONBOARDING = Route.ONBOARDINGVIEW_PAGE;
   static const LOGIN = Route.LOGINVIEW_PAGE;
@@ -30,72 +29,59 @@ class AppPages{
   static const PROFILE = Route.PROFILEVIEW_PAGE;
   static const JADWAL = Route.JADWALVIEW_PAGE;
 
-  static final routes = [
 
+  static final routes = [
     GetPage(
-      name: Path.SPLASHSCREEN_PAGE, 
-      page: () => SplashScreen(),
-      transition: Transition.noTransition
-    ),
+        name: Path.SPLASHSCREEN_PAGE,
+        page: () => SplashScreen(),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.ONBOARDING_PAGE,
         page: () => OnboardingScreen(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.LOGIN_PAGE,
         page: () => LoginView(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.REGISTER_PAGE,
         page: () => RegisterView(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.BIOGRAFI_PAGE,
         page: () => BiografiView(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.HOME_PAGE,
         page: () => HomeScreen(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.NOTIFICATION_PAGE,
         page: () => NotificationPage(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.STRUKTURKELAS_PAGE,
         page: () => StrukturKelasScreen(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.PEMBUKUAN_PAGE,
         page: () => PembukuanView(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.AGENDA_PAGE,
         page: () => AgendaScreen(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.KAS_PAGE,
         page: () => KasScreen(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.PROFILE_PAGE,
         page: () => ProfileScreen(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
-        name: Path.PROFILE_PAGE,
+        name: Path.JADWAL_PAGE,
         page: () => JadwalScreen(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
   ];
 }

@@ -14,6 +14,7 @@ abstract class Route {
   static const AGENDAVIEW_PAGE = Path.AGENDA_PAGE;
   static const PROFILEVIEW_PAGE = Path.PROFILE_PAGE;
   static const JADWALVIEW_PAGE = Path.JADWAL_PAGE;
+
 }
 
 abstract class Path {
@@ -32,4 +33,5 @@ abstract class Path {
   static const AGENDA_PAGE = "/agendascreen";
   static const PROFILE_PAGE = "/profilescreen";
   static const JADWAL_PAGE = "/jadwalscreen";
+
 }
