@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/pembukuan/pembukuan_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 import '../../themes/FontsStyle.dart';
-
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -25,14 +25,13 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.06),
-                    child: Text(
-                      'Hello, Ammar Faris 👋', 
-                      style: tsHeader3()
-                    ),
+                    margin: EdgeInsets.only(
+                        bottom: screenHeight * 0.02, left: screenWidth * 0.06),
+                    child: Text('Hello, Ammar Faris 👋', style: tsHeader3()),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                     height: screenHeight * 0.15,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -56,7 +55,11 @@ class HomeScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              SvgPicture.asset("lib/assets/icons/he_cash.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,),
+                              SvgPicture.asset(
+                                "lib/assets/icons/he_cash.svg",
+                                width: screenWidth * 0.05,
+                                height: screenHeight * 0.05,
+                              ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +89,9 @@ class HomeScreen extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.offNamed(Path.PEMBUKUAN_PAGE);
+                                  },
                                   icon: Icon(
                                     Icons.arrow_circle_right_rounded,
                                     size: screenWidth * 0.08,
@@ -99,14 +104,18 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(right: screenWidth * 0.03, left: screenWidth * 0.03, top: screenHeight * 0.05),
+                    margin: EdgeInsets.only(
+                        right: screenWidth * 0.03,
+                        left: screenWidth * 0.03,
+                        top: screenHeight * 0.05),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              margin:
+                                  EdgeInsets.only(bottom: screenHeight * 0.01),
                               width: screenWidth * 0.15,
                               height: screenWidth * 0.15,
                               decoration: BoxDecoration(
@@ -114,17 +123,15 @@ class HomeScreen extends StatelessWidget {
                                 color: Color(0xFF41BEBE),
                               ),
                               child: Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(Path.STRUKTURKELAS_PAGE);
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_info_kelas.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  )
-                                )
-                              ),
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(Path.STRUKTURKELAS_PAGE);
+                                      },
+                                      child: SvgPicture.asset(
+                                        "lib/assets/icons/he_info_kelas.svg",
+                                        width: screenWidth * 0.05,
+                                        height: screenHeight * 0.05,
+                                      ))),
                             ),
                             Text(
                               'Info Kelas',
@@ -135,7 +142,8 @@ class HomeScreen extends StatelessWidget {
                         Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              margin:
+                                  EdgeInsets.only(bottom: screenHeight * 0.01),
                               width: screenWidth * 0.15,
                               height: screenWidth * 0.15,
                               decoration: BoxDecoration(
@@ -143,17 +151,14 @@ class HomeScreen extends StatelessWidget {
                                 color: Color(0xFFFF844F),
                               ),
                               child: Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                 
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_info_tugas.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  ),
-                                )
-                              ),
+                                  child: GestureDetector(
+                                onTap: () {},
+                                child: SvgPicture.asset(
+                                  "lib/assets/icons/he_info_tugas.svg",
+                                  width: screenWidth * 0.05,
+                                  height: screenHeight * 0.05,
+                                ),
+                              )),
                             ),
                             Text(
                               'Info Tugas',
@@ -164,7 +169,8 @@ class HomeScreen extends StatelessWidget {
                         Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              margin:
+                                  EdgeInsets.only(bottom: screenHeight * 0.01),
                               width: screenWidth * 0.15,
                               height: screenWidth * 0.15,
                               decoration: BoxDecoration(
@@ -172,17 +178,14 @@ class HomeScreen extends StatelessWidget {
                                 color: Color(0xFF3EB67B),
                               ),
                               child: Center(
-                                child: GestureDetector(
-                                  onTap: () => {
-                                    Get.toNamed(Path.KAS_PAGE)
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_kas.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  ),
-                                )
-                              ),
+                                  child: GestureDetector(
+                                onTap: () => {Get.toNamed(Path.KAS_PAGE)},
+                                child: SvgPicture.asset(
+                                  "lib/assets/icons/he_kas.svg",
+                                  width: screenWidth * 0.05,
+                                  height: screenHeight * 0.05,
+                                ),
+                              )),
                             ),
                             Text(
                               'Kas',
@@ -193,7 +196,8 @@ class HomeScreen extends StatelessWidget {
                         Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              margin:
+                                  EdgeInsets.only(bottom: screenHeight * 0.01),
                               width: screenWidth * 0.15,
                               height: screenWidth * 0.15,
                               decoration: BoxDecoration(
@@ -201,17 +205,16 @@ class HomeScreen extends StatelessWidget {
                                 color: Color(0xFFFFBF43),
                               ),
                               child: Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(Path.AGENDA_PAGE);
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_note.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  ),
-                                )
-                              ),
+                                  child: GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Path.AGENDA_PAGE);
+                                },
+                                child: SvgPicture.asset(
+                                  "lib/assets/icons/he_note.svg",
+                                  width: screenWidth * 0.05,
+                                  height: screenHeight * 0.05,
+                                ),
+                              )),
                             ),
                             Text(
                               'Note',
@@ -222,7 +225,8 @@ class HomeScreen extends StatelessWidget {
                         Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                              margin:
+                                  EdgeInsets.only(bottom: screenHeight * 0.01),
                               width: screenWidth * 0.15,
                               height: screenWidth * 0.15,
                               decoration: BoxDecoration(
@@ -230,18 +234,15 @@ class HomeScreen extends StatelessWidget {
                                 color: Color(0xFF5675E3),
                               ),
                               child: Center(
-                                child: GestureDetector(
-                                  onTap: () => {
-                                    Get.toNamed(Path.STRUKTURKELAS_PAGE)
-                                  
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_struktur.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  ),
-                                )
-                              ),
+                                  child: GestureDetector(
+                                onTap: () =>
+                                    {Get.toNamed(Path.STRUKTURKELAS_PAGE)},
+                                child: SvgPicture.asset(
+                                  "lib/assets/icons/he_struktur.svg",
+                                  width: screenWidth * 0.05,
+                                  height: screenHeight * 0.05,
+                                ),
+                              )),
                             ),
                             Text(
                               'Struktur',
@@ -274,9 +275,11 @@ class HomeScreen extends StatelessWidget {
                         itemCount: 9,
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
-                            padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                            padding: EdgeInsets.symmetric(
+                                vertical: screenHeight * 0.01),
                             child: Container(
-                              padding: EdgeInsets.only(left: screenWidth * 0.05),
+                              padding:
+                                  EdgeInsets.only(left: screenWidth * 0.05),
                               height: screenHeight * 0.11,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -289,7 +292,8 @@ class HomeScreen extends StatelessWidget {
                                     width: screenWidth * 0.12,
                                     decoration: BoxDecoration(
                                         color: Color(0xFFEB4335),
-                                        borderRadius: BorderRadius.circular(15)),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
                                     child: Center(
                                       child: Icon(
                                         Icons.list_outlined,
@@ -304,7 +308,8 @@ class HomeScreen extends StatelessWidget {
                                   Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Kas Pada Tanggal 3 Maret 2024',
@@ -346,9 +351,8 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: primeryColorMedium,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            side: BorderSide(width: 3, color: Colors.white),
-            borderRadius: BorderRadius.circular(30)
-          ),
+              side: BorderSide(width: 3, color: Colors.white),
+              borderRadius: BorderRadius.circular(30)),
           child: Icon(
             Icons.qr_code,
             color: Colors.white,
