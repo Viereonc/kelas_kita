@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'edit_profile_controller.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
@@ -65,17 +66,23 @@ class EditProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(
-              left: screenWidth * 0.05,
-              right: screenWidth * 0.05,
-              bottom: screenHeight * 0.1),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Obx(() => Container(
+      body: Obx(() {
+        if (editProfileController.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: screenWidth * 0.05,
+                  right: screenWidth * 0.05,
+                  bottom: screenHeight * 0.1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Obx(() => Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       width: screenWidth * 0.43,
                       height: screenWidth * 0.4,
@@ -117,116 +124,132 @@ class EditProfileScreen extends StatelessWidget {
                         ],
                       ),
                     )),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: screenHeight * 0.05),
-                height: screenHeight * 0.12,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Email',
-                        style: tsSubHeader4(fontWeight: FontWeight.w700)),
-                    Container(
-                      margin: EdgeInsets.only(bottom: screenHeight * 0.02),
-                      child: textFormField(
-                          label: "Email",
-                          controller: ctrEmail,
-                          labelStyle: tsParagraft3(
-                              color: Colors.black.withOpacity(0.3)),
-                          height: screenHeight * 0.06),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: screenHeight * 0.05),
+                    height: screenHeight * 0.12,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Email', style: tsSubHeader4(fontWeight: FontWeight.w700)),
+                        Container(
+                          margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                          child: textFormField(
+                              label: "Email",
+                              controller: ctrEmail,
+                              labelStyle: tsParagraft3(
+                                  color: Colors.black.withOpacity(0.3)),
+                              height: screenHeight * 0.06,
+                              onChanged: (value) {
+                                editProfileController.ctrEmail.value = value;
+                              },
+                              validator: (value) {
+                                if (value == null || !value.contains('@gmail.com')) {
+                                  return 'Email tidak valid';
+                                }
+                                return null;
+                              }
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                height: screenHeight * 0.12,
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Nomor Telephone',
-                        style: tsSubHeader4(fontWeight: FontWeight.w700)),
-                    Container(
-                      margin: EdgeInsets.only(bottom: screenHeight * 0.02),
-                      child: textFormField(
-                          label: "Nomor Telephone",
-                          controller: ctrPhone,
-                          labelStyle: tsParagraft3(
-                              color: Colors.black.withOpacity(0.3)),
-                          height: screenHeight * 0.06),
+                  ),
+                  Container(
+                    height: screenHeight * 0.12,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Nomor Telephone', style: tsSubHeader4(fontWeight: FontWeight.w700)),
+                        Container(
+                          margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                          child: textFormField(
+                              label: "Nomor Telephone",
+                              controller: ctrPhone,
+                              labelStyle: tsParagraft3(
+                                  color: Colors.black.withOpacity(0.3)),
+                              height: screenHeight * 0.06),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                height: screenHeight * 0.12,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Alamat',
-                        style: tsSubHeader4(fontWeight: FontWeight.w700)),
-                    Container(
-                      margin: EdgeInsets.only(bottom: screenHeight * 0.02),
-                      child: textFormField(
-                          label: "Alamat",
-                          controller: ctrAddress,
-                          labelStyle: tsParagraft3(
-                              color: Colors.black.withOpacity(0.3)),
-                          height: screenHeight * 0.06),
+                  ),
+                  Container(
+                    height: screenHeight * 0.12,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Alamat',
+                            style: tsSubHeader4(fontWeight: FontWeight.w700)),
+                        Container(
+                          margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                          child: textFormField(
+                              label: "Alamat",
+                              controller: ctrAddress,
+                              labelStyle: tsParagraft3(
+                                  color: Colors.black.withOpacity(0.3)),
+                              height: screenHeight * 0.06),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 5),
-                height: screenHeight * 0.14,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Bio',
-                        style: tsSubHeader4(fontWeight: FontWeight.w700)),
-                    Container(
-                      child: textFormField(
-                          label: "Bio",
-                          controller: ctrBio,
-                          labelStyle: tsParagraft3(
-                              color: Colors.black.withOpacity(0.3)),
-                          height: screenHeight * 0.1),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    height: screenHeight * 0.14,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Bio',
+                            style: tsSubHeader4(fontWeight: FontWeight.w700)),
+                        Container(
+                          child: textFormField(
+                              label: "Bio",
+                              controller: ctrBio,
+                              labelStyle: tsParagraft3(
+                                  color: Colors.black.withOpacity(0.3)),
+                              height: screenHeight * 0.1),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Obx(() => Button(
+                    label: "Simpan Perubahan",
+                    textStyle: tsSubHeader4(),
+                    textColor: Colors.white,
+                    backgroundColor: editProfileController.ctrEmail.value.contains('@gmail.com')
+                        ? primeryColorMedium
+                        : Colors.grey,
+                    side: BorderSide.none,
+                    onPressed: editProfileController.ctrEmail.value.contains('@gmail.com')
+                        ? () {
+                      editProfileController.ctrEdit(
+                        ctrEmail.text,
+                        ctrPhone.text,
+                        ctrAddress.text,
+                        ctrBio.text,
+                        editProfileController.selectedImagePath.value,
+                      );
+                      Get.to(() => ProfileScreen())?.then((value) {
+                        ctrEmail.clear();
+                        ctrPhone.clear();
+                        ctrAddress.clear();
+                        ctrBio.clear();
+                        editProfileController.selectedImagePath.value = null;
+                      });
+                    }
+                        : () {}, // Default to an empty function if null
+                  ),
+                  )
+                ],
               ),
-              Button(
-                  label: "Simpan Perubahan",
-                  textStyle: tsSubHeader4(),
-                  textColor: Colors.white,
-                  backgroundColor: primeryColorMedium,
-                  side: BorderSide.none,
-                  onPressed: () {
-                    editProfileController.ctrEdit(
-                      ctrEmail.text,
-                      ctrPhone.text,
-                      ctrAddress.text,
-                      ctrBio.text,
-                      editProfileController.selectedImagePath.value,
-                    );
-                    Get.to(() => ProfileScreen())?.then((value) {
-                      ctrEmail.clear();
-                      ctrPhone.clear();
-                      ctrAddress.clear();
-                      ctrBio.clear();
-                      editProfileController.selectedImagePath.value = null;
-                    });
-                  }
-              )
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
+      })
     );
   }
 }
+

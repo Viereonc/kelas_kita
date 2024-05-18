@@ -278,6 +278,7 @@ class HomeScreen extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                                 vertical: screenHeight * 0.01),
                             child: Container(
+                              width: double.infinity,
                               padding:
                                   EdgeInsets.only(left: screenWidth * 0.05),
                               height: screenHeight * 0.11,
@@ -313,6 +314,8 @@ class HomeScreen extends StatelessWidget {
                                     children: [
                                       Text(
                                         'Kas Pada Tanggal 3 Maret 2024',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
                                         style: tsSubHeader4(
                                             fontWeight: FontWeight.bold),
                                       ),
