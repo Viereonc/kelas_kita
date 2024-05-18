@@ -11,7 +11,7 @@ class MetodePembayaran extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      height: screenHeight / 3,
+      height: screenHeight / 2.5,
       width: double.infinity,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -29,6 +29,8 @@ class MetodePembayaran extends StatelessWidget {
             ),
             Text("e-wallet", style: tsSubHeader4(fontWeight: FontWeight.bold)),
             SizedBox(height: screenHeight * 0.02),
+            Text("Untuk pembayaran secara online dikenakan pajak 10.000", style: tsSubHeader5(fontWeight: FontWeight.bold).copyWith(color: Colors.grey)),
+            SizedBox(height: screenHeight * 0.04),
             Expanded(
               child: ListView.separated(
                 itemBuilder: (context, index) {

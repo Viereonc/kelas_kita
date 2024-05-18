@@ -46,132 +46,140 @@ class DetailProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.only(left: screenWidth * 0.05, right: screenWidth * 0.05, bottom: screenHeight * 0.1),
-        child: Column(
-          children: [
-            Divider(
-              color: Colors.grey,
-              thickness: 1,
-            ),
-            Container(
-              height: screenHeight * 0.27,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: screenHeight * 0.2,
-                    width: screenWidth * 0.3,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: editProfileController.selectedImagePath.value != null ?
-                            FileImage(editProfileController.selectedImagePath.value!) :
-                            NetworkImage("https://picsum.photos/500/300") as ImageProvider
-                        )
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: screenHeight * 0.05,
-                    color: Colors.transparent,
-                    width: double.infinity,
-                    child: Obx(() => Text(editProfileController.ctrBio.toString(), style: tsParagraft4(), maxLines: 3,)),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.03,),
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    height: screenHeight * 0.15,
-                    color: Colors.transparent,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Profile Informasi", style: tsHeader3(),),
-                        Container(
-                          height: screenHeight * 0.08,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Nama", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                  Text("Ammar Faris", style: tsParagraft4(fontWeight: FontWeight.w600),)
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Kelas", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                  Text("11 PPLG 2", style: tsParagraft4(fontWeight: FontWeight.w600),)
-                                ],
-                              ),
-                            ],
-                          ),
+      body: Obx(() {
+        if (editProfileController.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return Padding(
+            padding: EdgeInsets.only(left: screenWidth * 0.05, right: screenWidth * 0.05, bottom: screenHeight * 0.1),
+            child: Column(
+              children: [
+                Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                ),
+                Container(
+                  height: screenHeight * 0.27,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: screenHeight * 0.2,
+                        width: screenWidth * 0.3,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: editProfileController.selectedImagePath.value != null ?
+                                FileImage(editProfileController.selectedImagePath.value!) :
+                                NetworkImage("https://picsum.photos/500/300") as ImageProvider
+                            )
                         ),
-                      ],
-                    ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        height: screenHeight * 0.05,
+                        color: Colors.transparent,
+                        width: double.infinity,
+                        child: Obx(() => Text(editProfileController.ctrBio.toString(), style: tsParagraft4(), maxLines: 3,)),
+                      )
+                    ],
                   ),
-                  SizedBox(height: screenHeight * 0.03,),
-                  Container(
-                    height: screenHeight * 0.27,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Informasi Siswa", style: tsHeader3(),),
-                        Container(
-                          height: screenHeight * 0.2,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
+                ),
+                SizedBox(height: screenHeight * 0.03,),
+                Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: screenHeight * 0.15,
+                        color: Colors.transparent,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Profile Informasi", style: tsHeader3(),),
+                            Container(
+                              height: screenHeight * 0.08,
+                              child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("NIS", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                  Text("0510", style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Nama", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text("Ammar Faris", style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Kelas", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text("11 PPLG 2", style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                    ],
+                                  ),
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Email", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                  Text(editProfileController.ctrEmail.value, style: tsParagraft4(fontWeight: FontWeight.w600),)
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Nomor Telepon", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                  Text(editProfileController.ctrPhone.toString(), style: tsParagraft4(fontWeight: FontWeight.w600),)
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Alamat", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                  Text(editProfileController.ctrAddress.value, style: tsParagraft4(fontWeight: FontWeight.w600),)
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: screenHeight * 0.03,),
+                      Container(
+                        height: screenHeight * 0.27,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Informasi Siswa", style: tsHeader3(),),
+                            Container(
+                              height: screenHeight * 0.2,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("NIS", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text("0510", style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Email", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text(editProfileController.ctrEmail.value, style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Nomor Telepon", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text(editProfileController.ctrPhone.toString(), style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Alamat", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text(editProfileController.ctrAddress.value, style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          );
+        }
+      })
     );
   }
 }

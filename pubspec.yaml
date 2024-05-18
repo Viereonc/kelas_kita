@@ -42,6 +42,7 @@ dependencies:
   get: ^4.6.5
   dio:
   image_picker: ^1.1.1
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
