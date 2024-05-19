@@ -28,7 +28,9 @@ class HomeScreen extends StatelessWidget {
                     margin: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.06),
                     child: Text(
                       'Hello, Ammar Faris 👋', 
-                      style: tsHeader3()
+                      style: tsHeader3(
+                        screenSize: screenWidth
+                      )
                     ),
                   ),
                   Container(
@@ -62,13 +64,17 @@ class HomeScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('Total Kas Kelas 11 PPLG 2',
-                                      style: tsParagraft4()
+                                      style: tsParagraft4(
+                                        screenSize: screenWidth
+                                      )
                                           .copyWith(color: Colors.white)),
                                   Padding(
                                       padding: EdgeInsets.only(
                                           top: screenHeight * 0.01)),
                                   Text('Rp 50.000',
-                                      style: tsHeader2()
+                                      style: tsHeader2(
+                                        screenSize: screenWidth
+                                      )
                                           .copyWith(color: Colors.white)),
                                 ],
                               )
@@ -82,7 +88,9 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'Pembukuan \n Kas',
-                                style: tsParagraft4(),
+                                style: tsParagraft4(
+                                  screenSize: screenWidth
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                               IconButton(
@@ -128,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Text(
                               'Info Kelas',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
                             )
                           ],
                         ),
@@ -157,7 +165,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Text(
                               'Info Tugas',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
                             )
                           ],
                         ),
@@ -186,7 +194,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Text(
                               'Kas',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
                             )
                           ],
                         ),
@@ -215,7 +223,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Text(
                               'Note',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
                             )
                           ],
                         ),
@@ -245,7 +253,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Text(
                               'Struktur',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold),
+                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
                             )
                           ],
                         ),
@@ -268,7 +276,7 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Tagihan Tas Kelas", style: tsSubHeader3()),
+                    Text("Tagihan Tas Kelas", style: tsSubHeader3(screenSize: screenWidth)),
                     Expanded(
                       child: ListView.builder(
                         itemCount: 9,
@@ -309,15 +317,19 @@ class HomeScreen extends StatelessWidget {
                                       Text(
                                         'Kas Pada Tanggal 3 Maret 2024',
                                         style: tsSubHeader4(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold, screenSize: screenWidth),
                                       ),
                                       Text(
                                         'Belum Dibayar',
-                                        style: tsParagraft4(),
+                                        style: tsParagraft4(
+                                          screenSize: screenWidth
+                                        ),
                                       ),
                                       Text(
                                         'Rp.5.000',
-                                        style: tsParagraft4()
+                                        style: tsParagraft4(
+                                          screenSize: screenWidth
+                                        )
                                             .copyWith(color: Color(0xFFBE1833)),
                                       ),
                                     ],

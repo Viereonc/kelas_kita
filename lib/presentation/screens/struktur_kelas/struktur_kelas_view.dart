@@ -22,7 +22,9 @@ class StrukturKelasScreen extends StatelessWidget {
             surfaceTintColor: Colors.white,
             title: Text(
               "Struktur Kelas",
-              style: tsHeader2(),
+              style: tsHeader2(
+                screenSize: screenWidth
+              ),
             ),
             centerTitle: true,
             leading: Container(
@@ -82,10 +84,11 @@ class StrukturKelasScreen extends StatelessWidget {
                                 Text(
                                   'Dwi Janto', 
                                   style: tsSubHeader4(
-                                    fontWeight: FontWeight.bold
+                                    fontWeight: FontWeight.bold,
+                                    screenSize: screenWidth
                                   ),
                                 ),
-                                Text('Wali Kelas', style: tsParagraft5(fontWeight: FontWeight.w600),),
+                                Text('Wali Kelas', style: tsParagraft5(fontWeight: FontWeight.w600, screenSize: screenWidth)),
                               ],
                             ),
                             leading: Container(
@@ -120,14 +123,17 @@ class StrukturKelasScreen extends StatelessWidget {
                                     Text(
                                       'Absen',
                                       style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold
+                                        fontWeight: FontWeight.bold,
+                                        screenSize: screenWidth
                                       ),
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(top: screenHeight * 0.01),
                                       child: Text(
                                         '01',
-                                        style: tsParagraft5(),
+                                        style: tsParagraft5(
+                                          screenSize: screenWidth
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -138,14 +144,17 @@ class StrukturKelasScreen extends StatelessWidget {
                                     Text(
                                       'Alamat',
                                       style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold
+                                        fontWeight: FontWeight.bold,
+                                        screenSize: screenWidth
                                       ),
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(top: screenHeight * 0.01),
                                       child: Text(
                                         'Kudus Kota',
-                                        style: tsParagraft5(),
+                                        style: tsParagraft5(
+                                          screenSize: screenWidth
+                                        ),
                                       )
                                     ),
                                   ],
@@ -156,14 +165,17 @@ class StrukturKelasScreen extends StatelessWidget {
                                     Text(
                                       'NIS',
                                       style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold
+                                        fontWeight: FontWeight.bold,
+                                        screenSize: screenWidth
                                       ),
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(top: screenHeight * 0.01),
                                       child: Text(
                                         '12345',
-                                        style: tsParagraft5(),
+                                        style: tsParagraft5(
+                                          screenSize: screenWidth
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -174,14 +186,17 @@ class StrukturKelasScreen extends StatelessWidget {
                                     Text(
                                       'No Telepon', 
                                       style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold
+                                        fontWeight: FontWeight.bold,
+                                        screenSize: screenWidth
                                       ),
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(top: screenHeight * 0.01),
                                       child: Text(
                                         '081222333444',
-                                        style: tsParagraft5(),
+                                        style: tsParagraft5(
+                                          screenSize: screenWidth
+                                        ),
                                       ),
                                     ),
                                   ],

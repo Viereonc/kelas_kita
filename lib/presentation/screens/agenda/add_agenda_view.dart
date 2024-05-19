@@ -34,11 +34,15 @@ class AddAgenda extends StatelessWidget {
                     child: TextField(
                       controller: titleController,
                       textAlign: TextAlign.center,
-                      style: tsHeader2(),
+                      style: tsHeader2(
+                        screenSize: screenWidth
+                      ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Judul",
-                        hintStyle: tsHeader2(),
+                        hintStyle: tsHeader2(
+                          screenSize: screenWidth
+                        ),
                       ),
                     ),
                   ),
@@ -70,7 +74,9 @@ class AddAgenda extends StatelessWidget {
               ),
               TextField(
                 controller: contentController,
-                style: tsParagraft4(),
+                style: tsParagraft4(
+                  screenSize: screenWidth
+                ),
                 maxLines: null,
                 decoration: InputDecoration(
                   hintText: 'Tulis sesuatu disini',

@@ -28,11 +28,15 @@ class LoginView extends StatelessWidget {
                   children: [
                     Text(
                       'Selamat Datang',
-                      style: tsSubHeader1(),
+                      style: tsSubHeader1(
+                        screenSize: screenWidth,
+                      ),
                     ),
                     Text(
                       'Login untuk melanjutkan',
-                      style: tsSubHeader4(),
+                      style: tsSubHeader4(
+                        screenSize: screenWidth
+                      ),
                     ),
                   ],
                 ),
@@ -51,7 +55,7 @@ class LoginView extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                       child: textFormField(
                         label: "Email",
-                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3)),
+                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                         height: screenHeight * 0.06,
                       ),
                     ),
@@ -59,7 +63,7 @@ class LoginView extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                       child: textFormField(
                         label: "Password",
-                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3)),
+                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                         height: screenHeight * 0.06,
                       ),
                     ),
@@ -71,14 +75,16 @@ class LoginView extends StatelessWidget {
                             margin: EdgeInsets.only(bottom: screenHeight * 0.015),
                             child: Text(
                               "Forgot Password?",
-                              style: tsParagraft3(color: primeryColorMedium),
+                              style: tsParagraft3(color: primeryColorMedium, screenSize: screenWidth),
                             ),
                           ),
                           Column(
                             children: [
                               Button(
                                 label: "Login",
-                                textStyle: tsSubHeader4(),
+                                textStyle: tsSubHeader4(
+                                  screenSize: screenWidth
+                                ),
                                 textColor: Colors.white,
                                 backgroundColor: primeryColorMedium,
                                 side: BorderSide.none,
@@ -105,7 +111,9 @@ class LoginView extends StatelessWidget {
                             margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                             child: Text(
                               'atau login dengan',
-                              style: tsParagraft3(),
+                              style: tsParagraft3(
+                                screenSize: screenWidth
+                              ),
                             ),
                           ),
                           Expanded(child: Divider(color: Colors.black, thickness: 1)),
@@ -156,7 +164,9 @@ class LoginView extends StatelessWidget {
                         },
                         textColor: primeryColorMedium,
                         backgroundColor: Colors.white,
-                        textStyle: tsHeader3(),
+                        textStyle: tsHeader3(
+                          screenSize: screenWidth
+                        ),
                         side: BorderSide(
                           color: primeryColorMedium
                         ),

@@ -30,7 +30,9 @@ class AgendaScreen extends StatelessWidget {
                 surfaceTintColor: Colors.white,
                 title: Text(
                   "Note",
-                  style: tsHeader2(),
+                  style: tsHeader2(
+                    screenSize: screenWidth
+                  ),
                 ),
                 centerTitle: true,
                 leading: Container(
@@ -98,12 +100,16 @@ class AgendaScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   "10 Maret 2024,",
-                                  style: tsHeader3().copyWith(color: secondaryColorDark),
+                                  style: tsHeader3(
+                                    screenSize: screenWidth
+                                  ).copyWith(color: secondaryColorDark),
                                 ),
                                 SizedBox(width: screenWidth * 0.005),
                                 Text(
                                   "Minggu",
-                                  style: tsParagraft4().copyWith(color: Colors.grey),
+                                  style: tsParagraft4(
+                                    screenSize: screenWidth
+                                  ).copyWith(color: Colors.grey),
                                 )
                               ],
                             ),
@@ -115,12 +121,16 @@ class AgendaScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     agenda["title"],
-                                    style: tsHeader3(),
+                                    style: tsHeader3(
+                                      screenSize: screenWidth
+                                    ),
                                   ),
                                   SizedBox(height: 5,),
                                   Text(
                                     agenda["content"],
-                                    style: tsParagraft4(),
+                                    style: tsParagraft4(
+                                      screenSize: screenWidth
+                                    ),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   )
