@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_controller.dart';
 import 'package:kelas_kita/presentation/themes/Backdrop.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
 class StrukturKelasScreen extends StatelessWidget {
-  const StrukturKelasScreen({Key? key}) : super(key: key);
+  StrukturKelasScreen({Key? key}) : super(key: key);
+
+  final StrukturKelasController strukturKelasController = Get.put(StrukturKelasController());
 
   @override
   Widget build(BuildContext context) {

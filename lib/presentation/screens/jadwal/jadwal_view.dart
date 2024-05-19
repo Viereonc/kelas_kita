@@ -1,635 +1,380 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kelas_kita/presentation/screens/jadwal/jadwal_piket_view.dart';
+import 'package:kelas_kita/presentation/themes/Colors.dart';
+import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 
 class JadwalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 60,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: Icon(CupertinoIcons.back, size: 35),
-                    onPressed: () {},
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Container(
+            alignment: Alignment.bottomCenter,
+            padding: EdgeInsets.only(
+              bottom: screenHeight * 0.01,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: screenWidth * 0.05,
                   ),
-                  SizedBox(width: 100),
-                  Text(
-                    "Maret",
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios,
                     ),
                   ),
-                  SizedBox(width: 100),
-                  IconButton(
-                    icon: Icon(CupertinoIcons.forward, size: 35),
+                ),
+                Text(
+                  'Maret',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'tsSubHeader1',
+                    fontWeight: FontWeight.bold,
+                    fontSize: screenHeight * 0.031,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    right: screenWidth * 0.05,
+                  ),
+                  child: IconButton(
                     onPressed: () {},
+                    icon: Icon(
+                      Icons.arrow_forward_ios,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: screenHeight * 0.001),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Sen\n5',
+                    context,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Sel\n6',
+                    context,
+                    isBlue: true,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Rab\n7',
+                    context,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Kam\n8',
+                    context,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Jum\n9',
+                    context,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Sab\n10',
+                    context,
                   ),
                 ],
               ),
-            ),
-          ),
-
-          Positioned(
-            top: 120,
-            left: 12,
-            child: _buildDayContainer("Sen", "5"),
-          ),
-          Positioned(
-            top: 120,
-            left: 74,
-            child: _buildDayContainer("Sel", "6", isWhite: false),
-          ),
-          Positioned(
-            top: 120,
-            left: 136,
-            child: _buildDayContainer("Rab", "7"),
-          ),
-          Positioned(
-            top: 120,
-            left: 199,
-            child: _buildDayContainer("Kam", "8"),
-          ),
-          Positioned(
-            top: 120,
-            left: 262,
-            child: _buildDayContainer("Jum", "9"),
-          ),
-          Positioned(
-            top: 120,
-            left: 325,
-            child: _buildDayContainer("Sab", "10"),
-          ),
-
-          Positioned(
-            top: 220,
-            left: 12,
-            child: _buildChangeScheduleContainer(screenWidth, context),
-          ),
-
-          Positioned(
-            top: 280,
-            left: 12,
-            child: Container(
-              width: screenWidth - 24,
-              height: 1,
-              color: Colors.black.withOpacity(0.2),
-            ),
-          ),
-
-          // Text "07.40"
-          Positioned(
-            top: 300,
-            left: 14,
-            child: Text(
-              "07.40",
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontWeight: FontWeight.w600,
-                fontSize: 15.0,
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 330,
-            left: 35,
-            child: Container(
-              width: 1,
-              height: 80,
-              color: Colors.black.withOpacity(0.3),
-            ),
-          ),
-
-          Positioned(
-            top: 420,
-            left: 14,
-            child: Text(
-              "09.40",
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontWeight: FontWeight.w600,
-                fontSize: 15.0,
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 305,
-            left: 80,
-            child: Container(
-              width: 290,
-              height: 106,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 56, 122, 223),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
+              SizedBox(height: screenHeight * 0.02),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => JadwalPiket()),
+                  );
+                },
+                child: Container(
+                  width: screenWidth * 0.91,
+                  height: screenHeight * 0.037,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(screenHeight * 0.010),
+                    color: Color.fromARGB(255, 56, 122, 223),
+                  ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(width: 10),
-                      Text(
-                        "Bahasa Indonesia",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16.0,
-                          color: Colors.white,
+                      Padding(
+                        padding: EdgeInsets.only(left: screenWidth * 0.04),
+                        child: Text(
+                          'Ganti Jadwal',
+                          style: TextStyle(
+                            fontFamily: 'tsParagraft1',
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            fontSize: screenHeight * 0.018,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(screenWidth * 0.02),
+                        child: SvgPicture.asset(
+                          'lib/assets/icons/ep_switch (1).svg',
+                          width: screenWidth * 0.03,
+                          height: screenHeight * 0.03,
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ),
-
-          Positioned(
-            top: 336,
-            left: 100, // Sesuaikan posisi dengan kebutuhan Anda
-            child: Row(
-              children: [
-                Image.asset(
-                  'lib/assets/images/Vector.png',
-                  width: 18,
-                  height: 18,
+              SizedBox(height: screenHeight * 0.03),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.05,
+                  vertical: screenHeight * 0.005,
                 ),
-                SizedBox(width: 5),
-                Text(
-                  "Pak Fuad",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 358,
-            left: 100,
-            child: Row(
-              children: [
-                Image.asset(
-                  'lib/assets/images/Vector.png',
-                  width: 18,
-                  height: 18,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "07.40 - 09.40",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Positioned(
-            top: 360,
-            left: 100,
-            child: Image.asset(
-              'lib/assets/images/pr_icon.png',
-              width: 60,
-              height: 60,
-            ),
-          ),
-
-          Positioned(
-            top: 450,
-            left: 35,
-            child: Container(
-              width: 1,
-              height: 80,
-              color: Colors.black.withOpacity(0.3),
-            ),
-          ),
-
-          Positioned(
-            top: 430,
-            left: 80,
-            child: Container(
-              width: 290,
-              height: 106,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 56, 122, 223),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 10),
-                      Text(
-                        "Bahasa Inggris",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+                child: Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
                 ),
               ),
-            ),
+              SizedBox(height: screenHeight * 0.02),
+              _buildScheduleContainer(screenHeight, screenWidth),
+            ],
           ),
-
-          Positioned(
-            top: 460,
-            left: 100,
-            child: Row(
-              children: [
-                Image.asset(
-                  'lib/assets/images/Vector.png',
-                  width: 18,
-                  height: 18,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "Mrs Ristina",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 480,
-            left: 100,
-            child: Row(
-              children: [
-                Image.asset(
-                  'lib/assets/images/Vector.png',
-                  width: 18,
-                  height: 18,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "10.00 - 11.40",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Positioned(
-            top: 480,
-            left: 100,
-            child: Image.asset(
-              'lib/assets/images/pr_icon.png',
-              width: 60,
-              height: 60,
-            ),
-          ),
-
-          Positioned(
-            top: 545,
-            left: 14,
-            child: Text(
-              "10.40",
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontWeight: FontWeight.w600,
-                fontSize: 15.0,
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 580,
-            left: 35,
-            child: Container(
-              width: 1,
-              height: 80,
-              color: Colors.black.withOpacity(0.3),
-            ),
-          ),
-
-          Positioned(
-            top: 555,
-            left: 80,
-            child: Container(
-              width: 290,
-              height: 106,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 56, 122, 223),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 10),
-                      Text(
-                        "Matematika",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 587,
-            left: 100,
-            child: Row(
-              children: [
-                Image.asset(
-                  'lib/assets/images/Vector.png',
-                  width: 18,
-                  height: 18,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "Bu Fauziyah Lisfana",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 608,
-            left: 100,
-            child: Row(
-              children: [
-                Image.asset(
-                  'lib/assets/images/Vector.png',
-                  width: 18,
-                  height: 18,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "11.40 - 12.40",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Positioned(
-            top: 610,
-            left: 100,
-            child: Image.asset(
-              'lib/assets/images/pr_icon.png',
-              width: 60,
-              height: 60,
-            ),
-          ),
-
-          Positioned(
-            top: 675,
-            left: 14,
-            child: Text(
-              "14.40",
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontWeight: FontWeight.w600,
-                fontSize: 15.0,
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 705,
-            left: 35,
-            child: Container(
-              width: 1,
-              height: 80,
-              color: Colors.black.withOpacity(0.3),
-            ),
-          ),
-
-          Positioned(
-            top: 680,
-            left: 80,
-            child: Container(
-              width: 290,
-              height: 106,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 56, 122, 223),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 10),
-                      Text(
-                        "Web Programing",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 710,
-            left: 100,
-            child: Row(
-              children: [
-                Image.asset(
-                  'lib/assets/images/Vector.png',
-                  width: 18,
-                  height: 18,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "Pak Fahmi Ihsyad",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 730,
-            left: 100,
-            child: Row(
-              children: [
-                Image.asset(
-                  'lib/assets/images/Vector.png',
-                  width: 18,
-                  height: 18,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "12.40 - 14.40",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Positioned(
-            top: 733,
-            left: 100,
-            child: Image.asset(
-              'lib/assets/images/pr_icon.png',
-              width: 60,
-              height: 60,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDayContainer(String day, String date, {bool isWhite = true}) {
-    return Container(
-      width: 58,
-      height: 75,
-      decoration: BoxDecoration(
-        color: isWhite ? Colors.white : Color.fromARGB(255, 56, 122, 223),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Color.fromARGB(255, 56, 122, 223),
-          width: 2,
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            day,
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w600,
-              fontSize: 15.0,
-              color: isWhite ? Colors.black.withOpacity(0.4) : Colors.white,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Container(
+          margin: EdgeInsets.only(top: 30),
+          height: 64,
+          width: 64,
+          child: FloatingActionButton(
+            onPressed: () {},
+            backgroundColor: primeryColorMedium,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(width: 3, color: Colors.white),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Icon(
+              Icons.qr_code,
+              color: Colors.white,
             ),
           ),
-          SizedBox(height: 5),
-          Text(
-            date,
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w600,
-              fontSize: 15.0,
-              color: isWhite ? Colors.black.withOpacity(0.4) : Colors.white,
-            ),
-          ),
-        ],
+        ),
+        bottomNavigationBar: BottomNavbar(),
       ),
     );
   }
 
-  Widget _buildChangeScheduleContainer(
-      double screenWidth, BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => JadwalPiketView()),
-        );
-      },
+  Widget _buildScheduleContainer(double screenHeight, double screenWidth) {
+    return SingleChildScrollView(
       child: Container(
-        width: screenWidth - 24,
-        height: 29,
+        margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+        padding: EdgeInsets.symmetric(vertical: screenHeight * 0.012),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 56, 122, 223),
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                "Ganti Jadwal Piket",
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15.0,
-                  color: Colors.white,
-                ),
-              ),
+            _buildScheduleItem(
+              screenWidth,
+              screenHeight,
+              '07.40',
+              'Bahasa Indonesia',
+              'Pak Fuad',
+              '07.40 - 09.40',
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Image.asset(
-                'lib/assets/images/ep_switch.png',
-                width: 20,
-                height: 20,
-                color: Colors.white,
-              ),
+            SizedBox(height: screenHeight * 0.02),
+            _buildScheduleItem(
+              screenWidth,
+              screenHeight,
+              '09.40',
+              'Bahasa Inggris',
+              'Mrs Ristina',
+              '09.40 - 11.40',
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            _buildScheduleItem(
+              screenWidth,
+              screenHeight,
+              '11.40',
+              'Matematika',
+              'Bu Fauziyah Lisfana',
+              '11.40 - 13.40',
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            _buildScheduleItem(
+              screenWidth,
+              screenHeight,
+              '13.40',
+              'Web Programming',
+              'Pak Fahmi Irsyad',
+              '13.40 - 15.40',
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScheduleItem(double screenWidth, double screenHeight,
+      String time, String subject, String teacher, String duration) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+              child: Text(
+                time,
+                style: TextStyle(
+                  fontFamily: 'tsSubHeader2',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              width: 1,
+              height: 103,
+              color: Colors.grey,
+              margin: EdgeInsets.only(left: screenWidth * 0.01),
+            ),
+          ],
+        ),
+        SizedBox(width: screenWidth * 0.05),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: screenWidth * 0.73,
+                height: 124,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                                    color: Color.fromARGB(255, 56, 122, 223),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.08),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        subject,
+                        style: TextStyle(
+                          fontFamily: 'tsParagraft2',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'lib/assets/icons/teacher.svg',
+                            width: 16,
+                            height: 16,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            teacher,
+                            style: TextStyle(
+                              fontFamily: 'tsParagraft3',
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 3),
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'lib/assets/icons/teacher.svg',
+                            width: 16,
+                            height: 16,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            duration,
+                            style: TextStyle(
+                              fontFamily: 'tsParagraft3',
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 9),
+                      SvgPicture.asset(
+                        'lib/assets/icons/abidhitam.svg',
+                        width: 20,
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDayContainer(
+      double screenWidth, double screenHeight, String day, BuildContext context,
+      {bool isBlue = false}) {
+    Color containerColor =
+        isBlue ? Color.fromARGB(255, 56, 122, 223) : Colors.white;
+
+    return Container(
+      width: screenWidth * 0.15,
+      height: screenHeight * 0.085,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(screenHeight * 0.026),
+        color: containerColor,
+        border: Border.all(
+          color: Color.fromARGB(255, 56, 122, 223),
+        ),
+      ),
+      child: Center(
+        child: Text(
+          day,
+          style: TextStyle(
+            fontFamily: 'tsSubHeader1',
+            fontWeight: FontWeight.w600,
+            color: isBlue ? Colors.white : Color.fromARGB(255, 56, 122, 223),
+            fontSize: screenHeight * 0.022,
+          ),
+          textAlign: TextAlign.center,
         ),
       ),
     );

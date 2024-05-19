@@ -135,8 +135,7 @@ class OnboardingScreen extends StatelessWidget {
           ),
           PageViewModel(
               title: 'Keamanan yang Terpercaya',
-              body:
-                  'Keamanan yang teruji dan terpercaya \n serta privasi yang terjamin',
+              body: 'Keamanan yang teruji dan terpercaya \n serta privasi yang terjamin',
               decoration: PageDecoration(
                 titleTextStyle: tsHeader2(
                   screenSize: screenWidth
@@ -144,10 +143,16 @@ class OnboardingScreen extends StatelessWidget {
                 bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300, screenSize: screenWidth),
                 bodyAlignment: Alignment.bottomCenter,
                 imageAlignment: Alignment.bottomCenter,
-                imagePadding: EdgeInsets.only(bottom: screenHeight * 0.02)),
-              image: Image.asset(
-                'lib/assets/images/ob_security.png',
-                width: screenWidth * 0.7,
+                imagePadding: EdgeInsets.only(top: screenHeight * 0),
+                imageFlex: 2
+              ),
+              image: Expanded(
+                child: Image.asset(
+                  'lib/assets/images/ob_security.png',
+                  fit: BoxFit.cover,
+                  height: screenHeight * 0.7,
+                  width: screenWidth * 0.8,
+                ),
               ),
               footer: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -186,7 +191,8 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-              )),
+              )
+          ),
         ],
         onDone: () {},
         controlsMargin: EdgeInsets.symmetric(
