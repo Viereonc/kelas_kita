@@ -44,7 +44,9 @@ class EditProfileScreen extends StatelessWidget {
             surfaceTintColor: Colors.white,
             title: Text(
               "Edit Profile",
-              style: tsHeader2(),
+              style: tsHeader2(
+                screenSize: screenWidth,
+              ),
             ),
             centerTitle: true,
             leading: Container(
@@ -132,14 +134,16 @@ class EditProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Email', style: tsSubHeader4(fontWeight: FontWeight.w700)),
+                        Text('Email', style: tsSubHeader4(fontWeight: FontWeight.w700, screenSize: screenWidth,)),
                         Container(
                           margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                           child: textFormField(
                               label: "Email",
                               controller: ctrEmail,
                               labelStyle: tsParagraft3(
-                                  color: Colors.black.withOpacity(0.3)),
+                                color: Colors.black.withOpacity(0.3),
+                                screenSize: screenWidth,
+                              ),
                               height: screenHeight * 0.06,
                               onChanged: (value) {
                                 editProfileController.ctrEmail.value = value;
@@ -162,14 +166,16 @@ class EditProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Nomor Telephone', style: tsSubHeader4(fontWeight: FontWeight.w700)),
+                        Text('Nomor Telephone', style: tsSubHeader4(fontWeight: FontWeight.w700, screenSize: screenWidth,)),
                         Container(
                           margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                           child: textFormField(
                               label: "Nomor Telephone",
                               controller: ctrPhone,
                               labelStyle: tsParagraft3(
-                                  color: Colors.black.withOpacity(0.3)),
+                                color: Colors.black.withOpacity(0.3),
+                                screenSize: screenWidth,
+                              ),
                               height: screenHeight * 0.06),
                         ),
                       ],
@@ -182,14 +188,16 @@ class EditProfileScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Alamat',
-                            style: tsSubHeader4(fontWeight: FontWeight.w700)),
+                            style: tsSubHeader4(fontWeight: FontWeight.w700, screenSize: screenWidth,)),
                         Container(
                           margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                           child: textFormField(
                               label: "Alamat",
                               controller: ctrAddress,
                               labelStyle: tsParagraft3(
-                                  color: Colors.black.withOpacity(0.3)),
+                                color: Colors.black.withOpacity(0.3),
+                                screenSize: screenWidth,
+                              ),
                               height: screenHeight * 0.06),
                         ),
                       ],
@@ -203,13 +211,15 @@ class EditProfileScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Bio',
-                            style: tsSubHeader4(fontWeight: FontWeight.w700)),
+                            style: tsSubHeader4(fontWeight: FontWeight.w700, screenSize: screenWidth,)),
                         Container(
                           child: textFormField(
                               label: "Bio",
                               controller: ctrBio,
                               labelStyle: tsParagraft3(
-                                  color: Colors.black.withOpacity(0.3)),
+                                color: Colors.black.withOpacity(0.3),
+                                screenSize: screenWidth,
+                              ),
                               height: screenHeight * 0.1),
                         ),
                       ],
@@ -217,7 +227,9 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                   Obx(() => Button(
                     label: "Simpan Perubahan",
-                    textStyle: tsSubHeader4(),
+                    textStyle: tsSubHeader4(
+                      screenSize: screenWidth,
+                    ),
                     textColor: Colors.white,
                     backgroundColor: editProfileController.ctrEmail.value.contains('@gmail.com')
                         ? primeryColorMedium

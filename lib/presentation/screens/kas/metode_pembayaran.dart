@@ -23,13 +23,15 @@ class MetodePembayaran extends StatelessWidget {
               child: Center(
                 child: Text(
                   "Pilih Metode Pembayaran",
-                  style: tsSubHeader3(),
+                  style: tsSubHeader3(
+                    screenSize: screenWidth
+                  ),
                 ),
               ),
             ),
-            Text("e-wallet", style: tsSubHeader4(fontWeight: FontWeight.bold)),
+            Text("e-wallet", style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth)),
             SizedBox(height: screenHeight * 0.02),
-            Text("Untuk pembayaran secara online dikenakan pajak 10.000", style: tsSubHeader5(fontWeight: FontWeight.bold).copyWith(color: Colors.grey)),
+            Text("Untuk pembayaran secara online dikenakan pajak 10.000", style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth,).copyWith(color: Colors.grey)),
             SizedBox(height: screenHeight * 0.04),
             Expanded(
               child: ListView.separated(
@@ -55,7 +57,9 @@ class MetodePembayaran extends StatelessWidget {
                       leading: Icon(item['icon']),
                       title: Text(
                         item['title'],
-                        style: tsSubHeader4(),
+                        style: tsSubHeader4(
+                          screenSize: screenWidth
+                        ),
                       ),
                       trailing: Icon(Icons.arrow_forward_ios),
                     ),

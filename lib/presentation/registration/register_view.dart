@@ -27,11 +27,15 @@ class RegisterView extends StatelessWidget {
                   children: [
                     Text(
                       'Selamat Datang',
-                      style: tsSubHeader1(),
+                      style: tsSubHeader1(
+                        screenSize: screenWidth,
+                      ),
                     ),
                     Text(
                       'Register untuk melanjutkan',
-                      style: tsSubHeader4(),
+                      style: tsSubHeader4(
+                        screenSize: screenWidth
+                      ),
                     ),
                   ],
                 ),
@@ -48,25 +52,27 @@ class RegisterView extends StatelessWidget {
                   children: [
                     textFormField(
                       label: "Email",
-                      labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3)),
+                      labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                       height: screenHeight * 0.06,
                     ),
                     SizedBox(height: screenHeight * 0.03),
                     textFormField(
                       label: "Password",
-                      labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3)),
+                      labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                       height: screenHeight * 0.06,
                     ),
                     SizedBox(height: screenHeight * 0.03),
                     textFormField(
                       label: "Confirm Password",
-                      labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3)),
+                      labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                       height: screenHeight * 0.06,
                     ),
                     SizedBox(height: screenHeight * 0.03),
                     Button(
                       label: "Register",
-                      textStyle: tsSubHeader4(),
+                      textStyle: tsSubHeader4(
+                        screenSize: screenWidth
+                      ),
                       textColor: Colors.white,
                       backgroundColor: primeryColorMedium,
                       side: BorderSide.none,
@@ -95,7 +101,9 @@ class RegisterView extends StatelessWidget {
                       },
                       textColor: primeryColorMedium,
                       backgroundColor: Colors.white,
-                      textStyle: tsHeader3(),
+                      textStyle: tsHeader3(
+                        screenSize: screenWidth
+                      ),
                       side: BorderSide(color: primeryColorMedium),
                     ),
                   ],

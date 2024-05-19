@@ -26,7 +26,9 @@ class DetailAgenda extends StatelessWidget {
                   surfaceTintColor: Colors.white,
                   title: Text(
                     title,
-                    style: tsHeader2(),
+                    style: tsHeader2(
+                      screenSize: screenWidth
+                    ),
                   ),
                   centerTitle: true,
                   leading: Container(
@@ -58,7 +60,9 @@ class DetailAgenda extends StatelessWidget {
                 child: Text(
                   textAlign: TextAlign.start,
                   content,
-                  style: tsParagraft4(),
+                  style: tsParagraft4(
+                    screenSize: screenWidth
+                  ),
                 ),
               ),
             ],

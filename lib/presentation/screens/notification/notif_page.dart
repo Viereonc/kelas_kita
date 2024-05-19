@@ -28,7 +28,8 @@ class NotificationPage extends StatelessWidget {
                   Text(
                     'Notification',
                     style: tsParagraft1(
-                      fontWeight: FontWeight.w600
+                      fontWeight: FontWeight.w600,
+                      screenSize: screenWidth
                     )
                   ),
                   SvgPicture.asset(
@@ -74,7 +75,8 @@ class NotificationPage extends StatelessWidget {
                                       child: Text(
                                         'Tugas CRUD',
                                         style: tsParagraft3(
-                                          fontWeight: FontWeight.w600
+                                          fontWeight: FontWeight.w600,
+                                          screenSize: screenWidth
                                         )
                                       ),
                                     ),
@@ -82,7 +84,9 @@ class NotificationPage extends StatelessWidget {
                                       width: screenWidth * 0.5,
                                       child: Text(
                                         'Tugas Laravel CRUD dari Fahmi sudah lewat deadline',
-                                        style: tsParagraft5()
+                                        style: tsParagraft5(
+                                          screenSize: screenWidth
+                                        )
                                       ),
                                     ),
                                   ],
@@ -91,7 +95,9 @@ class NotificationPage extends StatelessWidget {
                             ),
                             Text(
                               '2 hari lalu',
-                              style: tsParagraft5()
+                              style: tsParagraft5(
+                                screenSize: screenWidth
+                              )
                             ),
                           ],
                         ),

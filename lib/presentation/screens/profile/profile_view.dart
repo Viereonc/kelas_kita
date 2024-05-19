@@ -112,9 +112,13 @@ class ProfileScreen extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                       child: Column(
                         children: [
-                          Text("Ammar Faris", style: tsHeader3(),),
+                          Text("Ammar Faris", style: tsHeader3(
+                            screenSize: screenWidth,
+                          ),),
                           SizedBox(height: 5,),
-                          Text("Anggota Kelas", style: tsSubHeader4(),),
+                          Text("Anggota Kelas", style: tsSubHeader4(
+                            screenSize: screenWidth,
+                          ),),
                           Container(
                             margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
                             width: double.infinity,
@@ -135,8 +139,12 @@ class ProfileScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       SvgPicture.asset("lib/assets/icons/pe_fire.svg", color: Colors.red,),
-                                      Text("80%", style: tsSubHeader4(),),
-                                      Text("Pembayaran Kas", style: tsSubHeader6(),),
+                                      Text("80%", style: tsSubHeader4(
+                                        screenSize: screenWidth,
+                                      ),),
+                                      Text("Pembayaran Kas", style: tsSubHeader6(
+                                        screenSize: screenWidth,
+                                      ),),
                                     ],
                                   ),
                                 ),
@@ -146,8 +154,12 @@ class ProfileScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
-                                      Text("100%", style: tsSubHeader4(),),
-                                      Text("Absensi", style: tsSubHeader6(),),
+                                      Text("100%", style: tsSubHeader4(
+                                        screenSize: screenWidth,
+                                      ),),
+                                      Text("Absensi", style: tsSubHeader6(
+                                        screenSize: screenWidth,
+                                      ),),
                                     ],
                                   ),
                                 ),
@@ -157,8 +169,12 @@ class ProfileScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
-                                      Text("80%", style: tsSubHeader4(),),
-                                      Text("Pembayaran Kas", style: tsSubHeader6(),),
+                                      Text("80%", style: tsSubHeader4(
+                                        screenSize: screenWidth,
+                                      ),),
+                                      Text("Pembayaran Kas", style: tsSubHeader6(
+                                        screenSize: screenWidth,
+                                      ),),
                                     ],
                                   ),
                                 ),
@@ -192,7 +208,7 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                           Text(
                                             "Detail Profile",
-                                            style: tsSubHeader4(fontWeight: FontWeight.bold),
+                                            style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
                                           ),
                                         ],
                                       ),
@@ -230,7 +246,7 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                           Text(
                                             "Edit Profile",
-                                            style: tsSubHeader4(fontWeight: FontWeight.bold),
+                                            style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
                                           ),
                                         ],
                                       ),
@@ -268,7 +284,7 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                           Text(
                                             "Privacy Policy",
-                                            style: tsSubHeader4(fontWeight: FontWeight.bold),
+                                            style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
                                           ),
                                         ],
                                       ),
@@ -308,7 +324,7 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                           Text(
                                             "About Us",
-                                            style: tsSubHeader4(fontWeight: FontWeight.bold),
+                                            style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
                                           ),
                                         ],
                                       ),
@@ -333,18 +349,28 @@ class ProfileScreen extends StatelessWidget {
                             margin: EdgeInsets.only(bottom: screenHeight * 0.04, top: screenHeight * 0.02),
                             child: Button(
                                 label: "Log Out",
-                                textStyle: tsSubHeader4(),
+                                textStyle: tsSubHeader4(
+                                  screenSize: screenWidth,
+                                ),
                                 textColor: Colors.white,
                                 backgroundColor: Color(0xFFFF2D2D),
                                 side: BorderSide.none,
                                 onPressed: () {
                                   showCupertinoDialog<void>(
                                     context: context, builder: (BuildContext context) => CupertinoAlertDialog(
-                                    title: Text('Peringatan', style: tsParagraft2(),),
-                                    content: Text('Apakah anda ingin Log Out?', style: tsParagraft5(),),
+                                    title: Text('Peringatan', style: tsParagraft2(
+                                      screenSize: screenWidth,
+                                    ),),
+                                    content: Text('Apakah anda ingin Log Out?', style: tsParagraft5(
+                                      screenSize: screenWidth,
+                                    ),),
                                     actions: <CupertinoDialogAction>[
-                                      CupertinoDialogAction(child: Text('Tidak', style: tsSubHeader4().copyWith(color: Colors.red),), isDestructiveAction: true, onPressed: () {Navigator.pop(context);},),
-                                      CupertinoDialogAction(child: Text('Ya', style: tsSubHeader4(),), onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => LoginView()),);},),
+                                      CupertinoDialogAction(child: Text('Tidak', style: tsSubHeader4(
+                                        screenSize: screenWidth,
+                                      ).copyWith(color: Colors.red),), isDestructiveAction: true, onPressed: () {Navigator.pop(context);},),
+                                      CupertinoDialogAction(child: Text('Ya', style: tsSubHeader4(
+                                        screenSize: screenWidth,
+                                      ),), onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => LoginView()),);},),
                                     ],
                                   ),
                                   );

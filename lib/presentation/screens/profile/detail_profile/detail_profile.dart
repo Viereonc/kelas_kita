@@ -26,7 +26,9 @@ class DetailProfileScreen extends StatelessWidget {
             surfaceTintColor: Colors.white,
             title: Text(
               "Detail Profile",
-              style: tsHeader2(),
+              style: tsHeader2(
+                screenSize: screenWidth,
+              ),
             ),
             centerTitle: true,
             leading: Container(
@@ -83,7 +85,9 @@ class DetailProfileScreen extends StatelessWidget {
                         height: screenHeight * 0.05,
                         color: Colors.transparent,
                         width: double.infinity,
-                        child: Obx(() => Text(editProfileController.ctrBio.toString(), style: tsParagraft4(), maxLines: 3,)),
+                        child: Obx(() => Text(editProfileController.ctrBio.toString(), style: tsParagraft4(
+                          screenSize: screenWidth,
+                        ), maxLines: 3,)),
                       )
                     ],
                   ),
@@ -99,7 +103,9 @@ class DetailProfileScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Profile Informasi", style: tsHeader3(),),
+                            Text("Profile Informasi", style: tsHeader3(
+                              screenSize: screenWidth,
+                            ),),
                             Container(
                               height: screenHeight * 0.08,
                               child: Column(
@@ -108,15 +114,19 @@ class DetailProfileScreen extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Nama", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                      Text("Ammar Faris", style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                      Text("Nama", style: tsParagraft3(
+                                        screenSize: screenWidth,
+                                      ).copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text("Ammar Faris", style: tsParagraft4(fontWeight: FontWeight.w600,screenSize: screenWidth,),)
                                     ],
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Kelas", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                      Text("11 PPLG 2", style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                      Text("Kelas", style: tsParagraft3(
+                                        screenSize: screenWidth,
+                                      ).copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text("11 PPLG 2", style: tsParagraft4(fontWeight: FontWeight.w600, screenSize: screenWidth,),)
                                     ],
                                   ),
                                 ],
@@ -132,7 +142,9 @@ class DetailProfileScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Informasi Siswa", style: tsHeader3(),),
+                            Text("Informasi Siswa", style: tsHeader3(
+                              screenSize: screenWidth,
+                            ),),
                             Container(
                               height: screenHeight * 0.2,
                               child: Column(
@@ -141,29 +153,37 @@ class DetailProfileScreen extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("NIS", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                      Text("0510", style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                      Text("NIS", style: tsParagraft3(
+                                        screenSize: screenWidth
+                                      ).copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text("0510", style: tsParagraft4(fontWeight: FontWeight.w600, screenSize: screenWidth,),)
                                     ],
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Email", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                      Text(editProfileController.ctrEmail.value, style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                      Text("Email", style: tsParagraft3(
+                                        screenSize: screenWidth,
+                                      ).copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text(editProfileController.ctrEmail.value, style: tsParagraft4(fontWeight: FontWeight.w600, screenSize: screenWidth,),)
                                     ],
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Nomor Telepon", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                      Text(editProfileController.ctrPhone.toString(), style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                      Text("Nomor Telepon", style: tsParagraft3(
+                                        screenSize: screenWidth,
+                                      ).copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text(editProfileController.ctrPhone.toString(), style: tsParagraft4(fontWeight: FontWeight.w600, screenSize: screenWidth,),)
                                     ],
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Alamat", style: tsParagraft3().copyWith(color: Colors.grey.withOpacity(0.9)),),
-                                      Text(editProfileController.ctrAddress.value, style: tsParagraft4(fontWeight: FontWeight.w600),)
+                                      Text("Alamat", style: tsParagraft3(
+                                        screenSize: screenWidth,
+                                      ).copyWith(color: Colors.grey.withOpacity(0.9)),),
+                                      Text(editProfileController.ctrAddress.value, style: tsParagraft4(fontWeight: FontWeight.w600, screenSize: screenWidth,),)
                                     ],
                                   ),
                                 ],
