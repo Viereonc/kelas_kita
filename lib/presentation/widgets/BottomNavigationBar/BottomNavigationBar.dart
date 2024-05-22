@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:kelas_kita/presentation/screens/home/home_view.dart';
-import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
-import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
-import 'package:kelas_kita/presentation/screens/jadwal/jadwal_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 import 'NavbarController.dart';
@@ -23,55 +17,74 @@ class BottomNavbar extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 10),
       height: screenHeight * 0.12,
       child: Obx(() => BottomAppBar(
-          elevation: 0,
-          color: Colors.transparent,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    // color: Colors.black, // Warna shadow
-                    // spreadRadius: 9, // Menyebar dari batas shadow
-                    // blurRadius: 5, // Radius blur shadow
-                    // offset: Offset(0, 30),
-                  )
-                ],
-                color: primeryColorMedium,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildNavBarItem(
-                    0, 
-                    "lib/assets/icons/nb_home.svg", 
-                    "Home"
+        color: Colors.transparent,
+        elevation: 0,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: primeryColorMedium,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buildNavBarItem(
+                        0,
+                        "lib/assets/icons/nb_home_new.svg",
+                        "lib/assets/icons/nb_home_fill_new.svg",
+                        "Home",
+                        screenWidth,
+                        screenHeight,
+                      ),
+                      buildNavBarItem(
+                        1,
+                        "lib/assets/icons/nb_jadwal_new.svg",
+                        "lib/assets/icons/nb_jadwal_fill_new.svg",
+                        "Jadwal",
+                        screenWidth,
+                        screenHeight,
+                      ),
+                    ],
                   ),
-                  buildNavBarItem(
-                    1, 
-                    "lib/assets/icons/nb_jadwal.svg", 
-                    "Jadwal"
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buildNavBarItem(
+                        2,
+                        "lib/assets/icons/nb_notif_new.svg",
+                        "lib/assets/icons/nb_notif_fill_new.svg",
+                        "Notice",
+                        screenWidth,
+                        screenHeight,
+                      ),
+                      buildNavBarItem(
+                        3,
+                        "lib/assets/icons/nb_profile_new.svg",
+                        "lib/assets/icons/nb_profile_fill_new.svg",
+                        "Profile",
+                        screenWidth,
+                        screenHeight,
+                      ),
+                    ],
                   ),
-                  buildNavBarItem(
-                    2, 
-                    "lib/assets/icons/nb_notification.svg", 
-                    "Notification"
-                  ),
-                  buildNavBarItem(
-                    3, 
-                    "lib/assets/icons/nb_profile.svg", 
-                    "Profile"
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 
-  Widget buildNavBarItem(int index, String imagePath, String label) {
+  Widget buildNavBarItem(int index, String imagePath, String filledImagePath, String label, double screenWidth, double screenHeight) {
+    bool isSelected = bottomNavBarController.selectedIndex.value == index;
+
     return GestureDetector(
       onTap: () {
         bottomNavBarController.changeTabIndex(index);
@@ -92,17 +105,27 @@ class BottomNavbar extends StatelessWidget {
             break;
         }
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(imagePath),
-          Text(
-            label,
-            style: TextStyle(
-              color: bottomNavBarController.selectedIndex.value == index ? Colors.white : Colors.white,
+      child: Container(
+        height: screenHeight * 0.075,
+        width: screenWidth * 0.2,
+        child: Column(
+          children: [
+            SizedBox(
+              height: screenHeight * 0.042,
+              width: screenWidth * 0.05,
+              child: SvgPicture.asset(
+                isSelected ? filledImagePath : imagePath,
+                color: Colors.white,
+              ),
             ),
-          ),
-        ],
+            Text(
+              label,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

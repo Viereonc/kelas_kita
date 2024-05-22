@@ -117,8 +117,7 @@ class EditProfileScreen extends StatelessWidget {
                                       color: primeryColorMedium),
                                   child: GestureDetector(
                                       onTap: _getImageFromGallery,
-                                      child: Icon(Icons.edit,
-                                          color: Colors.white)),
+                                      child: Icon(Icons.edit, color: Colors.white)),
                                 ),
                               ),
                             ),

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/home/home_controller.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
-import 'package:kelas_kita/routes/app_routes.dart';
+import 'package:kelas_kita/presentation/screens/home/shimmer_home.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 import '../../themes/FontsStyle.dart';
+import 'home_real_content.dart';
 
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
+
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,233 +37,27 @@ class HomeScreen extends StatelessWidget {
                       )
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                    height: screenHeight * 0.15,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: screenWidth * 0.003,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          width: screenWidth * 0.65,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  topLeft: Radius.circular(13),
-                                  bottomRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(13)),
-                              color: primeryColorDark),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SvgPicture.asset("lib/assets/icons/he_cash.svg", width: screenWidth * 0.05, height: screenHeight * 0.05,),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Total Kas Kelas 11 PPLG 2',
-                                      style: tsParagraft4(
-                                        screenSize: screenWidth
-                                      )
-                                          .copyWith(color: Colors.white)),
-                                  Padding(
-                                      padding: EdgeInsets.only(
-                                          top: screenHeight * 0.01)),
-                                  Text('Rp 50.000',
-                                      style: tsHeader2(
-                                        screenSize: screenWidth
-                                      )
-                                          .copyWith(color: Colors.white)),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Pembukuan \n Kas',
-                                style: tsParagraft4(
-                                  screenSize: screenWidth
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.arrow_circle_right_rounded,
-                                    size: screenWidth * 0.08,
-                                    color: primeryColorDark,
-                                  ))
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: screenWidth * 0.03, left: screenWidth * 0.03, top: screenHeight * 0.05),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                              width: screenWidth * 0.15,
-                              height: screenWidth * 0.15,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(13),
-                                color: Color(0xFF41BEBE),
-                              ),
-                              child: Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(Path.STRUKTURKELAS_PAGE);
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_info_kelas.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  )
-                                )
-                              ),
-                            ),
-                            Text(
-                              'Info Kelas',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                              width: screenWidth * 0.15,
-                              height: screenWidth * 0.15,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(13),
-                                color: Color(0xFFFF844F),
-                              ),
-                              child: Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                 
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_info_tugas.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  ),
-                                )
-                              ),
-                            ),
-                            Text(
-                              'Info Tugas',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                              width: screenWidth * 0.15,
-                              height: screenWidth * 0.15,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(13),
-                                color: Color(0xFF3EB67B),
-                              ),
-                              child: Center(
-                                child: GestureDetector(
-                                  onTap: () => {
-                                    Get.toNamed(Path.KAS_PAGE)
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_kas.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  ),
-                                )
-                              ),
-                            ),
-                            Text(
-                              'Kas',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                              width: screenWidth * 0.15,
-                              height: screenWidth * 0.15,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(13),
-                                color: Color(0xFFFFBF43),
-                              ),
-                              child: Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(Path.AGENDA_PAGE);
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_note.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  ),
-                                )
-                              ),
-                            ),
-                            Text(
-                              'Note',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                              width: screenWidth * 0.15,
-                              height: screenWidth * 0.15,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(13),
-                                color: Color(0xFF5675E3),
-                              ),
-                              child: Center(
-                                child: GestureDetector(
-                                  onTap: () => {
-                                    Get.toNamed(Path.STRUKTURKELAS_PAGE)
-                                  
-                                  },
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/he_struktur.svg", 
-                                    width: screenWidth * 0.05, 
-                                    height: screenHeight * 0.05,
-                                  ),
-                                )
-                              ),
-                            ),
-                            Text(
-                              'Struktur',
-                              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  Obx(() => homeController.isLoading.value
+                      ? ShimmerLoadingContainer1(
+                    screenWidth: screenWidth,
+                    screenHeight: screenHeight,
+                    primeryColorDark: primeryColorDark,
+                  )
+                      : RealContent(
+                    screenWidth: screenWidth,
+                    screenHeight: screenHeight,
+                    primeryColorDark: primeryColorDark,
+                  )),
+                  Obx(() => homeController.isLoading.value
+                      ? ShimmerLoadingIcons(
+                    screenWidth: screenWidth,
+                    screenHeight: screenHeight,
+                  )
+                      : RealIcons(
+                    screenWidth: screenWidth,
+                    screenHeight: screenHeight,
+                    primeryColorDark: primeryColorDark,
+                  )),
                 ],
               ),
             ),
@@ -276,11 +74,13 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Tagihan Tas Kelas", style: tsSubHeader3(screenSize: screenWidth)),
+                    Text("Tagihan Kas Kelas", style: tsSubHeader3(screenSize: screenWidth)),
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: 9,
-                        itemBuilder: (BuildContext context, int index) {
+                      child: Obx(() => homeController.isLoading.value
+                          ? ShimmerLoadingListView(screenWidth: screenWidth, screenHeight: screenHeight,
+                        ) : ListView.builder(
+                          itemCount: 9,
+                          itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
                             child: Container(
@@ -296,8 +96,9 @@ class HomeScreen extends StatelessWidget {
                                     height: screenWidth * 0.12,
                                     width: screenWidth * 0.12,
                                     decoration: BoxDecoration(
-                                        color: Color(0xFFEB4335),
-                                        borderRadius: BorderRadius.circular(15)),
+                                      color: Color(0xFFEB4335),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
                                     child: Center(
                                       child: Icon(
                                         Icons.list_outlined,
@@ -306,40 +107,34 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
+                                  SizedBox(width: 20),
                                   Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Kas Pada Tanggal 3 Maret 2024',
                                         style: tsSubHeader4(
-                                            fontWeight: FontWeight.bold, screenSize: screenWidth),
-                                      ),
-                                      Text(
-                                        'Belum Dibayar',
-                                        style: tsParagraft4(
-                                          screenSize: screenWidth
+                                          fontWeight: FontWeight.bold,
+                                          screenSize: screenWidth * 1,
                                         ),
                                       ),
                                       Text(
+                                        'Belum Dibayar',
+                                        style: tsParagraft4(screenSize: screenWidth),
+                                      ),
+                                      Text(
                                         'Rp.5.000',
-                                        style: tsParagraft4(
-                                          screenSize: screenWidth
-                                        )
-                                            .copyWith(color: Color(0xFFBE1833)),
+                                        style: tsParagraft4(screenSize: screenWidth).copyWith(color: Color(0xFFBE1833)),
                                       ),
                                     ],
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
                           );
-                        },
-                      ),
+                                                  },
+                                                )),
                     ),
                   ],
                 ),
