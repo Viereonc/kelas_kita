@@ -9,6 +9,7 @@ abstract class Route {
   static const HOMEVIEW_PAGE = Path.HOME_PAGE;
   static const NOTIFICATIONVIEW_PAGE = Path.NOTIFICATION_PAGE;
   static const STRUKTURKELASVIEW_PAGE = Path.STRUKTURKELAS_PAGE;
+  static const INFOKELASVIEW_PAGE = Path.INFOKELAS_PAGE;
   static const PEMBUKUANVIEW_PAGE = Path.PEMBUKUAN_PAGE;
   static const KASVIEW_PAGE = Path.KAS_PAGE;
   static const AGENDAVIEW_PAGE = Path.AGENDA_PAGE;
@@ -28,6 +29,7 @@ abstract class Path {
   static const HOME_PAGE = "/homescreen";
   static const NOTIFICATION_PAGE = "/notification";
   static const STRUKTURKELAS_PAGE = "/strukturkelasscreen";
+  static const INFOKELAS_PAGE = "/infokelasscreen";
   static const PEMBUKUAN_PAGE = "/pembukuanscreen";
   static const KAS_PAGE = "/kasscreen";
   static const AGENDA_PAGE = "/agendascreen";
