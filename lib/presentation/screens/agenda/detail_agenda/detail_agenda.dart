@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../themes/Colors.dart';
-import '../../themes/FontsStyle.dart';
+import '../../../themes/Colors.dart';
+import '../../../themes/FontsStyle.dart';
 
 class DetailAgenda extends StatelessWidget {
   final String title;

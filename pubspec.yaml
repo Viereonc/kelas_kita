@@ -45,6 +45,7 @@ dependencies:
   shared_preferences:
   iconify:
   shimmer:
+  timeago:
 
 dev_dependencies:
   flutter_test:
