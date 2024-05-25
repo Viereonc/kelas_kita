@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:kelas_kita/presentation/registration/form_biografi.dart';
+import 'package:kelas_kita/presentation/registration/biografi/form_biografi.dart';
 import 'package:kelas_kita/presentation/screens/SplashScreen.dart';
 import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
 import 'package:kelas_kita/presentation/screens/home/home_view.dart';
@@ -7,13 +7,14 @@ import 'package:kelas_kita/presentation/screens/info_kelas/info_kelas_view.dart'
 import 'package:kelas_kita/presentation/screens/jadwal/jadwal_view.dart';
 import 'package:kelas_kita/presentation/screens/kas/kas_view.dart';
 import 'package:kelas_kita/presentation/screens/onboarding/onboarding_view.dart';
-import 'package:kelas_kita/presentation/registration/login_view.dart';
-import 'package:kelas_kita/presentation/registration/register_view.dart';
+import 'package:kelas_kita/presentation/registration/login/login_view.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/Pembukuan_view.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
 import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
+
+import '../presentation/registration/register/register_view.dart';
 
 class AppPages {
   static const INITIAL = Route.SPLASHSCREEN_PAGE;

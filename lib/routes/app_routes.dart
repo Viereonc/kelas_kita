@@ -23,7 +23,7 @@ abstract class Path {
 
   static const SPLASHSCREEN_PAGE = "/";
   static const ONBOARDING_PAGE = "/onboarding";
-  static const LOGIN_PAGE = "/loginview";
+  static const LOGIN_PAGE = "/loginView";
   static const REGISTER_PAGE = "/registerview";
   static const BIOGRAFI_PAGE = "/biografiView";
   static const HOME_PAGE = "/homescreen";

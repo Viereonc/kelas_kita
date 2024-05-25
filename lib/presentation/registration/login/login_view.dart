@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kelas_kita/presentation/registration/form_biografi.dart';
-import 'package:kelas_kita/presentation/registration/register_view.dart';
+import 'package:kelas_kita/presentation/registration/login/login_controller.dart';
+import 'package:kelas_kita/presentation/registration/register/register_view.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
 import 'package:kelas_kita/presentation/widgets/TextFormField.dart';
 
 class LoginView extends StatelessWidget {
+  final LoginController loginController = Get.put(LoginController());
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -55,6 +57,7 @@ class LoginView extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                       child: textFormField(
                         label: "Email",
+                        controller: loginController.emailController,
                         labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                         height: screenHeight * 0.06,
                       ),
@@ -63,6 +66,7 @@ class LoginView extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                       child: textFormField(
                         label: "Password",
+                        controller: loginController.passwordController,
                         labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                         height: screenHeight * 0.06,
                       ),
@@ -89,11 +93,7 @@ class LoginView extends StatelessWidget {
                                 backgroundColor: primeryColorMedium,
                                 side: BorderSide.none,
                                 onPressed: () {
-                                  Get.to(
-                                    () => BiografiView(),
-                                    transition: Transition.rightToLeft,
-                                    duration: Duration(milliseconds: 300),
-                                  );
+                                  loginController.loginUser(loginController.emailController.text, loginController.passwordController.text);
                                 },
                               ),
                             ],
