@@ -1,12 +1,36 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:kelas_kita/presentation/screens/home/home_view.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:kelas_kita/presentation/registration/biografi/biografi_controller.dart';
+
 
 class BiografiView extends StatelessWidget {
+  final BiografiController biografiController = Get.put(BiografiController());
+
+  Future<void> _getImageFromGallery() async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final File image = File(pickedFile.path);
+      biografiController.selectedImagePath.value = image;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<String> kelasOptions = [
+      '10 PPLG 1',
+      '10 PPLG 2',
+      '11 PPLG 1',
+      '11 PPLG 2'
+    ];
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
     double imageWidth = screenWidth * 0.4;
 
     return Scaffold(
@@ -96,20 +120,68 @@ class BiografiView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         buildFormField(
+                          controller: biografiController.namaController,
                           label: 'Nama',
                           hint: 'Nama',
                           hintDescription: 'Isi dengan nama asli',
                           screenWidth: screenWidth,
                         ),
                         SizedBox(height: screenHeight * 0.025),
-                        buildFormField(
-                          label: 'Kelas',
-                          hint: 'Kelas',
-                          hintDescription: 'Isi dengan kelas Anda',
-                          screenWidth: screenWidth,
+                        Container(
+                          height: screenHeight * 0.13,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.school),
+                                  SizedBox(width: screenWidth * 0.015,),
+                                  Text('Kelas', style: TextStyle(
+                                    fontFamily: 'tsParagraft3',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: screenWidth * 0.04,
+                                  )),
+                                ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black.withOpacity(0.4),
+                                    width: 1.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: DropdownButtonFormField<String>(
+                                  value: biografiController.selectedValue.value,
+                                  items: kelasOptions.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? value) {
+                                    biografiController.selectedValue.value = value!;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Pilih Kelas',
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                              Text("Isi sesuai kelas", style: TextStyle(
+                                fontFamily: 'tsParagraft4',
+                                fontWeight: FontWeight.w500,
+                                fontSize: screenWidth * 0.0325,
+                                color: Colors.black.withOpacity(0.4),
+                              )),
+                            ],
+                          ),
                         ),
                         SizedBox(height: screenHeight * 0.025),
                         buildFormField(
+                          controller: biografiController.nisController,
                           label: 'NIS',
                           hint: 'NIS',
                           hintDescription: 'Isi dengan NIS Anda',
@@ -117,12 +189,50 @@ class BiografiView extends StatelessWidget {
                         ),
                         SizedBox(height: screenHeight * 0.025),
                         buildFormField(
+                          controller: biografiController.alamatController,
                           label: 'Alamat',
+
+
                           hint: 'Alamat',
                           hintDescription: 'Isi dengan alamat Anda',
                           screenWidth: screenWidth,
                         ),
-                        SizedBox(height: screenHeight * 0.10),
+                        SizedBox(height: screenHeight * 0.05),
+                        GestureDetector(
+                          onTap: _getImageFromGallery,
+                          child: Obx(
+                                () => Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: screenHeight * 0.01),
+                              height: screenHeight * 0.2,
+                              decoration: BoxDecoration(
+                                color: biografiController.selectedImagePath.value !=
+                                    null
+                                    ? Colors.grey.shade200
+                                    : Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                                image: biografiController.selectedImagePath.value !=
+                                    null
+                                    ? DecorationImage(
+                                  image: FileImage(
+                                      biografiController.selectedImagePath
+                                          .value!),
+                                  fit: BoxFit.cover,
+                                )
+                                    : null,
+                              ),
+                              child: biografiController.selectedImagePath.value ==
+                                  null
+                                  ? Container(
+                                margin: EdgeInsets.all(15),
+                                child: SvgPicture.asset(
+                                    "lib/assets/icons/pe_camera.svg"),
+                              )
+                                  : null,
+                              width: double.infinity,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -158,9 +268,13 @@ class BiografiView extends StatelessWidget {
               textColor: Colors.white,
               screenWidth: screenWidth,
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                String imagePath = biografiController.selectedImagePath.value?.path ?? '';
+                biografiController.submitBiografi(
+                    biografiController.namaController.text,
+                    biografiController.selectedValue.value,
+                    biografiController.nisController.text,
+                    biografiController.alamatController.text,
+                    imagePath
                 );
               },
             ),
@@ -171,6 +285,7 @@ class BiografiView extends StatelessWidget {
   }
 
   Widget buildFormField({
+    TextEditingController? controller,
     required String label,
     required String hint,
     required String hintDescription,
@@ -198,6 +313,7 @@ class BiografiView extends StatelessWidget {
           width: double.infinity,
           height: screenWidth * 0.1,
           child: TextFormField(
+            controller: controller,
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TextStyle(

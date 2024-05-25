@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kelas_kita/presentation/registration/login_view.dart';
+import 'package:kelas_kita/presentation/registration/login/login_view.dart';
+import 'package:kelas_kita/presentation/registration/register/register_controller.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
 import 'package:kelas_kita/presentation/widgets/TextFormField.dart';
 
 class RegisterView extends StatelessWidget {
+  final RegisterController registerController = Get.put(RegisterController());
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -34,7 +37,7 @@ class RegisterView extends StatelessWidget {
                     Text(
                       'Register untuk melanjutkan',
                       style: tsSubHeader4(
-                        screenSize: screenWidth
+                          screenSize: screenWidth
                       ),
                     ),
                   ],
@@ -51,19 +54,29 @@ class RegisterView extends StatelessWidget {
                 child: Column(
                   children: [
                     textFormField(
-                      label: "Email",
+                      label: "Username",
+                      controller: registerController.usernameController,
                       labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                       height: screenHeight * 0.06,
                     ),
                     SizedBox(height: screenHeight * 0.03),
                     textFormField(
+                      label: "Email",
+                      controller: registerController.emailController,
+                      labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
+                      height: screenHeight * 0.06,
+                    ),
+                    SizedBox(height: screenHeight * 0.03),
+                    textFormField(
+                      controller: registerController.passwordController,
                       label: "Password",
                       labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                       height: screenHeight * 0.06,
                     ),
                     SizedBox(height: screenHeight * 0.03),
                     textFormField(
-                      label: "Confirm Password",
+                      controller: registerController.nomorTeleponController,
+                      label: "Nomor Telepon",
                       labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                       height: screenHeight * 0.06,
                     ),
@@ -71,17 +84,13 @@ class RegisterView extends StatelessWidget {
                     Button(
                       label: "Register",
                       textStyle: tsSubHeader4(
-                        screenSize: screenWidth
+                          screenSize: screenWidth
                       ),
                       textColor: Colors.white,
                       backgroundColor: primeryColorMedium,
                       side: BorderSide.none,
                       onPressed: () {
-                        Get.to(
-                          () => LoginView(),
-                          transition: Transition.rightToLeft,
-                          duration: Duration(milliseconds: 300),
-                        );
+                        registerController.registerUser(registerController.usernameController.text, registerController.emailController.text, registerController.passwordController.text, registerController.nomorTeleponController.text);
                       },
                     ),
                     SizedBox(height: screenHeight * 0.03),
@@ -94,7 +103,7 @@ class RegisterView extends StatelessWidget {
                       label: 'Login',
                       onPressed: () {
                         Get.to(
-                          () => LoginView(),
+                              () => LoginView(),
                           transition: Transition.rightToLeft,
                           duration: Duration(milliseconds: 300),
                         );
@@ -102,7 +111,7 @@ class RegisterView extends StatelessWidget {
                       textColor: primeryColorMedium,
                       backgroundColor: Colors.white,
                       textStyle: tsHeader3(
-                        screenSize: screenWidth
+                          screenSize: screenWidth
                       ),
                       side: BorderSide(color: primeryColorMedium),
                     ),
