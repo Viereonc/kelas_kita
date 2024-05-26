@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  qr_flutter: ^4.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,10 +42,16 @@ dependencies:
   introduction_screen:
   get: ^4.6.5
   dio:
+  share_plus: ^9.0.0
+  intl: ^0.19.0
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  qr_code_scanner: ^1.0.1
+  camera: ^0.10.0+3
+  flutter_native_splash: ^2.0.1+1
 
   
 
@@ -54,8 +61,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  flutter_native_splash: ^2.0.1+1
-flutter_native_splash: 
+flutter_native_splash:
   color: "#ffffff"
   images: assets/icons/logo.png
 
@@ -64,6 +70,7 @@ flutter_native_splash:
 
 # The following section is specific to Flutter packages.
 flutter:
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

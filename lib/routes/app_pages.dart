@@ -7,6 +7,7 @@ import 'package:kelas_kita/presentation/registration/register_view.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
 import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
+import 'package:kelas_kita/presentation/screens/infotugas/info_tugas.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 
 class AppPages{
