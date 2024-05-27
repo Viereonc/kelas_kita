@@ -94,7 +94,7 @@ class BiografiController extends GetxController {
 
       if (response.statusCode == 201) {
         print('Success: ${response.statusCode}');
-        Get.toNamed(Path.HOME_PAGE);
+        Get.toNamed(Path.PENDING_PAGE);
       } else {
         print('Error: ${response.statusCode}');
         print(nama);

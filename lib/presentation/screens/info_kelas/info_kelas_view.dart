@@ -81,7 +81,6 @@ class InfoKelasScreen extends StatelessWidget {
                         itemTime = DateTime.parse(infoKelas["time"]);
                       }
 
-                      final DateTime now = DateTime.now();
                       final timeAgo = '${itemTime.year}-${itemTime.month}-${itemTime.day} ${itemTime.hour}:${itemTime.minute}';
 
                       return GestureDetector(

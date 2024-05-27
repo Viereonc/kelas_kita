@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/registration/biografi/form_biografi.dart';
-import 'package:kelas_kita/presentation/screens/SplashScreen.dart';
+import 'package:kelas_kita/presentation/screens/pending/pending_view.dart';
+import 'package:kelas_kita/presentation/screens/splashscreen/SplashScreen.dart';
 import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
 import 'package:kelas_kita/presentation/screens/home/home_view.dart';
 import 'package:kelas_kita/presentation/screens/info_kelas/info_kelas_view.dart';
@@ -22,6 +23,7 @@ class AppPages {
   static const LOGIN = Route.LOGINVIEW_PAGE;
   static const REGISTER = Route.REGISTERVIEW_PAGE;
   static const BIOGRAFI = Route.BIOGRAFIVIEW_PAGE;
+  static const PENDING = Route.PENDING_PAGE;
   static const HOME = Route.HOMEVIEW_PAGE;
   static const NOTIFICATION = Route.NOTIFICATIONVIEW_PAGE;
   static const STRUKTURKELAS = Route.STRUKTURKELASVIEW_PAGE;
@@ -54,6 +56,10 @@ class AppPages {
     GetPage(
         name: Path.BIOGRAFI_PAGE,
         page: () => BiografiView(),
+        transition: Transition.noTransition),
+    GetPage(
+        name: Path.PENDING_PAGE,
+        page: () => PendingScreen(),
         transition: Transition.noTransition),
     GetPage(
         name: Path.HOME_PAGE,
