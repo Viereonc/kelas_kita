@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kelas_kita/presentation/registration/biografi/biografi_controller.dart';
+import 'package:kelas_kita/presentation/screens/pending/pending_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:kelas_kita/routes/app_routes.dart';
 
 import 'kelas_model.dart';
 
@@ -174,7 +176,6 @@ class BiografiView extends StatelessWidget {
                                             biografiController.idKelas.value = value;
                                           }
                                         },
-
                                         decoration: InputDecoration(
                                           hintText: 'Pilih Kelas',
                                           border: InputBorder.none,
