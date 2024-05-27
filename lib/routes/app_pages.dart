@@ -9,6 +9,7 @@ import 'package:kelas_kita/presentation/screens/info_kelas/info_kelas_view.dart'
 import 'package:kelas_kita/presentation/screens/jadwal/jadwal_view.dart';
 import 'package:kelas_kita/presentation/screens/kas/kas_view.dart';
 import 'package:kelas_kita/presentation/screens/onboarding/onboarding_view.dart';
+import 'package:kelas_kita/presentation/screens/qr/qr_code.dart';
 import 'package:kelas_kita/presentation/registration/login/login_view.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/Pembukuan_view.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
@@ -102,6 +103,10 @@ class AppPages {
     GetPage(
         name: Path.JADWAL_PAGE,
         page: () => JadwalScreen(),
+        transition: Transition.noTransition),
+    GetPage(
+        name: Path.QRCODE,
+        page: () => QrCodeScreen(),
         transition: Transition.noTransition),
   ];
 }
