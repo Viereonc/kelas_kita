@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
+// Font Family
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -84,11 +86,7 @@ class HomePage extends StatelessWidget {
             backgroundColor: Colors.white,
             title: Text(
               'Info Tugas',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: screenWidth * 0.05,
-              ),
+              style: tsHeader3(screenSize: screenWidth),
             ),
             centerTitle: true,
             leading: IconButton(
@@ -163,7 +161,7 @@ class HomePage extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.edit, color: Colors.orange, size: screenWidth * 0.07),
-            title: Text('Edit', style: TextStyle(fontSize: screenWidth * 0.045)),
+            title: Text('Edit', style: tsParagraft3(screenSize: screenWidth)),
             onTap: () {
               Navigator.of(ctx).pop();
               Navigator.of(context).push(
@@ -176,7 +174,7 @@ class HomePage extends StatelessWidget {
           Divider(),
           ListTile(
             leading: Icon(Icons.delete, color: Colors.red, size: screenWidth * 0.07),
-            title: Text('Delete', style: TextStyle(fontSize: screenWidth * 0.045)),
+            title: Text('Delete', style: tsParagraft3(screenSize: screenWidth)),
             onTap: () {
               Navigator.of(ctx).pop();
               _showDeleteConfirmation(context, task);
@@ -196,17 +194,17 @@ class HomePage extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(screenWidth * 0.025)),
-        title: Text('Hapus Tugas', style: TextStyle(color: Colors.blue, fontSize: screenWidth * 0.05)),
-        content: Text('Apakah Anda yakin ingin menghapus tugas ini?', style: TextStyle(color: Colors.black, fontSize: screenWidth * 0.045)),
+        title: Text('Hapus Tugas', style: tsHeader3(screenSize: screenWidth)),
+        content: Text('Apakah Anda yakin ingin menghapus tugas ini?', style: tsParagraft3(screenSize: screenWidth)),
         actions: <Widget>[
           TextButton(
-            child: Text('Batal', style: TextStyle(color: Colors.blue, fontSize: screenWidth * 0.045)),
+            child: Text('Batal', style: tsParagraft3(screenSize: screenWidth)),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
           ),
           TextButton(
-            child: Text('Hapus', style: TextStyle(color: Colors.blue, fontSize: screenWidth * 0.045)),
+            child: Text('Hapus', style: tsParagraft3(screenSize: screenWidth)),
             onPressed: () {
               Provider.of<TaskProvider>(context, listen: false).removeTask(task);
               Navigator.of(ctx).pop();
@@ -238,26 +236,21 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(
-                fontSize: screenWidth * 0.05,
-                fontWeight: FontWeight.bold,
-              ),
+              style: tsHeader3(screenSize: screenWidth),
             ),
             SizedBox(height: screenWidth * 0.025),
             Text(
               'Ketentuan: $description',
-              style: TextStyle(
-                fontSize: screenWidth * 0.045,
-              ),
+              style: tsParagraft3(screenSize: screenWidth),
             ),
             SizedBox(height: screenWidth * 0.025),
             Row(
               children: [
-                Text('Guru: $teacher', style: TextStyle(fontSize: screenWidth * 0.04)),
+                Text('Guru: $teacher', style: tsParagraft3(screenSize: screenWidth)),
                 Spacer(),
                 Icon(Icons.calendar_today, size: screenWidth * 0.04, color: Colors.red),
                 SizedBox(width: screenWidth * 0.01),
-                Text(date, style: TextStyle(fontSize: screenWidth * 0.04)),
+                Text(date, style: tsParagraft3(screenSize: screenWidth)),
               ],
             ),
           ],
@@ -315,11 +308,11 @@ class _NewTaskPageState extends State<NewTaskPage> {
         builder: (ctx) => AlertDialog(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.025)),
-          title: Text('Perhatian', style: TextStyle(color: Colors.blue, fontSize: MediaQuery.of(context).size.width * 0.05)),
-          content: Text('Isi semua bidang terlebih dahulu.', style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.045)),
+          title: Text('Perhatian', style: tsHeader3(screenSize: MediaQuery.of(context).size.width)),
+          content: Text('Isi semua bidang terlebih dahulu.', style: tsParagraft3(screenSize: MediaQuery.of(context).size.width)),
           actions: <Widget>[
             TextButton(
-              child: Text('OK', style: TextStyle(color: Colors.blue, fontSize: MediaQuery.of(context).size.width * 0.045)),
+              child: Text('OK', style: tsParagraft3(screenSize: MediaQuery.of(context).size.width)),
               onPressed: () {
                 Navigator.of(ctx).pop();
               },
@@ -346,7 +339,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: Text('Tambah Info Tugas', style: TextStyle(color: Colors.black, fontSize: screenWidth * 0.05)),
+        title: Text('Tambah Info Tugas', style: tsHeader3(screenSize: screenWidth)),
         centerTitle: true,
         leading: IconButton(
           icon: Container(
@@ -395,11 +388,11 @@ class _NewTaskPageState extends State<NewTaskPage> {
                 items: teachers.map((teacher) {
                   return DropdownMenuItem(
                     value: teacher,
-                    child: Text(teacher, style: TextStyle(color: Colors.black, fontSize: screenWidth * 0.045)),
+                    child: Text(teacher, style: tsParagraft3(screenSize: screenWidth)),
                   );
                 }).toList(),
                 validator: (value) => value == null ? 'Pilih guru' : null,
-                style: TextStyle(color: Colors.black, fontSize: screenWidth * 0.045),
+                style: tsParagraft3(screenSize: screenWidth),
               ),
               SizedBox(height: screenWidth * 0.04),
               Row(
@@ -414,7 +407,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                       readOnly: true,
                       onTap: () => _selectDate(context),
                       validator: (value) => value!.isEmpty ? 'Pilih tanggal' : null,
-                      style: TextStyle(fontSize: screenWidth * 0.045),
+                      style: tsParagraft3(screenSize: screenWidth),
                     ),
                   ),
                   IconButton(
@@ -459,7 +452,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
       children: [
         Text(
           label,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.045),
+          style: tsParagraft3(screenSize: screenWidth),
         ),
         SizedBox(height: screenWidth * 0.02),
         TextFormField(
@@ -470,7 +463,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
           ),
           maxLines: label == 'Ketentuan Tugas' ? 5 : 1,
           validator: validator,
-          style: TextStyle(fontSize: screenWidth * 0.045),
+          style: tsParagraft3(screenSize: screenWidth),
         ),
       ],
     );
@@ -537,11 +530,11 @@ class _EditTaskPageState extends State<EditTaskPage> {
         builder: (ctx) => AlertDialog(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.025)),
-          title: Text('Perhatian', style: TextStyle(color: Colors.blue, fontSize: MediaQuery.of(context).size.width * 0.05)),
-          content: Text('Isi semua bidang terlebih dahulu.', style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.045)),
+          title: Text('Perhatian', style: tsHeader3(screenSize: MediaQuery.of(context).size.width)),
+          content: Text('Isi semua bidang terlebih dahulu.', style: tsParagraft3(screenSize: MediaQuery.of(context).size.width)),
           actions: <Widget>[
             TextButton(
-              child: Text('OK', style: TextStyle(color: Colors.blue, fontSize: MediaQuery.of(context).size.width * 0.045)),
+              child: Text('OK', style: tsParagraft3(screenSize: MediaQuery.of(context).size.width)),
               onPressed: () {
                 Navigator.of(ctx).pop();
               },
@@ -568,7 +561,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: Text('Edit Info Tugas', style: TextStyle(color: Colors.black, fontSize: screenWidth * 0.05)),
+        title: Text('Edit Info Tugas', style: tsHeader3(screenSize: screenWidth)),
         centerTitle: true,
         leading: IconButton(
           icon: Container(
@@ -617,11 +610,11 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 items: ['Pak Aji', 'Pak Dwi', 'Pak Agus', 'Pak Fahmi', 'Pak Anjas'].map((teacher) {
                   return DropdownMenuItem(
                     value: teacher,
-                    child: Text(teacher, style: TextStyle(color: Colors.black, fontSize: screenWidth * 0.045)),
+                    child: Text(teacher, style: tsParagraft3(screenSize: screenWidth)),
                   );
                 }).toList(),
                 validator: (value) => value == null ? 'Pilih guru' : null,
-                style: TextStyle(color: Colors.black, fontSize: screenWidth * 0.045),
+                style: tsParagraft3(screenSize: screenWidth),
               ),
               SizedBox(height: screenWidth * 0.04),
               Row(
@@ -636,7 +629,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                       readOnly: true,
                       onTap: () => _selectDate(context),
                       validator: (value) => value!.isEmpty ? 'Pilih tanggal' : null,
-                      style: TextStyle(fontSize: screenWidth * 0.045),
+                      style: tsParagraft3(screenSize: screenWidth),
                     ),
                   ),
                   IconButton(
@@ -681,7 +674,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
       children: [
         Text(
           label,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenWidth * 0.045),
+          style: tsParagraft3(screenSize: screenWidth),
         ),
         SizedBox(height: screenWidth * 0.02),
         TextFormField(
@@ -692,7 +685,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
           ),
           maxLines: label == 'Ketentuan Tugas' ? 5 : 1,
           validator: validator,
-          style: TextStyle(fontSize: screenWidth * 0.045),
+          style: tsParagraft3(screenSize: screenWidth),
         ),
       ],
     );

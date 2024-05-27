@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'Absen QR Code',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: tsHeader1(screenSize: MediaQuery.of(context).size.width, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           elevation: 0,
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             'Scan Disini',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            style: tsSubHeader1(screenSize: MediaQuery.of(context).size.width, fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: 20),
                           QrImageView(
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
                           SizedBox(height: 20),
                           Text(
                             'Vicko Amelino Syahputra',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            style: tsSubHeader2(screenSize: MediaQuery.of(context).size.width, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             'II PPLG 2',
