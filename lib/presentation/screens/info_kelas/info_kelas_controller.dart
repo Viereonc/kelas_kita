@@ -36,7 +36,7 @@ class InfoKelasController extends GetxController {
     infoKelasList.add({
       "description": description,
       "image": imageFile?.path ?? "",
-      "time": currentTime.toIso8601String(), // Menyimpan waktu saat ini dalam format ISO 8601
+      "time": currentTime.toIso8601String(),
     });
     saveInfoKelas();
   }
@@ -46,7 +46,7 @@ class InfoKelasController extends GetxController {
     infoKelasList[index] = {
       "description": description,
       "image": imageFile?.path ?? "",
-      "time": currentTime.toIso8601String(), // Menyimpan waktu saat ini dalam format ISO 8601
+      "time": currentTime.toIso8601String(),
     };
     saveInfoKelas();
   }

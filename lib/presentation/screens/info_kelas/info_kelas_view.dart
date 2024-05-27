@@ -7,7 +7,6 @@ import '../../themes/FontsStyle.dart';
 import 'add_info_kelas/add_info_kelas.dart';
 import 'info_kelas_controller.dart';
 import 'detail_info_kelas/detail_info_kelas.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 
 class InfoKelasScreen extends StatelessWidget {
