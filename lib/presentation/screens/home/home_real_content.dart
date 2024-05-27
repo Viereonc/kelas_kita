@@ -122,7 +122,7 @@ class RealIcons extends StatelessWidget {
                 child: Center(
                   child: GestureDetector(
                     onTap: () {
-                      Get.toNamed(Path.STRUKTURKELAS_PAGE);
+                      Get.toNamed(Path.INFOKELAS_PAGE);
                     },
                     child: SvgPicture.asset(
                       "lib/assets/icons/he_info_kelas.svg",

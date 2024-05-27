@@ -3,13 +3,66 @@ import 'package:get/get.dart';
 
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
-import 'add_agenda_view.dart';
+import 'add_agenda/add_agenda_view.dart';
 import 'agenda_controller.dart';
-import 'detail_agenda.dart';
+import 'detail_agenda/detail_agenda.dart';
 
 class AgendaScreen extends StatelessWidget {
   AgendaScreen({Key? key}) : super(key: key);
+
   final AgendaController agendaController = Get.put(AgendaController());
+
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return "Januari";
+      case 2:
+        return "Februari";
+      case 3:
+        return "Maret";
+      case 4:
+        return "April";
+      case 5:
+        return "Mei";
+      case 6:
+        return "Juni";
+      case 7:
+        return "Juli";
+      case 8:
+        return "Agustus";
+      case 9:
+        return "September";
+      case 10:
+        return "Oktober";
+      case 11:
+        return "November";
+      case 12:
+        return "Desember";
+      default:
+        return "";
+    }
+  }
+
+  String _getDayName(int day) {
+    switch (day) {
+      case 1:
+        return "Senin";
+      case 2:
+        return "Selasa";
+      case 3:
+        return "Rabu";
+      case 4:
+        return "Kamis";
+      case 5:
+        return "Jumat";
+      case 6:
+        return "Sabtu";
+      case 7:
+        return "Minggu";
+      default:
+        return "";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +138,12 @@ class AgendaScreen extends StatelessWidget {
                             ),
                           );
                         },
+                        onLongPress: () {
+                          final agenda = agendaController.agendaList[index];
+                          final description = agenda["title"];
+                          final imagePath = agenda["content"];
+                          agendaController.openIconButtonpressed(context, index, description, imagePath);
+                        },
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01, vertical: screenHeight * 0.015),
                           child: Container(
@@ -101,18 +160,18 @@ class AgendaScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      "10 Maret 2024,",
+                                      "${DateTime.now().day} ${_getMonthName(DateTime.now().month)} ${DateTime.now().year},",
                                       style: tsHeader3(
                                         screenSize: screenWidth,
                                       ).copyWith(color: secondaryColorDark),
                                     ),
                                     SizedBox(width: screenWidth * 0.005),
                                     Text(
-                                      "Minggu",
+                                      "${_getDayName(DateTime.now().weekday)}",
                                       style: tsParagraft4(
                                         screenSize: screenWidth,
                                       ).copyWith(color: Colors.grey),
-                                    )
+                                    ),
                                   ],
                                 ),
                                 Container(
@@ -158,7 +217,7 @@ class AgendaScreen extends StatelessWidget {
           onPressed: () async {
             final result = await Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddAgenda()),
+              MaterialPageRoute(builder: (context) => AddAgendaScreen()),
             );
 
             if (result != null) {

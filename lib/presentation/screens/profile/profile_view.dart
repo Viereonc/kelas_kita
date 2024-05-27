@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:kelas_kita/presentation/registration/login_view.dart';
+import 'package:kelas_kita/presentation/registration/login/login_view.dart';
 import 'package:kelas_kita/presentation/screens/profile/about_us/about_us.dart';
 import 'package:kelas_kita/presentation/screens/profile/detail_profile/detail_profile.dart';
 import 'package:kelas_kita/presentation/screens/profile/edit_profile/edit_profile.dart';
