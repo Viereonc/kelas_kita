@@ -11,11 +11,17 @@ class InfoKelasController extends GetxController {
   var infoKelasList = [].obs;
   var isLoading = true.obs;
   var selectedImagePath = Rx<File?>(null);
+  var userStatus = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     loadInfoKelas();
+    setUserStatus();
+  }
+
+  void setUserStatus() {
+    userStatus.value = 'sekretaris';
   }
 
   void openIconButtonpressed(BuildContext context, int index, String description, String imagePath) {

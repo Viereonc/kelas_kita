@@ -47,6 +47,9 @@ dependencies:
   shimmer:
   timeago:
   http:
+  qr_flutter:
+  share_plus:
+  provider:
 
 dev_dependencies:
   flutter_test:

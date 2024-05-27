@@ -181,24 +181,26 @@ class InfoKelasScreen extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-          onPressed: () async {
-            final result = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddInfoKelas()),
-            );
-
-            if (result != null) {
-              infoKelasController.addInfoKelas(File(result["image"]), result["description"]);
-
-            }
-          },
-          shape: CircleBorder(),
-          backgroundColor: primeryColorMedium,
-          child: Icon(Icons.add, color: Colors.white, size: 34),
-        ),
-      ),
+      floatingActionButton: Obx(() {
+        if (infoKelasController.userStatus.value == 'sekretaris') {
+          return FloatingActionButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddInfoKelas()),
+              );
+              if (result != null) {
+                infoKelasController.addInfoKelas(File(result["image"]), result["description"]);
+              }
+            },
+            shape: CircleBorder(),
+            backgroundColor: primeryColorMedium,
+            child: Icon(Icons.add, color: Colors.white, size: 34),
+          );
+        } else {
+          return SizedBox.shrink(); // Return an empty widget if the user is not a secretary
+        }
+      }),
     );
   }
 }

@@ -12,7 +12,8 @@ class SplashController extends GetxController {
   void checkLoginStatus() async {
     await Future.delayed(Duration(seconds: 2));
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isLoggedIn = prefs.getBool('isLoggedIn');
+    bool? isLoggedIn = prefs.getBool('isLoggedIn') ?? false; // Default ke false jika null
+    print('isLoggedIn: $isLoggedIn'); // Tambahkan ini untuk debugging
     if (isLoggedIn == true) {
       Get.offNamed(Path.HOME_PAGE);
     } else {

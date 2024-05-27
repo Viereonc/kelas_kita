@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/registration/biografi/form_biografi.dart';
+import 'package:kelas_kita/presentation/screens/infotugas/info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/pending/pending_view.dart';
 import 'package:kelas_kita/presentation/screens/splashscreen/SplashScreen.dart';
 import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
@@ -28,6 +29,7 @@ class AppPages {
   static const NOTIFICATION = Route.NOTIFICATIONVIEW_PAGE;
   static const STRUKTURKELAS = Route.STRUKTURKELASVIEW_PAGE;
   static const INFOKELAS = Route.INFOKELASVIEW_PAGE;
+  static const INFOTUGAS = Route.INFOTUGASVIEW_PAGE;
   static const PEMBUKUAN = Route.PEMBUKUANVIEW_PAGE;
   static const KAS = Route.KASVIEW_PAGE;
   static const AGENDA = Route.AGENDAVIEW_PAGE;
@@ -76,6 +78,10 @@ class AppPages {
     GetPage(
         name: Path.INFOKELAS_PAGE,
         page: () => InfoKelasScreen(),
+        transition: Transition.noTransition),
+    GetPage(
+        name: Path.INFOTUGAS_PAGE,
+        page: () => InfoTugas(),
         transition: Transition.noTransition),
     GetPage(
         name: Path.PEMBUKUAN_PAGE,
