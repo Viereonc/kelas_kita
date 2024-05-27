@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/registration/biografi/form_biografi.dart';
-import 'package:kelas_kita/presentation/screens/infotugas/info_tugas.dart';
+import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/pending/pending_view.dart';
 import 'package:kelas_kita/presentation/screens/splashscreen/SplashScreen.dart';
 import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
@@ -81,7 +81,7 @@ class AppPages {
         transition: Transition.noTransition),
     GetPage(
         name: Path.INFOTUGAS_PAGE,
-        page: () => InfoTugas(),
+        page: () => InfoTugasScreen(),
         transition: Transition.noTransition),
     GetPage(
         name: Path.PEMBUKUAN_PAGE,

@@ -48,8 +48,8 @@ dependencies:
   timeago:
   http:
   qr_flutter:
+  intl:
   share_plus:
-  provider:
 
 dev_dependencies:
   flutter_test:
