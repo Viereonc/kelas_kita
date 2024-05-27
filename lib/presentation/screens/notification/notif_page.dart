@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
@@ -27,7 +28,8 @@ class NotificationPage extends StatelessWidget {
                   Text(
                     'Notification',
                     style: tsParagraft1(
-                      fontWeight: FontWeight.w600
+                      fontWeight: FontWeight.w600,
+                      screenSize: screenWidth
                     )
                   ),
                   SvgPicture.asset(
@@ -42,11 +44,9 @@ class NotificationPage extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
             ),
-            Container(
-              width: screenWidth,
-              height: screenHeight * 0.75,
+            Expanded(
               child: ListView.builder(
-                itemCount: 1000,
+                itemCount: 10,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
@@ -75,7 +75,8 @@ class NotificationPage extends StatelessWidget {
                                       child: Text(
                                         'Tugas CRUD',
                                         style: tsParagraft3(
-                                          fontWeight: FontWeight.w600
+                                          fontWeight: FontWeight.w600,
+                                          screenSize: screenWidth
                                         )
                                       ),
                                     ),
@@ -83,7 +84,9 @@ class NotificationPage extends StatelessWidget {
                                       width: screenWidth * 0.5,
                                       child: Text(
                                         'Tugas Laravel CRUD dari Fahmi sudah lewat deadline',
-                                        style: tsParagraft5()
+                                        style: tsParagraft5(
+                                          screenSize: screenWidth
+                                        )
                                       ),
                                     ),
                                   ],
@@ -92,7 +95,9 @@ class NotificationPage extends StatelessWidget {
                             ),
                             Text(
                               '2 hari lalu',
-                              style: tsParagraft5()
+                              style: tsParagraft5(
+                                screenSize: screenWidth
+                              )
                             ),
                           ],
                         ),

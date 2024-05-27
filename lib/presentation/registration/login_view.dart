@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/registration/form_biografi.dart';
+import 'package:kelas_kita/presentation/registration/register_view.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
 import 'package:kelas_kita/presentation/widgets/TextFormField.dart';
-import 'package:kelas_kita/routes/app_routes.dart';
 
 class LoginView extends StatelessWidget {
   @override
@@ -27,14 +28,18 @@ class LoginView extends StatelessWidget {
                   children: [
                     Text(
                       'Selamat Datang',
-                      style: tsSubHeader1(),
+                      style: tsSubHeader1(
+                        screenSize: screenWidth,
+                      ),
                     ),
                     Text(
                       'Login untuk melanjutkan',
-                      style: tsSubHeader4(),
+                      style: tsSubHeader4(
+                        screenSize: screenWidth
+                      ),
                     ),
                   ],
-                )
+                ),
               ),
               Center(
                 child: Image.asset(
@@ -49,17 +54,17 @@ class LoginView extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                       child: textFormField(
-                        label: "Email", 
-                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3)),
-                        height: screenHeight * 0.06
+                        label: "Email",
+                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
+                        height: screenHeight * 0.06,
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                       child: textFormField(
-                        label: "Password", 
-                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3)),
-                        height: screenHeight * 0.06
+                        label: "Password",
+                        labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
+                        height: screenHeight * 0.06,
                       ),
                     ),
                     Container(
@@ -70,23 +75,29 @@ class LoginView extends StatelessWidget {
                             margin: EdgeInsets.only(bottom: screenHeight * 0.015),
                             child: Text(
                               "Forgot Password?",
-                              style: tsParagraft3(color: primeryColorMedium),
+                              style: tsParagraft3(color: primeryColorMedium, screenSize: screenWidth),
                             ),
                           ),
                           Column(
                             children: [
                               Button(
-                                label: "Login", 
-                                textStyle: tsSubHeader4(), 
-                                textColor: Colors.white, 
-                                backgroundColor: primeryColorMedium, 
-                                side: BorderSide.none, 
+                                label: "Login",
+                                textStyle: tsSubHeader4(
+                                  screenSize: screenWidth
+                                ),
+                                textColor: Colors.white,
+                                backgroundColor: primeryColorMedium,
+                                side: BorderSide.none,
                                 onPressed: () {
-                                  Get.offNamed(Path.HOMESCREEN_PAGE);
-                                }
-                              )
+                                  Get.to(
+                                    () => BiografiView(),
+                                    transition: Transition.rightToLeft,
+                                    duration: Duration(milliseconds: 300),
+                                  );
+                                },
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -95,18 +106,17 @@ class LoginView extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Divider(color: Colors.black, thickness: 1)),
-                            Container(
-                              margin: EdgeInsets.only(left: screenWidth * 0.05, right: screenWidth * 0.05),
-                              child: Text(
-                                'atau login dengan',
-                                style: tsParagraft3(),
+                          Expanded(child: Divider(color: Colors.black, thickness: 1)),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                            child: Text(
+                              'atau login dengan',
+                              style: tsParagraft3(
+                                screenSize: screenWidth
                               ),
                             ),
-                          Expanded(
-                            child: Divider(color: Colors.black, thickness: 1)
                           ),
+                          Expanded(child: Divider(color: Colors.black, thickness: 1)),
                         ],
                       ),
                     ),
@@ -115,20 +125,21 @@ class LoginView extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(right: screenWidth * 0.05),
-                            child: Image.asset(
-                              'lib/assets/images/logos_google-icon.png',
-                              width: screenWidth * 0.08,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: screenWidth * 0.05),
-                            child: Icon(
+                          IconButton(
+                            icon: Icon(
                               Icons.facebook,
-                              size: screenWidth * 0.11,
-                              color: Colors.blue, 
+                              color: Colors.blue,
                             ),
+                            iconSize: screenWidth * 0.11,
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.facebook,
+                              color: Colors.blue,
+                            ),
+                            iconSize: screenWidth * 0.11,
+                            onPressed: () {},
                           ),
                         ],
                       ),
@@ -143,14 +154,22 @@ class LoginView extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(bottom: screenHeight * 0.04),
                       child: Button(
-                      label: 'Register',
-                      onPressed: () {
-                        Get.offNamed(Path.REGISTERVIEW_PAGE);
-                      },
-                      textColor: primeryColorMedium,
-                      backgroundColor: Colors.white,
-                      textStyle: tsHeader3(),
-                      side: BorderSide(color: primeryColorMedium),
+                        label: 'Register',
+                        onPressed: () {
+                          Get.to(
+                            () => RegisterView(),
+                            transition: Transition.rightToLeft,
+                            duration: Duration(milliseconds: 300),
+                          );
+                        },
+                        textColor: primeryColorMedium,
+                        backgroundColor: Colors.white,
+                        textStyle: tsHeader3(
+                          screenSize: screenWidth
+                        ),
+                        side: BorderSide(
+                          color: primeryColorMedium
+                        ),
                       ),
                     ),
                   ],
@@ -159,7 +178,7 @@ class LoginView extends StatelessWidget {
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

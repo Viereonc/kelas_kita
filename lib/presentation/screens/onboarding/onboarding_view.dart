@@ -24,8 +24,11 @@ class OnboardingScreen extends StatelessWidget {
             body:
                 'Kelola kelas dengan mudah dengan \n berbagai fitur seperti mengatur struktur \n kelas, mengelola uang kas dan masih banyak fitur lainnya',
             decoration: PageDecoration(
-                titleTextStyle: tsHeader2(),
-                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
+                titleTextStyle: tsHeader2(
+                  screenSize: screenWidth
+                ),
+                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300,
+                screenSize: screenWidth),
                 bodyAlignment: Alignment.center,
                 imagePadding: EdgeInsets.only(top: screenHeight * 0.03),),
             image: Column(
@@ -40,7 +43,9 @@ class OnboardingScreen extends StatelessWidget {
                         _introKey.currentState?.skipToEnd();
                       },
                       child: Text('Skip',
-                          style: tsSubHeader3()),
+                          style: tsSubHeader3(
+                            screenSize: screenWidth
+                          )),
                     ),
                   ),
                 ),
@@ -58,8 +63,10 @@ class OnboardingScreen extends StatelessWidget {
             body:
                 'Memudahkan para guru dan murid \n saat melakukan kegiatan pembelajaran',
             decoration: PageDecoration(
-                titleTextStyle: tsHeader2(),
-                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
+                titleTextStyle: tsHeader2(
+                  screenSize: screenWidth
+                ),
+                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300, screenSize: screenWidth),
                 bodyAlignment: Alignment.center,
                 imagePadding: EdgeInsets.only(top: screenHeight * 0.03)),
             image: Column(
@@ -74,8 +81,10 @@ class OnboardingScreen extends StatelessWidget {
                         _introKey.currentState?.skipToEnd();
                       },
                       child: Container(
-                        child: Text('Skip',
-                            style: tsSubHeader3()),
+                        child: Text(
+                          'Skip',
+                          style: tsSubHeader3(screenSize: screenWidth)
+                        ),
                       ),
                     ),
                   ),
@@ -92,8 +101,10 @@ class OnboardingScreen extends StatelessWidget {
             body:
                 'Membuat guru dan bendahara kelas \n jadi lebih mudah saat mengabsen atau \n menagih kas para murid',
             decoration: PageDecoration(
-                titleTextStyle: tsHeader2(),
-                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
+                titleTextStyle: tsHeader2(
+                  screenSize: screenWidth
+                ),
+                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300, screenSize: screenWidth),
                 bodyAlignment: Alignment.center,
                 imageAlignment: Alignment.bottomCenter,
                 imagePadding: EdgeInsets.only(top: screenHeight * 0.03)),
@@ -109,7 +120,9 @@ class OnboardingScreen extends StatelessWidget {
                         _introKey.currentState?.skipToEnd();
                       },
                       child: Text('Skip',
-                          style: tsSubHeader3()),
+                          style: tsSubHeader3(
+                            screenSize: screenWidth
+                          )),
                     ),
                   ),
                 ),
@@ -122,17 +135,24 @@ class OnboardingScreen extends StatelessWidget {
           ),
           PageViewModel(
               title: 'Keamanan yang Terpercaya',
-              body:
-                  'Keamanan yang teruji dan terpercaya \n serta privasi yang terjamin',
+              body: 'Keamanan yang teruji dan terpercaya \n serta privasi yang terjamin',
               decoration: PageDecoration(
-                titleTextStyle: tsHeader2(),
-                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
+                titleTextStyle: tsHeader2(
+                  screenSize: screenWidth
+                ),
+                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300, screenSize: screenWidth),
                 bodyAlignment: Alignment.bottomCenter,
                 imageAlignment: Alignment.bottomCenter,
-                imagePadding: EdgeInsets.only(bottom: screenHeight * 0.02)),
-              image: Image.asset(
-                'lib/assets/images/ob_security.png',
-                width: screenWidth * 0.7,
+                imagePadding: EdgeInsets.only(top: screenHeight * 0),
+                imageFlex: 2
+              ),
+              image: Expanded(
+                child: Image.asset(
+                  'lib/assets/images/ob_security.png',
+                  fit: BoxFit.cover,
+                  height: screenHeight * 0.7,
+                  width: screenWidth * 0.8,
+                ),
               ),
               footer: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -144,11 +164,13 @@ class OnboardingScreen extends StatelessWidget {
                       child: Button(
                         label: 'Login',
                         onPressed: () {
-                          Get.toNamed(Path.LOGINVIEW_PAGE);
+                          Get.toNamed(Path.LOGIN_PAGE);
                         },
                         textColor: Colors.white,
                         backgroundColor: primeryColorMedium,
-                        textStyle: tsHeader3(),
+                        textStyle: tsHeader3(
+                          screenSize: screenWidth
+                        ),
                         side: BorderSide.none,
                       ),
                     ),
@@ -158,16 +180,19 @@ class OnboardingScreen extends StatelessWidget {
                     child: Button(
                       label: 'Register',
                       onPressed: () {
-                        Get.toNamed(Path.REGISTERVIEW_PAGE);
+                        Get.toNamed(Path.REGISTER_PAGE);
                       },
                       textColor: primeryColorMedium,
                       backgroundColor: Colors.white,
-                      textStyle: tsHeader3(),
+                      textStyle: tsHeader3(
+                        screenSize: screenWidth
+                      ),
                       side: BorderSide(color: primeryColorMedium),
                     ),
                   ),
                 ],
-              )),
+              )
+          ),
         ],
         onDone: () {},
         controlsMargin: EdgeInsets.symmetric(
