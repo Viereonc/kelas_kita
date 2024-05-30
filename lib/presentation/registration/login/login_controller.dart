@@ -13,6 +13,7 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
 
   Future<void> loginUser(String email, String password) async {
+
     var url = Uri.parse(baseUrl + loginEndpoint);
     var headers = {
       'Content-Type': 'application/json',
@@ -32,11 +33,12 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final token = jsonResponse['token'];
-        final userId = jsonResponse['user']['id_user']; // Access user_id from the response
+        final userId = jsonResponse['user']['id_user'];
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', token); // Save bearer token to SharedPreferences
-        prefs.setInt('user_id', userId); // Save user_id to SharedPreferences
+        await prefs.setBool('isLoggedIn', true);
+        prefs.setString('token', token);
+        prefs.setInt('user_id', userId);
 
         print('Login berhasil');
         Get.toNamed(Path.BIOGRAFI_PAGE);
@@ -47,6 +49,4 @@ class LoginController extends GetxController {
       print('Error: $e');
     }
   }
-
-
 }

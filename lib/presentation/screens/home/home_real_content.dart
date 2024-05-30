@@ -151,7 +151,9 @@ class RealIcons extends StatelessWidget {
                 ),
                 child: Center(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(Path.INFOTUGAS_PAGE);
+                    },
                     child: SvgPicture.asset(
                       "lib/assets/icons/he_info_tugas.svg",
                       width: screenWidth * 0.05,

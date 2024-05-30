@@ -7,7 +7,6 @@ import '../../themes/FontsStyle.dart';
 import 'add_info_kelas/add_info_kelas.dart';
 import 'info_kelas_controller.dart';
 import 'detail_info_kelas/detail_info_kelas.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 
 class InfoKelasScreen extends StatelessWidget {
@@ -81,7 +80,6 @@ class InfoKelasScreen extends StatelessWidget {
                         itemTime = DateTime.parse(infoKelas["time"]);
                       }
 
-                      final DateTime now = DateTime.now();
                       final timeAgo = '${itemTime.year}-${itemTime.month}-${itemTime.day} ${itemTime.hour}:${itemTime.minute}';
 
                       return GestureDetector(
@@ -182,24 +180,26 @@ class InfoKelasScreen extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-          onPressed: () async {
-            final result = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddInfoKelas()),
-            );
-
-            if (result != null) {
-              infoKelasController.addInfoKelas(File(result["image"]), result["description"]);
-
-            }
-          },
-          shape: CircleBorder(),
-          backgroundColor: primeryColorMedium,
-          child: Icon(Icons.add, color: Colors.white, size: 34),
-        ),
-      ),
+      floatingActionButton: Obx(() {
+        if (infoKelasController.userStatus.value == 'sekretaris') {
+          return FloatingActionButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddInfoKelas()),
+              );
+              if (result != null) {
+                infoKelasController.addInfoKelas(File(result["image"]), result["description"]);
+              }
+            },
+            shape: CircleBorder(),
+            backgroundColor: primeryColorMedium,
+            child: Icon(Icons.add, color: Colors.white, size: 34),
+          );
+        } else {
+          return SizedBox.shrink(); // Return an empty widget if the user is not a secretary
+        }
+      }),
     );
   }
 }

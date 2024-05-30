@@ -126,6 +126,12 @@ class AgendaScreen extends StatelessWidget {
                     },
                     itemBuilder: (BuildContext context, int index) {
                       final agenda = agendaController.agendaList[index];
+                      DateTime lastEdited = DateTime.now(); // Default value
+
+                      if (agenda.containsKey("lastEdited") && agenda["lastEdited"] != null) {
+                        lastEdited = DateTime.parse(agenda["lastEdited"]);
+                      }
+
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -160,14 +166,14 @@ class AgendaScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      "${DateTime.now().day} ${_getMonthName(DateTime.now().month)} ${DateTime.now().year},",
+                                      "${lastEdited.day} ${_getMonthName(lastEdited.month)} ${lastEdited.year},",
                                       style: tsHeader3(
                                         screenSize: screenWidth,
                                       ).copyWith(color: secondaryColorDark),
                                     ),
                                     SizedBox(width: screenWidth * 0.005),
                                     Text(
-                                      "${_getDayName(DateTime.now().weekday)}",
+                                      "${_getDayName(lastEdited.weekday)}",
                                       style: tsParagraft4(
                                         screenSize: screenWidth,
                                       ).copyWith(color: Colors.grey),

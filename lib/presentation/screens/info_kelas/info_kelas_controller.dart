@@ -11,11 +11,17 @@ class InfoKelasController extends GetxController {
   var infoKelasList = [].obs;
   var isLoading = true.obs;
   var selectedImagePath = Rx<File?>(null);
+  var userStatus = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     loadInfoKelas();
+    setUserStatus();
+  }
+
+  void setUserStatus() {
+    userStatus.value = 'sekretaris';
   }
 
   void openIconButtonpressed(BuildContext context, int index, String description, String imagePath) {
@@ -30,7 +36,7 @@ class InfoKelasController extends GetxController {
     infoKelasList.add({
       "description": description,
       "image": imageFile?.path ?? "",
-      "time": currentTime.toIso8601String(), // Menyimpan waktu saat ini dalam format ISO 8601
+      "time": currentTime.toIso8601String(),
     });
     saveInfoKelas();
   }
@@ -40,7 +46,7 @@ class InfoKelasController extends GetxController {
     infoKelasList[index] = {
       "description": description,
       "image": imageFile?.path ?? "",
-      "time": currentTime.toIso8601String(), // Menyimpan waktu saat ini dalam format ISO 8601
+      "time": currentTime.toIso8601String(),
     };
     saveInfoKelas();
   }

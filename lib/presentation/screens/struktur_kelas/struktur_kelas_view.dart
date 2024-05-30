@@ -1,12 +1,13 @@
-import 'package:flutter/cupertino.dart';
+// screens/struktur_kelas_screen.dart
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_controller.dart';
 import 'package:kelas_kita/presentation/themes/Backdrop.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
+
+import 'models/model_struktur.dart';
 
 class StrukturKelasScreen extends StatelessWidget {
   StrukturKelasScreen({Key? key}) : super(key: key);
@@ -27,14 +28,14 @@ class StrukturKelasScreen extends StatelessWidget {
             surfaceTintColor: Colors.white,
             title: Text(
               "Struktur Kelas",
-              style: tsHeader2(
-                screenSize: screenWidth
-              ),
+              style: tsHeader2(screenSize: screenWidth),
             ),
             centerTitle: true,
             leading: Container(
               child: IconButton(
-                onPressed: () {Navigator.pop(context);},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 icon: Container(
                   decoration: BoxDecoration(
                     color: primeryColorMedium,
@@ -45,7 +46,7 @@ class StrukturKelasScreen extends StatelessWidget {
                       Icons.arrow_back_ios_new,
                       color: Colors.white,
                       size: screenWidth * 0.05,
-                    )
+                    ),
                   ),
                 ),
               ),
@@ -53,172 +54,193 @@ class StrukturKelasScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-        child: Column(
-          children: [
-            Container(
-              child: Divider(
-                color: Colors.grey,
-                thickness: 1.5,
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02, horizontal: screenWidth * 0.02),
-                    child: Container(
-                      height: screenHeight * 0.18,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          primaryBackDrop(opacity: 0.1)
-                        ],
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ListTile(
-                            contentPadding: EdgeInsets.only(left: screenWidth * 0.05),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Dwi Janto', 
-                                  style: tsSubHeader4(
-                                    fontWeight: FontWeight.bold,
-                                    screenSize: screenWidth
-                                  ),
-                                ),
-                                Text('Wali Kelas', style: tsParagraft5(fontWeight: FontWeight.w600, screenSize: screenWidth)),
-                              ],
-                            ),
-                            leading: Container(
-                              width: screenWidth * 0.12,
-                              height: screenWidth * 0.12,
-                              decoration: BoxDecoration(
-                                color: primeryColorMedium,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.person,
-                                color: Colors.white
-                              ),
-                            ),
+      body: Obx(() {
+        if (strukturKelasController.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          return Container(
+            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+            child: Column(
+              children: [
+                Container(
+                  child: Divider(
+                    color: Colors.grey,
+                    thickness: 1.5,
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: strukturKelasController.classMembers.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      ClassMember member = strukturKelasController.classMembers[index];
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02, horizontal: screenWidth * 0.02),
+                        child: Container(
+                          height: screenHeight * 0.18,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              primaryBackDrop(opacity: 0.1),
+                            ],
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.005),
-                            child: Divider(
-                              color: Colors.grey,
-                              thickness: 0.5,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: screenWidth * 0.05),
+                                title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      member.name,
+                                      style: tsSubHeader4(
+                                        fontWeight: FontWeight.bold,
+                                        screenSize: screenWidth,
+                                      ),
+                                    ),
+                                    Text(
+                                      member.role,
+                                      style: tsParagraft5(
+                                        fontWeight: FontWeight.w600,
+                                        screenSize: screenWidth,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                leading: Container(
+                                  width: screenWidth * 0.12,
+                                  height: screenWidth * 0.12,
+                                  decoration: BoxDecoration(
+                                    color: primeryColorMedium,
+                                    shape: BoxShape.circle,
+                                    image: member.image.isNotEmpty
+                                        ? DecorationImage(
+                                      image: AssetImage(member.image),
+                                      fit: BoxFit.cover,
+                                    )
+                                        : null,
+                                  ),
+                                  child: member.image.isEmpty
+                                      ? Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                  )
+                                      : null,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.005),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  thickness: 0.5,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      'Absen',
-                                      style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold,
-                                        screenSize: screenWidth
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Text(
-                                        '01',
-                                        style: tsParagraft5(
-                                          screenSize: screenWidth
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Absen',
+                                          style: tsSubHeader4(
+                                            fontWeight: FontWeight.bold,
+                                            screenSize: screenWidth,
+                                          ),
                                         ),
-                                      ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                          child: Text(
+                                            member.absen,
+                                            style: tsParagraft5(
+                                              screenSize: screenWidth,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Alamat',
+                                          style: tsSubHeader4(
+                                            fontWeight: FontWeight.bold,
+                                            screenSize: screenWidth,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                          child: Text(
+                                            member.alamat,
+                                            style: tsParagraft5(
+                                              screenSize: screenWidth,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'NIS',
+                                          style: tsSubHeader4(
+                                            fontWeight: FontWeight.bold,
+                                            screenSize: screenWidth,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                          child: Text(
+                                            member.nis,
+                                            style: tsParagraft5(
+                                              screenSize: screenWidth,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'No Telepon',
+                                          style: tsSubHeader4(
+                                            fontWeight: FontWeight.bold,
+                                            screenSize: screenWidth,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                          child: Text(
+                                            member.phone,
+                                            style: tsParagraft5(
+                                              screenSize: screenWidth,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Alamat',
-                                      style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold,
-                                        screenSize: screenWidth
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Text(
-                                        'Kudus Kota',
-                                        style: tsParagraft5(
-                                          screenSize: screenWidth
-                                        ),
-                                      )
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'NIS',
-                                      style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold,
-                                        screenSize: screenWidth
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Text(
-                                        '12345',
-                                        style: tsParagraft5(
-                                          screenSize: screenWidth
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'No Telepon', 
-                                      style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold,
-                                        screenSize: screenWidth
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Text(
-                                        '081222333444',
-                                        style: tsParagraft5(
-                                          screenSize: screenWidth
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          );
+        }
+      }),
     );
   }
 }
