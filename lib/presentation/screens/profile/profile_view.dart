@@ -12,6 +12,7 @@ import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../themes/Backdrop.dart';
@@ -87,31 +88,6 @@ class ProfileScreen extends StatelessWidget {
                             )
                           ]),
                     ),
-                    Positioned(
-                      top: screenHeight * 0.24,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: screenWidth * 0.1,
-                            height: screenWidth * 0.1,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                          ),
-                          Container(
-                            width: screenWidth * 0.085,
-                            height: screenWidth * 0.085,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35),
-                                color: primeryColorMedium
-                            ),
-                            child: Icon(Icons.edit, color: Colors.white,),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -120,7 +96,11 @@ class ProfileScreen extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                   child: Column(
                     children: [
-                      Text("Ammar Faris", style: tsHeader3(screenSize: screenWidth,),),
+                      Obx(() {
+                        return Text('${profileController.userName}',
+                            style: tsHeader3(screenSize: screenWidth)
+                        );
+                      }),
                       SizedBox(height: 5,),
                       Text("Anggota Kelas", style: tsSubHeader4(
                         screenSize: screenWidth,
@@ -373,10 +353,10 @@ class ProfileScreen extends StatelessWidget {
                                   actions: <CupertinoDialogAction>[
                                     CupertinoDialogAction(child: Text('Tidak', style: tsSubHeader4(
                                       screenSize: screenWidth,
-                                    ).copyWith(color: Colors.red),), isDestructiveAction: true, onPressed: () {Navigator.pop(context);},),
+                                    )), isDestructiveAction: true, onPressed: () {Navigator.pop(context);},),
                                     CupertinoDialogAction(child: Text('Ya', style: tsSubHeader4(
                                       screenSize: screenWidth,
-                                    ),),  onPressed: () async {
+                                    ).copyWith(color: Colors.red),),  onPressed: () async {
                                       await profileController.logout();
                                       Navigator.pushAndRemoveUntil(
                                         context,

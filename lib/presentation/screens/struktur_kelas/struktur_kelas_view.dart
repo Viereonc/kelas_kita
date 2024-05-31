@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:kelas_kita/data/models/struktur_kelas.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_controller.dart';
 import 'package:kelas_kita/presentation/themes/Backdrop.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
@@ -13,12 +13,27 @@ class StrukturKelasScreen extends StatelessWidget {
 
   final StrukturKelasController strukturKelasController = Get.put(StrukturKelasController());
 
+  // List of colors to use for the icons
+  final List<Color> iconColors = [
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.orange,
+    Colors.purple,
+    Colors.teal,
+    Colors.cyan,
+    Colors.pink,
+    Colors.amber,
+    Colors.indigo,
+  ];
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(screenHeight * 0.07),
         child: Container(
@@ -28,7 +43,7 @@ class StrukturKelasScreen extends StatelessWidget {
             title: Text(
               "Struktur Kelas",
               style: tsHeader2(
-                screenSize: screenWidth
+                  screenSize: screenWidth
               ),
             ),
             centerTitle: true,
@@ -41,11 +56,11 @@ class StrukturKelasScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Center(
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                      size: screenWidth * 0.05,
-                    )
+                      child: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: screenWidth * 0.05,
+                      )
                   ),
                 ),
               ),
@@ -64,157 +79,172 @@ class StrukturKelasScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02, horizontal: screenWidth * 0.02),
-                    child: Container(
-                      height: screenHeight * 0.18,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          primaryBackDrop(opacity: 0.1)
-                        ],
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ListTile(
-                            contentPadding: EdgeInsets.only(left: screenWidth * 0.05),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Dwi Janto', 
-                                  style: tsSubHeader4(
-                                    fontWeight: FontWeight.bold,
-                                    screenSize: screenWidth
-                                  ),
-                                ),
-                                Text('Wali Kelas', style: tsParagraft5(fontWeight: FontWeight.w600, screenSize: screenWidth)),
+              child: Obx(() {
+                if (strukturKelasController.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return ListView.builder(
+                    itemCount: strukturKelasList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final strukturKelas = strukturKelasList[index];
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02, horizontal: screenWidth * 0.02),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                primaryBackDrop(opacity: 0.1)
                               ],
-                            ),
-                            leading: Container(
-                              width: screenWidth * 0.12,
-                              height: screenWidth * 0.12,
-                              decoration: BoxDecoration(
-                                color: primeryColorMedium,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.person,
-                                color: Colors.white
-                              ),
-                            ),
+                              borderRadius: BorderRadius.circular(10)
                           ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.005),
-                            child: Divider(
-                              color: Colors.grey,
-                              thickness: 0.5,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: screenWidth * 0.05),
+                                title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Absen',
+                                      strukturKelas.name,
                                       style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold,
-                                        screenSize: screenWidth
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Text(
-                                        '01',
-                                        style: tsParagraft5(
+                                          fontWeight: FontWeight.bold,
                                           screenSize: screenWidth
-                                        ),
                                       ),
+                                      maxLines: 2,
                                     ),
+                                    SizedBox(height: screenHeight * 0.008,),
+                                    Text(strukturKelas.role, style: tsParagraft5(fontWeight: FontWeight.w500, screenSize: screenWidth * 1.3).copyWith(color: Colors.grey.withOpacity(0.9))),
                                   ],
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                leading: Container(
+                                  width: screenWidth * 0.12,
+                                  height: screenWidth * 0.12,
+                                  decoration: BoxDecoration(
+                                    color: iconColors[index % iconColors.length], // Set the color based on the index
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                      Icons.person,
+                                      color: Colors.white
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.005),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  thickness: 0.5,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                                child: Row(
+                                  mainAxisAlignment: strukturKelas.role == 'Wali Kelas'
+                                      ? MainAxisAlignment.start
+                                      : MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      'Alamat',
-                                      style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold,
-                                        screenSize: screenWidth
+                                    if (strukturKelas.role != 'Wali Kelas')
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Absen',
+                                            style: tsSubHeader4(
+                                                fontWeight: FontWeight.bold,
+                                                screenSize: screenWidth
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                            child: Text(
+                                              strukturKelas.absen.toString(),
+                                              style: tsParagraft5(
+                                                  screenSize: screenWidth * 1.3
+                                              ).copyWith(color: primeryColorMedium),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Text(
-                                        'Kudus Kota',
-                                        style: tsParagraft5(
-                                          screenSize: screenWidth
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Alamat',
+                                          style: tsSubHeader4(
+                                              fontWeight: FontWeight.bold,
+                                              screenSize: screenWidth
+                                          ),
                                         ),
-                                      )
+                                        Container(
+                                            margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                            child: Text(
+                                              strukturKelas.alamat,
+                                              style: tsParagraft5(
+                                                  screenSize: screenWidth * 1.3
+                                              ).copyWith(color: Color(0xFFFFA800)),
+                                            )
+                                        ),
+                                      ],
+                                    ),
+                                    if (strukturKelas.role != 'Wali Kelas')
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'NIS',
+                                            style: tsSubHeader4(
+                                                fontWeight: FontWeight.bold,
+                                                screenSize: screenWidth
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                            child: Text(
+                                              strukturKelas.nis.toString(),
+                                              style: tsParagraft5(
+                                                  screenSize: screenWidth * 1.3
+                                              ).copyWith(color: secondaryColorDark),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'No Telepon',
+                                          style: tsSubHeader4(
+                                              fontWeight: FontWeight.bold,
+                                              screenSize: screenWidth
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                          child: Text(
+                                            strukturKelas.noHP.toString(),
+                                            style: tsParagraft5(
+                                                screenSize: screenWidth * 1.3
+                                            ).copyWith(color: Color(0xFF473CC6)
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'NIS',
-                                      style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold,
-                                        screenSize: screenWidth
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Text(
-                                        '12345',
-                                        style: tsParagraft5(
-                                          screenSize: screenWidth
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'No Telepon', 
-                                      style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold,
-                                        screenSize: screenWidth
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Text(
-                                        '081222333444',
-                                        style: tsParagraft5(
-                                          screenSize: screenWidth
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   );
-                },
-              ),
+                }
+              }),
             ),
           ],
         ),

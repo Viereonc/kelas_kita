@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/registration/login/login_controller.dart';
 import 'package:kelas_kita/presentation/registration/register/register_view.dart';
@@ -133,14 +134,7 @@ class LoginView extends StatelessWidget {
                             iconSize: screenWidth * 0.11,
                             onPressed: () {},
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.facebook,
-                              color: Colors.blue,
-                            ),
-                            iconSize: screenWidth * 0.11,
-                            onPressed: () {},
-                          ),
+                          SvgPicture.asset("lib/assets/icons/google_icon.svg", fit: BoxFit.cover, width: screenWidth * 0.08,)
                         ],
                       ),
                     ),

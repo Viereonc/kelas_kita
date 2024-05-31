@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/data/models/biografi_model.dart';
 import 'package:kelas_kita/presentation/screens/home/home_controller.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/screens/home/shimmer_home.dart';
@@ -30,12 +31,11 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.06),
-                    child: Text(
-                      'Hello, Ammar Faris 👋', 
-                      style: tsHeader3(
-                        screenSize: screenWidth
-                      )
-                    ),
+                    child: Obx(() {
+                      return Text('Hello, ${homeController.userName} 👋',
+                          style: tsHeader3(screenSize: screenWidth)
+                      );
+                    }),
                   ),
                   Obx(() => homeController.isLoading.value
                       ? ShimmerLoadingContainer1(

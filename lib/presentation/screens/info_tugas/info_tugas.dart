@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/add_info_tugas/add_info_tugas.dart';
-import 'package:kelas_kita/presentation/screens/info_tugas/detail_info_tugas/detail_info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:kelas_kita/data/models/info_tugas.dart';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
 
@@ -12,6 +14,11 @@ class InfoTugasScreen extends StatelessWidget {
   InfoTugasScreen({Key? key}) : super(key: key);
 
   final InfoTugasController infoTugasController = Get.put(InfoTugasController());
+
+  String formatDate(DateTime date) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd'); // Specify your desired format
+    return formatter.format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +71,8 @@ class InfoTugasScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return ListView.separated(
+                  return ListView.builder(
                     itemCount: infoTugasController.infoTugasList.length,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Divider(
-                        color: Colors.grey,
-                        thickness: 0.5,
-                      );
-                    },
                     itemBuilder: (BuildContext context, int index) {
                       final infoTugas = infoTugasController.infoTugasList[index];
 
@@ -88,12 +89,11 @@ class InfoTugasScreen extends StatelessWidget {
                         //   );
                         // },
                         onLongPress: () {
-                          final infoTugas = infoTugasController.infoTugasList[index];
-                          final namaTugas = infoTugas["namaTugas"];
-                          final guruPemberiTugas = infoTugas["guruPemberiTugas"];
-                          final deadlineTugas = infoTugas["deadlineTugas"];
-                          final ketentuanTugas = infoTugas["ketentuanTugas"];
-                          infoTugasController.openIconButtonpressed(context, index, namaTugas, guruPemberiTugas, deadlineTugas, ketentuanTugas);
+                          final namaTugas = infoTugas.nama;
+                          final guruPemberiTugas = infoTugas.guru;
+                          final deadlineTugas = infoTugas.deadline;
+                          final ketentuanTugas = infoTugas.ketentuan;
+                          infoTugasController.openIconButtonpressed(context, index, namaTugas, guruPemberiTugas, deadlineTugas.toString(), ketentuanTugas);
                         },
 
                         child: Padding(
@@ -119,11 +119,11 @@ class InfoTugasScreen extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        infoTugas["namaTugas"],
+                                        infoTugas.nama,
                                         style: tsSubHeader3(screenSize: screenWidth),
                                       ),
                                       Text(
-                                        "Ketentuan : " + infoTugas["ketentuanTugas"],
+                                        "Ketentuan : " + infoTugas.ketentuan,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: tsParagraft4(screenSize: screenWidth),
@@ -132,14 +132,14 @@ class InfoTugasScreen extends StatelessWidget {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "Guru : " + infoTugas["guruPemberiTugas"],
+                                            "Guru : " + infoTugas.guru,
                                             style: tsParagraft4(screenSize: screenWidth),
                                           ),
                                           Row(
                                             children: [
                                               Icon(Icons.calendar_month, color: Colors.red,),
                                               SizedBox(width: screenWidth * 0.02,),
-                                              Text(infoTugas["deadlineTugas"],
+                                              Text(formatDate(infoTugas.deadline),
                                                 style: tsParagraft4(screenSize: screenWidth),
                                               ),
                                             ],
@@ -167,18 +167,38 @@ class InfoTugasScreen extends StatelessWidget {
         if (infoTugasController.userStatus.value == 'sekretaris') {
           return FloatingActionButton(
             onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              String? token = prefs.getString('token');
+
+              int idKelas = 2; // Ensure idKelas is an integer
+              String nama = "11 PPLG 2"; // Define the name of the class or retrieve it appropriately
+              DateTime? createdAt; // Initialize or set the createdAt date
+              DateTime? updatedAt; // Initialize or set the updatedAt date
+
+              Kelas kelas = Kelas(idKelas: idKelas, nama: nama, createdAt: createdAt, updatedAt: updatedAt);
+
               final result = await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AddInfoTugas()),
               );
+
               if (result != null) {
-                infoTugasController.addInfoTugas(result["namaTugas"], result["guruPemberiTugas"], result["deadlineTugas"], result["ketentuanTugas"]);
+                infoTugasController.addAndPostInfoTugas(
+                    result["namaTugas"],
+                    result["guruPemberiTugas"],
+                    result["deadlineTugas"],
+                    result["ketentuanTugas"],
+                    idKelas.toString(), // Convert idKelas back to string if necessary
+                    kelas,
+                    token ?? "default_token_value" // Provide a default value if token is null
+                );
               }
             },
             shape: CircleBorder(),
             backgroundColor: primeryColorMedium,
             child: Icon(Icons.add, color: Colors.white, size: 34),
           );
+
         } else {
           return SizedBox.shrink(); // Return an empty widget if the user is not a secretary
         }

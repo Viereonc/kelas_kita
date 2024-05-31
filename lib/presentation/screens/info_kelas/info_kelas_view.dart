@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:kelas_kita/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
 import 'add_info_kelas/add_info_kelas.dart';
 import 'info_kelas_controller.dart';
 import 'detail_info_kelas/detail_info_kelas.dart';
-
 
 class InfoKelasScreen extends StatelessWidget {
   InfoKelasScreen({Key? key}) : super(key: key);
@@ -16,38 +18,33 @@ class InfoKelasScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(left: 20, right: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            Container(
-              child: AppBar(
-                surfaceTintColor: Colors.white,
-                title: Text(
-                  "Info Kelas",
-                  style: tsHeader2(screenSize: screenWidth),
-                ),
-                centerTitle: true,
-                leading: Container(
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Container(
-                      decoration: BoxDecoration(
-                        color: primeryColorMedium,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+            AppBar(
+              surfaceTintColor: Colors.white,
+              title: Text(
+                "Info Kelas",
+                style: tsHeader2(screenSize: screenWidth),
+              ),
+              centerTitle: true,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Container(
+                  decoration: BoxDecoration(
+                    color: primeryColorMedium,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                    child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
                   ),
                 ),
               ),
@@ -75,12 +72,15 @@ class InfoKelasScreen extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       final infoKelas = infoKelasController.infoKelasList[index];
 
-                      DateTime itemTime = DateTime.now();
-                      if (infoKelas.containsKey("time") && infoKelas["time"] != null) {
-                        itemTime = DateTime.parse(infoKelas["time"]);
-                      }
+                      DateTime createdAt = DateTime.parse(infoKelas.createdAt.toString());
+                      String formattedDate = DateFormat('yyyy MMMM dd, EEEE, HH:mm').format(createdAt);
 
-                      final timeAgo = '${itemTime.year}-${itemTime.month}-${itemTime.day} ${itemTime.hour}:${itemTime.minute}';
+                      // DateTime itemTime = DateTime.now();
+                      // if (infoKelas.createdAt != null) {
+                      //   itemTime = DateTime.parse(infoKelas.createdAt);
+                      // }
+                      //
+                      // final timeAgo = '${itemTime.year}-${itemTime.month}-${itemTime.day} ${itemTime.hour}:${itemTime.minute}';
 
                       return GestureDetector(
                         onTap: () {
@@ -88,19 +88,19 @@ class InfoKelasScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DetailInfoKelas(
-                                description: infoKelas["description"],
-                                image: infoKelas["image"],
+                                description: infoKelas.pengumuman,
+                                image: infoKelas.image,
                               ),
                             ),
                           );
                         },
-                        onLongPress: () {
-                          final infoKelas = infoKelasController.infoKelasList[index];
-                          final description = infoKelas["description"];
-                          final imagePath = infoKelas["image"];
-                          infoKelasController.openIconButtonpressed(context, index, description, imagePath);
-                        },
-
+                        onLongPress: infoKelasController.userStatus.value == 'sekretaris'
+                            ? () {
+                          final description = infoKelas.pengumuman;
+                          final imagePath = infoKelas.image;
+                          infoKelasController.openIconButtonpressed(context, infoKelas.idInformasiKelas, description, imagePath);
+                        }
+                            : null,
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01, vertical: screenHeight * 0.015),
                           child: Container(
@@ -123,13 +123,13 @@ class InfoKelasScreen extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Flexible( // Menggunakan Flexible untuk memberikan ruang yang cukup untuk deskripsi
+                                      Flexible(
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              infoKelas["description"],
+                                              infoKelas.pengumuman,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: tsHeader3(screenSize: screenWidth),
@@ -137,7 +137,7 @@ class InfoKelasScreen extends StatelessWidget {
                                             Container(
                                               width: screenWidth * 0.55,
                                               child: Text(
-                                                timeAgo,
+                                                formattedDate,
                                                 maxLines: 2,
                                                 style: tsParagraft4(screenSize: screenWidth, fontWeight: FontWeight.w500).copyWith(color: Colors.grey),
                                               ),
@@ -145,24 +145,18 @@ class InfoKelasScreen extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      if (infoKelas["image"] != null && infoKelas["image"].isNotEmpty)
-                                        Container(
-                                          margin: EdgeInsets.only(left: 50),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(5),
-                                            child: Image.file(
-                                              File(infoKelas["image"]),
-                                              width: screenWidth * 0.45,
-                                              height: screenHeight * 0.15,
-                                              fit: BoxFit.cover,
-                                            ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 50),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(5),
+                                          child: Image.network(
+                                            baseUrl + storage + infoKelas.image,
+                                            width: screenWidth * 0.45,
+                                            height: screenHeight * 0.15,
+                                            fit: BoxFit.cover,
                                           ),
-                                        )
-                                      else
-                                        SizedBox(
-                                          width: screenWidth * 0.45,
-                                          height: screenHeight * 0.15,
-                                        )
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -182,22 +176,35 @@ class InfoKelasScreen extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() {
         if (infoKelasController.userStatus.value == 'sekretaris') {
-          return FloatingActionButton(
+           return FloatingActionButton(
             onPressed: () async {
-              final result = await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddInfoKelas()),
-              );
-              if (result != null) {
-                infoKelasController.addInfoKelas(File(result["image"]), result["description"]);
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              String? token = prefs.getString('token');
+              String idKelas = "1";
+              if (token != null) {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddInfoKelas()),
+                );
+                if (result != null) {
+                  infoKelasController.addAndPostInfoKelas(
+                    File(result["image"]),
+                    result["description"],
+                    idKelas,
+                    token,
+                  );
+                }
+              } else {
+                print('Token not found');
               }
             },
             shape: CircleBorder(),
             backgroundColor: primeryColorMedium,
             child: Icon(Icons.add, color: Colors.white, size: 34),
           );
+
         } else {
-          return SizedBox.shrink(); // Return an empty widget if the user is not a secretary
+          return SizedBox.shrink();
         }
       }),
     );

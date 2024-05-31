@@ -57,8 +57,7 @@ class BiografiController extends GetxController {
     }
   }
 
-  Future<void> submitBiografi(String nama, String kelas, String nis, String alamat, String userId, String imagePath) async {
-
+  Future<void> submitBiografi(String nama, String kelas, String nis, String alamat, String idUser, String imagePath) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     int? userId = prefs.getInt('user_id');
@@ -79,7 +78,7 @@ class BiografiController extends GetxController {
         'nama': nama,
         'id_kelas': kelas,
         'nis': nis,
-        'status': 'A',
+        'status': pending,
       });
 
       if (imagePath.isNotEmpty) {
@@ -94,7 +93,20 @@ class BiografiController extends GetxController {
 
       if (response.statusCode == 201) {
         print('Success: ${response.statusCode}');
-        Get.toNamed(Path.PENDING_PAGE);
+
+        var responseData = await http.Response.fromStream(response);
+        var decodedData = json.decode(responseData.body);
+        String biografiStatus = decodedData['status'];
+
+        await prefs.setString('status', biografiStatus);
+
+        if (biografiStatus == 'A') {
+          Get.offNamed(Path.HOME_PAGE);
+        } else if (biografiStatus == 'P') {
+          Get.offNamed(Path.PENDING_PAGE);
+        } else if (biografiStatus == 'T') {
+          Get.offNamed(Path.BIOGRAFI_PAGE);
+        }
       } else {
         print('Error: ${response.statusCode}');
         print(nama);

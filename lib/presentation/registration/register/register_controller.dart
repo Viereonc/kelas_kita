@@ -14,16 +14,25 @@ class RegisterController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController nomorTeleponController = TextEditingController();
 
-  Future<void> registerUser(String username, String email, String password, String nomorTelepon) async {
+  Future<void> registerUser(String username, String email, String password, String nomorHandphone) async {
     var url = Uri.parse(baseUrl + registerEndpoint);
     var headers = {
       'Content-Type': 'application/json',
     };
+
+    int parsedNomorHandphone;
+    try {
+      parsedNomorHandphone = int.parse(nomorHandphone);
+    } catch (e) {
+      print('Invalid phone number: $e');
+      return;
+    }
+
     var body = jsonEncode({
       'username': username,
       'email': email,
       'password': password,
-      'nomor': nomorTelepon,
+      'nomor': parsedNomorHandphone.toString(),
     });
 
     try {

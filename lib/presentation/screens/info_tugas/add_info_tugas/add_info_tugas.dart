@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
@@ -217,14 +217,36 @@ class AddInfoTugas extends StatelessWidget {
                   textColor: Colors.white,
                   backgroundColor: primeryColorMedium,
                   side: BorderSide.none,
-                  onPressed: () {
-                    infoTugasController.addInfoTugas(
-                      namaTugasController.text,
-                      selectedGuru.value ?? '',
-                      deadlineTugasController.text,
-                      ketentuanTugasController.text,
-                    );
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    String? guruPemberiTugas = selectedGuru.value;
+                    String deadlineTugas = deadlineTugasController.text;
+
+                    if (guruPemberiTugas == null || deadlineTugas.isEmpty) {
+                      Get.snackbar(
+                        'Error',
+                        'Mohon lengkapi semua kolom yang diperlukan',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                      return;
+                    }
+
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    String? token = prefs.getString('token');
+                    String idKelas = "1";
+                    if (token != null) {
+                      await infoTugasController.postInfoTugas(
+                          idKelas,
+                          namaTugasController.text,
+                          guruPemberiTugas,
+                          deadlineTugas,
+                          ketentuanTugasController.text,
+                          token
+                      );
+                      Navigator.pop(context);
+                    } else {
+                      print('Token not found');
+                    }
                   },
                 ),
               ),
