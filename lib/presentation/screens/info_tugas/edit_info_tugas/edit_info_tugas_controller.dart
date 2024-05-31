@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas_controller.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../data/models/info_tugas.dart';
 
 class EditInfoTugasController extends GetxController {
   final TextEditingController namaTugasController = TextEditingController();
@@ -26,16 +29,29 @@ class EditInfoTugasController extends GetxController {
     ketentuanTugasController.text = ketentuanTugas;
   }
 
-  void saveInfo(int index, BuildContext context) {
+  Future<void> saveInfo(int index, BuildContext context) async {
     if (namaTugasController.text.isNotEmpty &&
         deadlineTugasController.text.isNotEmpty &&
         selectedGuru.value != null) {
+
+      // Get the idKelas and kelas from the infoTugasList using the index
+      InfoTugasModel currentInfo = infoKelasController.infoTugasList[index];
+      String idKelas = currentInfo.idKelas.toString();
+      Kelas kelas = currentInfo.kelas;
+
+      // Assuming token is retrieved and passed appropriately
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
       infoKelasController.editInfoTugas(
         index,
         namaTugasController.text,
         selectedGuru.value!,
         deadlineTugasController.text,
         ketentuanTugasController.text,
+        idKelas,
+        kelas,
+        token!,
       );
       Navigator.pop(context);
     } else {
@@ -43,4 +59,6 @@ class EditInfoTugasController extends GetxController {
       Get.snackbar("Error", "All fields must be filled", snackPosition: SnackPosition.BOTTOM);
     }
   }
+
+
 }

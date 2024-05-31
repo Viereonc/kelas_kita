@@ -133,11 +133,11 @@ class EditProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Email', style: tsSubHeader4(fontWeight: FontWeight.w700, screenSize: screenWidth,)),
+                        Text('Username', style: tsSubHeader4(fontWeight: FontWeight.w700, screenSize: screenWidth,)),
                         Container(
                           margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                           child: textFormField(
-                              label: "Email",
+                              label: "Username",
                               controller: ctrEmail,
                               labelStyle: tsParagraft3(
                                 color: Colors.black.withOpacity(0.3),

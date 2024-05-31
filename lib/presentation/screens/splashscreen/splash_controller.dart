@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
+import 'package:kelas_kita/constants.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../data/models/biografi_model.dart';
 
 class SplashController extends GetxController {
+
   @override
   void onInit() {
     super.onInit();
@@ -12,12 +19,56 @@ class SplashController extends GetxController {
   void checkLoginStatus() async {
     await Future.delayed(Duration(seconds: 2));
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isLoggedIn = prefs.getBool('isLoggedIn') ?? false; // Default ke false jika null
-    print('isLoggedIn: $isLoggedIn'); // Tambahkan ini untuk debugging
+    bool? isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    print('isLoggedIn: $isLoggedIn');
     if (isLoggedIn == true) {
-      Get.offNamed(Path.HOME_PAGE);
+      await fetchBiografi();
     } else {
       Get.offNamed(Path.ONBOARDING_PAGE);
+    }
+  }
+
+  Future<void> fetchBiografi() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? userId = prefs.getInt('user_id');
+
+      if (userId != null) {
+        final response = await http.get(
+          Uri.parse(baseUrl + biodataEndpointGet + '$userId'),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          var jsonResponse = json.decode(response.body);
+          InfoBiografiModel biografiModel = InfoBiografiModel.fromJson(jsonResponse);
+          prefs.setString('nama', biografiModel.nama);
+          prefs.setInt('nis', biografiModel.nis);
+          prefs.setString('alamat', biografiModel.alamat);
+          prefs.setInt('id_kelas', biografiModel.idKelas);
+          prefs.setString('status', biografiModel.status);
+          print('Successfully loaded biografi data');
+          if (biografiModel.status == 'A') {
+            Get.offNamed(Path.HOME_PAGE);
+          } else if (biografiModel.status == 'P') {
+            Get.offNamed(Path.PENDING_PAGE);
+          } else if (biografiModel.status == 'D') {
+            Get.offNamed(Path.BIOGRAFI_PAGE);
+          }
+        } else {
+          print('Failed to load biografi, status code: ${response.statusCode}');
+          throw Exception('Failed to load biografi');
+        }
+      } else {
+        print('User ID is null. Unable to fetch biografi.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
     }
   }
 }

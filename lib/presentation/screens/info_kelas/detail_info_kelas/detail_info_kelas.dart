@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../../../constants.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
 
@@ -59,8 +60,8 @@ class DetailInfoKelas extends StatelessWidget {
                     child: image.isNotEmpty
                         ? ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: Image.file(
-                        File(image),
+                      child: Image.network(
+                        baseUrl + storage + image,
                         width: double.infinity,
                         height: screenHeight * 0.23,
                         fit: BoxFit.cover,

@@ -33,15 +33,24 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final token = jsonResponse['token'];
-        final userId = jsonResponse['user']['id_user'];
+        final userData = jsonResponse['user'];
+        final hasBiodata = userData['biodata'] != null;
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
         prefs.setString('token', token);
-        prefs.setInt('user_id', userId);
+
+        if (hasBiodata) {
+          Get.offNamed(Path.HOME_PAGE);
+        } else {
+          Get.offNamed(Path.BIOGRAFI_PAGE);
+        }
+
+        prefs.setInt('user_id', userData['id_user']);
+        prefs.setString('email', userData['email']);
 
         print('Login berhasil');
-        Get.toNamed(Path.BIOGRAFI_PAGE);
+        print('Bearer Token: $token');
       } else {
         print('Login gagal: ${response.body}');
       }

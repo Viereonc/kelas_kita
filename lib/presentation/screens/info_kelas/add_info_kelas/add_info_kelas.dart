@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
 import '../info_kelas_controller.dart';
@@ -76,31 +77,24 @@ class AddInfoKelas extends StatelessWidget {
                       onTap: _getImageFromGallery,
                       child: Obx(
                             () => Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: screenHeight * 0.01),
+                          margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
                           height: screenHeight * 0.2,
                           decoration: BoxDecoration(
-                            color: infoKelasController.selectedImagePath.value !=
-                                null
+                            color: infoKelasController.selectedImagePath.value != null
                                 ? Colors.grey.shade200
                                 : Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(5),
-                            image: infoKelasController.selectedImagePath.value !=
-                                null
+                            image: infoKelasController.selectedImagePath.value != null
                                 ? DecorationImage(
-                              image: FileImage(
-                                  infoKelasController.selectedImagePath
-                                      .value!),
+                              image: FileImage(infoKelasController.selectedImagePath.value!),
                               fit: BoxFit.cover,
                             )
                                 : null,
                           ),
-                          child: infoKelasController.selectedImagePath.value ==
-                              null
+                          child: infoKelasController.selectedImagePath.value == null
                               ? Container(
                             margin: EdgeInsets.all(15),
-                            child: SvgPicture.asset(
-                                "lib/assets/icons/pe_camera.svg"),
+                            child: SvgPicture.asset("lib/assets/icons/pe_camera.svg"),
                           )
                               : null,
                           width: double.infinity,
@@ -116,22 +110,17 @@ class AddInfoKelas extends StatelessWidget {
                   children: [
                     Text(
                       "Deskripsi Pengumuman",
-                      style: tsSubHeader4(
-                          screenSize: screenWidth,
-                          fontWeight: FontWeight.bold),
+                      style: tsSubHeader4(screenSize: screenWidth, fontWeight: FontWeight.bold),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: screenHeight * 0.02),
+                      margin: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                       child: TextField(
                         controller: descriptionController,
                         decoration: InputDecoration(
                           hintText: "Tambahkan Pengumuman",
-                          hintStyle: tsParagraft4(screenSize: screenWidth)
-                              .copyWith(color: Colors.grey),
+                          hintStyle: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.grey),
                           border: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
                             borderSide: BorderSide(
                               color: Colors.grey,
                               width: 1.0,
@@ -154,12 +143,22 @@ class AddInfoKelas extends StatelessWidget {
                   textColor: Colors.white,
                   backgroundColor: primeryColorMedium,
                   side: BorderSide.none,
-                  onPressed: () {
-                    infoKelasController.addInfoKelas(
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    String? token = prefs.getString('token'); // Adjust token retrieval as needed
+                    String idKelas = "1"; // Replace with the actual class ID
+                    if (token != null) {
+                      await infoKelasController.addAndPostInfoKelas(
                         infoKelasController.selectedImagePath.value,
-                        descriptionController.text);
-                    infoKelasController.selectedImagePath.value = null;
-                    Navigator.pop(context);
+                        descriptionController.text,
+                        idKelas,
+                        token,
+                      );
+                      infoKelasController.selectedImagePath.value = null;
+                      Navigator.pop(context);
+                    } else {
+                      print('Token not found');
+                    }
                   },
                 ),
               ),

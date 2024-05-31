@@ -76,9 +76,19 @@ class RegisterView extends StatelessWidget {
                     SizedBox(height: screenHeight * 0.03),
                     textFormField(
                       controller: registerController.nomorTeleponController,
-                      label: "Nomor Telepon",
+                      label: "Nomor Handphone",
                       labelStyle: tsParagraft3(color: Colors.black.withOpacity(0.3), screenSize: screenWidth),
                       height: screenHeight * 0.06,
+                      textInputType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Nomor Telepon tidak boleh kosong';
+                        }
+                        if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                          return 'Masukkan nomor telepon yang valid';
+                        }
+                        return null;
+                      },
                     ),
                     SizedBox(height: screenHeight * 0.03),
                     Button(
