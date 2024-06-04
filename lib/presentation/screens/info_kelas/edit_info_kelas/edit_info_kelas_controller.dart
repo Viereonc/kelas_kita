@@ -2,15 +2,53 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../info_kelas_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../constants.dart';
+import '../info_kelas_model.dart';
+import 'package:http/http.dart' as http;
 
 class EditInfoKelasController extends GetxController {
-
   final TextEditingController descriptionController = TextEditingController();
-  final InfoKelasController infoKelasController = Get.find();
   final Rx<File?> selectedImagePath = Rx<File?>(null);
+  RxList<InfoKelasModel> infoKelasList = <InfoKelasModel>[].obs;
+  var isLoading = true.obs;
 
-  void initializeValues(String description, String imagePath) {
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    fetchInformasiKelas();
+  }
+
+  void fetchInformasiKelas() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      final response = await http.get(
+        Uri.parse(baseUrl + infoGetKelasEndpoint),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        infoKelasList.value = infoKelasModelFromJson(response.body);
+        print('Data fetched successfully: ${infoKelasList.length} items');
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void initializeValues(String description, String imagePath, int index, int idInformasiKelas) {
+    print(idInformasiKelas);
+    print(description);
+    print(imagePath);
     if (imagePath.isNotEmpty) {
       selectedImagePath.value = File(imagePath);
     }
@@ -26,13 +64,42 @@ class EditInfoKelasController extends GetxController {
     }
   }
 
-  void saveInfo(int index, BuildContext context) {
-    if (descriptionController.text.isNotEmpty) {
-      infoKelasController.editInfoKelas(index, selectedImagePath.value, descriptionController.text);
-      Navigator.pop(context);
-    } else {
-      // Handle empty description case
-      // You can show a snackbar or a dialog to inform the user
+  Future<void> editInfoKelas(int index, File? imageFile, String description, String idKelas, String token, int idInformasiKelas) async {
+    final DateTime currentTime = DateTime.now();
+
+      InfoKelasModel updatedInfoKelas = InfoKelasModel(
+        idInformasiKelas: idInformasiKelas,
+        idKelas: int.parse(idKelas),
+        image: imageFile?.path ?? "",
+        pengumuman: description,
+        createdAt: currentTime,
+        updatedAt: currentTime,
+      );
+
+      var url = Uri.parse('${baseUrl}api/informasi_kelas/${idInformasiKelas}');
+      var headers = {
+        'Authorization': 'Bearer $token',
+      };
+      var request = http.MultipartRequest('POST', url)
+        ..headers.addAll(headers)
+        ..fields['id_informasi_kelas'] = updatedInfoKelas.idInformasiKelas.toString()
+        ..fields['id_kelas'] = idKelas
+        ..fields['pengumuman'] = description;
+
+      if (imageFile != null) {
+        request.files.add(await http.MultipartFile.fromPath('image', updatedInfoKelas.image));
+      }
+
+      try {
+        var response = await request.send();
+        if (response.statusCode == 200) {
+          print('Info kelas berhasil diedit');
+          fetchInformasiKelas();
+        } else {
+          print('Gagal mengedit info kelas: ${response.statusCode}');
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
     }
-  }
 }

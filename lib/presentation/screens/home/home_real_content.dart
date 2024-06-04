@@ -73,7 +73,7 @@ class RealContent extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    Get.toNamed('/pembukuan'); // Adjust the path as needed
+                    Get.toNamed(Path.PEMBUKUAN_PAGE); // Adjust the path as needed
                   },
                   icon: Icon(
                     Icons.arrow_circle_right_rounded,

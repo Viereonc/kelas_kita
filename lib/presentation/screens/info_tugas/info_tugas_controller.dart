@@ -24,14 +24,14 @@ class InfoTugasController extends GetxController {
   }
 
   void setUserStatus() {
-    userStatus.value = 'siswa';
+    userStatus.value = 'sekretaris';
   }
 
-  void openIconButtonpressed(BuildContext context, int index, String namaTugas, String guruPemberiTugas, String deadlineTugas, String ketentuanTugas) {
+  void openIconButtonpressed(BuildContext context, int index, String namaTugas, String guruPemberiTugas, String deadlineTugas, String ketentuanTugas, int idTugas) {
     print(index);
     showModalBottomSheet(
       context: context,
-      builder: (ctx) => OptionEditDeleteInfoTugas(index: index, namaTugas: namaTugas, guruPemberiTugas: guruPemberiTugas, deadlineTugas: deadlineTugas, ketentuanTugas: ketentuanTugas),
+      builder: (ctx) => OptionEditDeleteInfoTugas(index: index, namaTugas: namaTugas, guruPemberiTugas: guruPemberiTugas, deadlineTugas: deadlineTugas, ketentuanTugas: ketentuanTugas, idTugas: idTugas,),
     );
   }
 
@@ -62,65 +62,22 @@ class InfoTugasController extends GetxController {
     final DateTime currentTime = DateTime.now();
 
     int parsedIdKelas = int.parse(idKelas);
-
     DateTime parsedDeadline = DateTime.parse(deadlineTugas);
 
     InfoTugasModel infoTugas = InfoTugasModel(
-        idTugas: infoTugasList.length + 1,
-        idKelas: parsedIdKelas,
-        nama: namaTugas,
-        guru: guruPemberiTugas,
-        deadline: parsedDeadline,
-        ketentuan: ketentuanTugas,
-        createdAt: currentTime,
-        updatedAt: currentTime,
-        kelas: kelas
+      idTugas: infoTugasList.length + 1,
+      idKelas: parsedIdKelas,
+      nama: namaTugas,
+      guru: guruPemberiTugas,
+      deadline: parsedDeadline,
+      ketentuan: ketentuanTugas,
+      createdAt: currentTime,
+      updatedAt: currentTime,
+      kelas: kelas,
     );
 
     infoTugasList.add(infoTugas);
 
-    saveInfoTugas();
-
-    await postInfoTugas(idKelas, namaTugas, guruPemberiTugas, deadlineTugas, ketentuanTugas, token);
-  }
-
-  void editInfoTugas(int index, String namaTugas, String guruPemberiTugas, String deadlineTugas, String ketentuanTugas, String idKelas, Kelas kelas, String token) {
-    final DateTime currentTime = DateTime.now();
-
-    InfoTugasModel updatedInfoTugas = InfoTugasModel(
-        idTugas: infoTugasList[index].idTugas,
-        idKelas: infoTugasList[index].idKelas,
-        nama: infoTugasList[index].nama,
-        guru: infoTugasList[index].guru,
-        deadline: infoTugasList[index].deadline,
-        ketentuan: infoTugasList[index].ketentuan,
-        createdAt: infoTugasList[index].createdAt,
-        updatedAt: currentTime,
-        kelas: kelas
-    );
-
-    infoTugasList[index] = updatedInfoTugas;
-
-    saveInfoTugas();
-  }
-
-  void deleteInfoTugas(int index) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-
-    if (token != null) {
-      final url = Uri.parse('${baseUrl}api/tugas/${index}');
-      final headers = {
-        'Authorization': 'Bearer $token',
-      };
-      await http.delete(url, headers: headers);
-      fetchInformasiTugas();
-    } else {
-      print('Token not found');
-    }
-  }
-
-  Future<void> postInfoTugas(String idKelas, String namaTugas, String guruPemberiTugas, String deadlineTugas, String ketentuanTugas, String token) async {
     var url = Uri.parse(baseUrl + infoTugasEndPoint);
     var headers = {
       'Accept': 'application/json',
@@ -138,6 +95,7 @@ class InfoTugasController extends GetxController {
       var response = await request.send();
       if (response.statusCode == 201) {
         print('Info tugas berhasil diunggah');
+        fetchInformasiTugas();
       } else {
         print('Gagal mengunggah info tugas: ${response.statusCode}');
       }
@@ -146,9 +104,24 @@ class InfoTugasController extends GetxController {
     }
   }
 
-  void saveInfoTugas() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonString = jsonEncode(infoTugasList);
-    prefs.setString('InfoTugas_list', jsonString);
+  void deleteInfoTugas(int idTugas) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      if (token != null) {
+        final url = Uri.parse('${baseUrl}api/tugas/$idTugas');
+        final headers = {
+          'Authorization': 'Bearer $token',
+        };
+
+        await http.delete(url, headers: headers);
+        fetchInformasiTugas();
+      } else {
+        print('Token not found');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

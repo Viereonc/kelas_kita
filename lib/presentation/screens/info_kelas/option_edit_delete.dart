@@ -10,8 +10,9 @@ class OptionEditDeleteInfoKelas extends StatelessWidget {
   final int index;
   final String? description;
   final String? imagePath;
+  final int idInformasiKelas;
 
-  const OptionEditDeleteInfoKelas({Key? key, required this.index, required this.description, required this.imagePath}) : super(key: key);
+  const OptionEditDeleteInfoKelas({Key? key, required this.index, required this.description, required this.imagePath, required this.idInformasiKelas}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,21 +81,19 @@ class OptionEditDeleteInfoKelas extends StatelessWidget {
                           ),
                         );
                         if (result == true) {
-                          infoKelasController.deleteInfoKelas(index);
+                          infoKelasController.deleteInfoKelas(
+                            idInformasiKelas,
+                          );
                           Navigator.of(context).pop();
                         }
                       } else if (item['title'] == 'Edit') {
-                        Navigator.pop(context); // Close the bottom sheet first
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditInfoKelasScreen(
-                              description: description ?? "",
-                              index: index,
-                              imagePath: imagePath ?? "",
-                            ),
-                          ),
-                        );
+                        Get.back(); // Close the bottom sheet first
+                        Get.to(() => EditInfoKelasScreen(
+                          index: index,
+                          description: description ?? "",
+                          imagePath: imagePath ?? "",
+                          idInformasiKelas: idInformasiKelas,
+                        ));
                       }
                     },
                     child: ListTile(

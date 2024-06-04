@@ -20,6 +20,10 @@ class InfoTugasScreen extends StatelessWidget {
     return formatter.format(date);
   }
 
+  Future<void> _refreshData(BuildContext context) async {
+    return infoTugasController.fetchInformasiTugas();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -33,6 +37,7 @@ class InfoTugasScreen extends StatelessWidget {
           children: [
             Container(
               child: AppBar(
+                backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
                 title: Text(
                   "Info Tugas",
@@ -65,99 +70,93 @@ class InfoTugasScreen extends StatelessWidget {
               thickness: 0.5,
             ),
             Expanded(
-              child: Obx(() {
-                if (infoTugasController.isLoading.value) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: infoTugasController.infoTugasList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final infoTugas = infoTugasController.infoTugasList[index];
+              child: RefreshIndicator(
+                onRefresh: () => _refreshData(context), // Trigger refresh action
+                child: Obx(() {
+                  if (infoTugasController.isLoading.value) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    final reversedList = infoTugasController.infoTugasList.reversed.toList();
+                    return ListView.builder(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      itemCount: reversedList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final infoTugas = reversedList[index];
 
-                      return GestureDetector(
-                        // onTap: () {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => DetailInfoTugas(
-                        //         namaTugas: infoTugas["namaTugas"],
-                        //         ketentuanTugas: infoTugas["ketentuanTugas"],
-                        //       ),
-                        //     ),
-                        //   );
-                        // },
-                        onLongPress: () {
-                          final namaTugas = infoTugas.nama;
-                          final guruPemberiTugas = infoTugas.guru;
-                          final deadlineTugas = infoTugas.deadline;
-                          final ketentuanTugas = infoTugas.ketentuan;
-                          infoTugasController.openIconButtonpressed(context, index, namaTugas, guruPemberiTugas, deadlineTugas.toString(), ketentuanTugas);
-                        },
-
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01, vertical: screenHeight * 0.015),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.transparent,
-                              border: Border.all(
-                                color: Colors.black, 
-                                width: 1.0, 
+                        return GestureDetector(
+                          onLongPress: () {
+                            final namaTugas = infoTugas.nama;
+                            final guruPemberiTugas = infoTugas.guru;
+                            final deadlineTugas = infoTugas.deadline;
+                            final ketentuanTugas = infoTugas.ketentuan;
+                            final idTugas = infoTugas.idTugas;
+                            infoTugasController.openIconButtonpressed(context, index, namaTugas, guruPemberiTugas, deadlineTugas.toString(), ketentuanTugas, idTugas);
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01, vertical: screenHeight * 0.015),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.transparent,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 1.0,
+                                ),
+                              ),
+                              height: screenHeight * 0.17,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: screenHeight * 0.135,
+                                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          infoTugas.nama,
+                                          style: tsSubHeader3(screenSize: screenWidth),
+                                        ),
+                                        Text(
+                                          "Ketentuan : " + infoTugas.ketentuan,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: tsParagraft4(screenSize: screenWidth),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Guru : " + infoTugas.guru,
+                                              style: tsParagraft4(screenSize: screenWidth),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(Icons.calendar_month, color: Colors.red,),
+                                                SizedBox(width: screenWidth * 0.02,),
+                                                Text(formatDate(infoTugas.deadline),
+                                                  style: tsParagraft4(screenSize: screenWidth),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            height: screenHeight * 0.17,
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: screenHeight * 0.135,
-                                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        infoTugas.nama,
-                                        style: tsSubHeader3(screenSize: screenWidth),
-                                      ),
-                                      Text(
-                                        "Ketentuan : " + infoTugas.ketentuan,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: tsParagraft4(screenSize: screenWidth),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Guru : " + infoTugas.guru,
-                                            style: tsParagraft4(screenSize: screenWidth),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(Icons.calendar_month, color: Colors.red,),
-                                              SizedBox(width: screenWidth * 0.02,),
-                                              Text(formatDate(infoTugas.deadline),
-                                                style: tsParagraft4(screenSize: screenWidth),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }
-              }),
+                        );
+                      },
+                    );
+                  }
+                }),
+              ),
             ),
           ],
         ),
@@ -206,3 +205,4 @@ class InfoTugasScreen extends StatelessWidget {
     );
   }
 }
+

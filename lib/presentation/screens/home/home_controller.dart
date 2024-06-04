@@ -24,4 +24,11 @@ class HomeController extends GetxController {
     await prefs.setString('nama', name);
     userName.value = name;
   }
+
+  Future<void> refreshHome() async {
+    isLoading.value = true;
+    await loadUserName();
+    await Future.delayed(Duration(seconds: 2)); // Simulasi pemuatan data
+    isLoading.value = false;
+  }
 }

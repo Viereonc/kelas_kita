@@ -95,8 +95,7 @@ class AddInfoKelas extends StatelessWidget {
                               ? Container(
                             margin: EdgeInsets.all(15),
                             child: SvgPicture.asset("lib/assets/icons/pe_camera.svg"),
-                          )
-                              : null,
+                          ) : null,
                           width: double.infinity,
                         ),
                       ),

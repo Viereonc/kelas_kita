@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../constants.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
 import '../../../widgets/Button.dart';
@@ -11,25 +13,28 @@ class EditInfoKelasScreen extends StatelessWidget {
   final String description;
   final String imagePath;
   final int index;
+  final int idInformasiKelas;
 
-  EditInfoKelasScreen({Key? key, required this.description, required this.imagePath, required this.index}) : super(key: key);
+  EditInfoKelasScreen({Key? key, required this.description, required this.imagePath, required this.index, required this.idInformasiKelas}) : super(key: key);
 
-  final EditInfoKelasController controller = Get.put(EditInfoKelasController());
+  final EditInfoKelasController editInfoKelasController = Get.put(EditInfoKelasController());
 
   @override
   Widget build(BuildContext context) {
-    controller.initializeValues(description, imagePath);
+    editInfoKelasController.initializeValues(description, imagePath, index, idInformasiKelas);
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Column(
             children: [
               AppBar(
+                backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
                 title: Text("Edit Info Kelas", style: tsHeader2(screenSize: screenWidth),),
                 centerTitle: true,
@@ -59,30 +64,25 @@ class EditInfoKelasScreen extends StatelessWidget {
                   children: [
                     Text("Tambahkan \n Gambar", style: tsSubHeader4(screenSize: screenWidth, fontWeight: FontWeight.bold),),
                     GestureDetector(
-                      onTap: () => controller.getImageFromGallery(),
-                      child: Obx(() => Container(
-                        margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-                        height: screenHeight * 0.2,
-                        decoration: BoxDecoration(
-                          color: controller.selectedImagePath.value != null
-                              ? Colors.grey.shade200
-                              : Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(5),
-                          image: controller.selectedImagePath.value != null
-                              ? DecorationImage(
-                            image: FileImage(controller.selectedImagePath.value!),
-                            fit: BoxFit.cover,
-                          )
-                              : null,
-                        ),
-                        child: controller.selectedImagePath.value == null
-                            ? Container(
-                          margin: EdgeInsets.all(15),
-                          child: SvgPicture.asset("lib/assets/icons/pe_camera.svg"),
-                        )
-                            : null,
-                        width: double.infinity,
-                      )),
+                      onTap: () => editInfoKelasController.getImageFromGallery(),
+                      child: Obx(() {
+                        var selectedImagePath = editInfoKelasController.selectedImagePath.value;
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                          height: screenHeight * 0.2,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                              image: selectedImagePath != null && File(selectedImagePath.path).existsSync()
+                                  ? FileImage(selectedImagePath)
+                                  : NetworkImage(baseUrl + storage + imagePath) as ImageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          width: double.infinity,
+                        );
+                      }),
                     ),
                   ],
                 ),
@@ -95,7 +95,7 @@ class EditInfoKelasScreen extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                       child: TextField(
-                        controller: controller.descriptionController,
+                        controller: editInfoKelasController.descriptionController,
                         decoration: InputDecoration(
                           hintText: "Tambahkan Pengumuman",
                           hintStyle: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.grey),
@@ -118,12 +118,31 @@ class EditInfoKelasScreen extends StatelessWidget {
               Container(
                 margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
                 child: Button(
-                  label: "Unggah Informasi",
-                  textStyle: tsSubHeader4(screenSize: screenWidth),
-                  textColor: Colors.white,
-                  backgroundColor: primeryColorMedium,
-                  side: BorderSide.none,
-                  onPressed: () => controller.saveInfo(index, context),
+                    label: "Edit Informasi",
+                    textStyle: tsSubHeader4(screenSize: screenWidth),
+                    textColor: Colors.white,
+                    backgroundColor: primeryColorMedium,
+                    side: BorderSide.none,
+                    onPressed: () async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      String? token = prefs.getString('token');
+                      String idKelas = "1";
+
+                      if (token != null) {
+                        await editInfoKelasController.editInfoKelas(
+                            index,
+                            editInfoKelasController.selectedImagePath.value,
+                            editInfoKelasController.descriptionController.text,
+                            idKelas,
+                            token,
+                            idInformasiKelas
+                        );
+                        editInfoKelasController.selectedImagePath.value = null;
+                        Navigator.pop(context);
+                      } else {
+                        print('Token not found');
+                      }
+                    }
                 ),
               ),
             ],
