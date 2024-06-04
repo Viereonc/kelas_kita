@@ -1,4 +1,4 @@
-const baseUrl = 'https://26b3-140-213-163-224.ngrok-free.app/';
+const baseUrl = 'https://d809-2001-448a-4061-3333-41d-4f44-b241-6b6d.ngrok-free.app/';
 const registerEndpoint = 'api/register';
 const loginEndpoint = 'api/login';
 const biodataEndpoint = 'api/biodata/store';

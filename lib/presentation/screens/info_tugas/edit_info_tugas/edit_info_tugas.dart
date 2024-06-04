@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/edit_info_tugas/edit_info_tugas_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../data/models/info_tugas.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
 import '../../../widgets/Button.dart';
@@ -14,8 +16,9 @@ class EditInfoTugasScreen extends StatelessWidget {
   final String guruPemberiTugas;
   final String deadlineTugas;
   final String ketentuanTugas;
+  final int idTugas;
 
-  EditInfoTugasScreen({Key? key, required this.index, required this.namaTugas, required this.guruPemberiTugas, required this.deadlineTugas, required this.ketentuanTugas}) : super(key: key);
+  EditInfoTugasScreen({Key? key, required this.index, required this.namaTugas, required this.guruPemberiTugas, required this.deadlineTugas, required this.ketentuanTugas, required this.idTugas}) : super(key: key);
 
   final EditInfoTugasController editInfoTugasController = Get.put(EditInfoTugasController());
 
@@ -170,7 +173,7 @@ class EditInfoTugasScreen extends StatelessWidget {
                             lastDate: DateTime(2101),
                           );
                           if (pickedDate != null) {
-                            String formattedDate = DateFormat('dd MMMM yyyy').format(pickedDate);
+                            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                             editInfoTugasController.deadlineTugasController.text = formattedDate;
                           }
                         },
@@ -213,12 +216,39 @@ class EditInfoTugasScreen extends StatelessWidget {
               Container(
                 margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
                 child: Button(
-                  label: "Unggah Tugas",
+                  label: "Edit Info Tugas",
                   textStyle: tsSubHeader4(screenSize: screenWidth),
                   textColor: Colors.white,
                   backgroundColor: primeryColorMedium,
                   side: BorderSide.none,
-                  onPressed: () => editInfoTugasController.saveInfo(index, context),
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    String? token = prefs.getString('token');
+                    String idKelas = "1";
+                    Kelas kelasInstance = Kelas(
+                        idKelas: int.parse(idKelas),
+                        nama: namaTugas,
+                        createdAt: DateTime.now(),
+                        updatedAt: DateTime.now()
+                    );
+
+                    if (token != null) {
+                      await editInfoTugasController.editInfoTugas(
+                          index,
+                          editInfoTugasController.namaTugasController.text,
+                          editInfoTugasController.selectedGuru.value!,
+                          editInfoTugasController.deadlineTugasController.text,
+                          editInfoTugasController.ketentuanTugasController.text,
+                          idKelas,
+                          kelasInstance,
+                          token,
+                          idTugas
+                      );
+                      Navigator.pop(context);
+                    } else {
+                      print('Token not found');
+                    }
+                  },
                 ),
               ),
             ],

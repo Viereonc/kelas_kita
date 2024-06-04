@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../data/models/info_tugas.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
 import '../../../widgets/Button.dart';
@@ -234,13 +235,21 @@ class AddInfoTugas extends StatelessWidget {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     String? token = prefs.getString('token');
                     String idKelas = "1";
+                    Kelas kelasInstance = Kelas(
+                        idKelas: int.parse(idKelas),
+                        nama: namaTugasController.text,
+                        createdAt: DateTime.now(),
+                        updatedAt: DateTime.now()
+                    );
+
                     if (token != null) {
-                      await infoTugasController.postInfoTugas(
-                          idKelas,
+                      await infoTugasController.addAndPostInfoTugas(
                           namaTugasController.text,
                           guruPemberiTugas,
                           deadlineTugas,
                           ketentuanTugasController.text,
+                          idKelas,
+                          kelasInstance,
                           token
                       );
                       Navigator.pop(context);

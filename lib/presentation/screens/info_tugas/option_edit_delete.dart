@@ -11,8 +11,9 @@ class OptionEditDeleteInfoTugas extends StatelessWidget {
   final String? guruPemberiTugas;
   final String? deadlineTugas;
   final String? ketentuanTugas;
+  final int idTugas;
 
-  const OptionEditDeleteInfoTugas({Key? key, required this.index, required this.namaTugas, required this.guruPemberiTugas, required this.deadlineTugas, required this.ketentuanTugas}) : super(key: key);
+  const OptionEditDeleteInfoTugas({Key? key, required this.index, required this.namaTugas, required this.guruPemberiTugas, required this.deadlineTugas, required this.ketentuanTugas, required this.idTugas}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +82,7 @@ class OptionEditDeleteInfoTugas extends StatelessWidget {
                           ),
                         );
                         if (result == true) {
-                          infoTugasController.deleteInfoTugas(index);
+                          infoTugasController.deleteInfoTugas(idTugas);
                           Navigator.of(context).pop();
                         }
                       } else if (item['title'] == 'Edit') {
@@ -95,6 +96,7 @@ class OptionEditDeleteInfoTugas extends StatelessWidget {
                               guruPemberiTugas: guruPemberiTugas ?? "",
                               deadlineTugas: deadlineTugas ?? "",
                               ketentuanTugas: ketentuanTugas ?? "",
+                              idTugas: idTugas,
                             ),
                           ),
 

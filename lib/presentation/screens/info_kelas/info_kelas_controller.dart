@@ -1,125 +1,87 @@
-  import 'dart:io';
-  import 'package:flutter/cupertino.dart';
-  import 'package:flutter/material.dart';
-  import 'package:get/get.dart';
-  import 'package:kelas_kita/constants.dart';
-  import 'package:shared_preferences/shared_preferences.dart';
-  import 'dart:convert';
-  import 'info_kelas_model.dart';
-  import 'option_edit_delete.dart';
-  import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kelas_kita/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'info_kelas_model.dart';
+import 'option_edit_delete.dart';
+import 'package:http/http.dart' as http;
 
-  class InfoKelasController extends GetxController {
-    RxList<InfoKelasModel> infoKelasList = <InfoKelasModel>[].obs;
-    var isLoading = true.obs;
-    var selectedImagePath = Rx<File?>(null);
-    var userStatus = ''.obs;
+class InfoKelasController extends GetxController {
+  RxList<InfoKelasModel> infoKelasList = <InfoKelasModel>[].obs;
+  var isLoading = true.obs;
+  var selectedImagePath = Rx<File?>(null);
+  var userStatus = ''.obs;
 
-    @override
-    void onInit() {
-      super.onInit();
-      setUserStatus();
-      fetchInformasiKelas();
-    }
+  @override
+  void onInit() {
+    super.onInit();
+    setUserStatus();
+    fetchInformasiKelas();
+  }
 
-    void setUserStatus() {
-      userStatus.value = 'siswa';
-    }
+  void setUserStatus() {
+    userStatus.value = 'sekretaris';
+  }
 
-    void fetchInformasiKelas() async {
-      try {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        String? token = prefs.getString('token');
-
-        final response = await http.get(
-          Uri.parse(baseUrl + infoGetKelasEndpoint),
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-        );
-
-        if (response.statusCode == 200) {
-          infoKelasList.value = infoKelasModelFromJson(response.body);
-          isLoading.value = false;
-        } else {
-          print('Failed to fetch data: ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Error fetching data: $e');
-      }
-    }
-
-    void openIconButtonpressed(BuildContext context, int index, String description, String imagePath) {
-      print(index);
-      showModalBottomSheet(
-        context: context,
-        builder: (ctx) => OptionEditDeleteInfoKelas(index: index, description: description, imagePath: imagePath),
-      );
-    }
-
-    Future<void> addAndPostInfoKelas(File? imageFile, String description, String idKelas, String token) async {
-      final DateTime currentTime = DateTime.now();
-
-      int parsedIdKelas = int.parse(idKelas);
-
-      InfoKelasModel infoKelas = InfoKelasModel(
-        idInformasiKelas: infoKelasList.length + 1,
-        idKelas: parsedIdKelas,
-        image: imageFile?.path ?? "",
-        pengumuman: description,
-        createdAt: currentTime,
-        updatedAt: currentTime,
-      );
-
-      infoKelasList.add(infoKelas);
-
-      saveInfoKelas();
-
-      await postInfoKelas(parsedIdKelas.toString(), imageFile?.path ?? "", description, token);
-    }
-
-    void editInfoKelas(int index, File? imageFile, String description) {
-      final DateTime currentTime = DateTime.now();
-
-      InfoKelasModel updatedInfoKelas = InfoKelasModel(
-        idInformasiKelas: infoKelasList[index].idInformasiKelas,
-        idKelas: infoKelasList[index].idKelas,
-        image: imageFile?.path ?? infoKelasList[index].image,
-        pengumuman: description,
-        createdAt: infoKelasList[index].createdAt,
-        updatedAt: currentTime,
-      );
-
-      infoKelasList[index] = updatedInfoKelas;
-
-      saveInfoKelas();
-    }
-
-    void deleteInfoKelas(int index) async {
+  void fetchInformasiKelas() async {
+    try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
 
-      if (token != null) {
-        final url = Uri.parse('${baseUrl}api/informasi_kelas/${index}');
-        final headers = {
+      final response = await http.get(
+        Uri.parse(baseUrl + infoGetKelasEndpoint),
+        headers: {
           'Authorization': 'Bearer $token',
-        };
+        },
+      );
 
-        await http.delete(url, headers: headers);
-        fetchInformasiKelas();
+      if (response.statusCode == 200) {
+        infoKelasList.value = infoKelasModelFromJson(response.body);
+        print('Data fetched successfully: ${infoKelasList.length} items');
       } else {
-        print('Token not found');
+        print('Failed to fetch data: ${response.statusCode}');
       }
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      isLoading.value = false;
     }
+  }
 
-
-    void saveInfoKelas() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String jsonString = jsonEncode(infoKelasList);
-      prefs.setString('InfoKelas_list', jsonString);
+  void openIconButtonpressed(BuildContext context, int index, String description, String imagePath, int idInformasiKelas) {
+    print('List length: ${infoKelasList.length}');
+    print('ID being accessed: $idInformasiKelas');
+    print(description);
+    print(imagePath);
+    if (infoKelasList.any((element) => element.idInformasiKelas == idInformasiKelas)) {
+      showModalBottomSheet(
+        context: context,
+        builder: (ctx) => OptionEditDeleteInfoKelas(index: index, description: description, imagePath: imagePath, idInformasiKelas: idInformasiKelas,),
+      );
+    } else {
+      print('ID di luar batas');
     }
+  }
 
-    Future<void> postInfoKelas(String idKelas, String imagePath, String description, String token) async {
+  Future<void> addAndPostInfoKelas(File? imageFile, String description, String idKelas, String token) async {
+    final DateTime currentTime = DateTime.now();
+
+    int parsedIdKelas = int.parse(idKelas);
+
+    InfoKelasModel infoKelas = InfoKelasModel(
+      idInformasiKelas: infoKelasList.length,
+      idKelas: parsedIdKelas,
+      image: imageFile?.path ?? "",
+      pengumuman: description,
+      createdAt: currentTime,
+      updatedAt: currentTime,
+    );
+
+    infoKelasList.add(infoKelas);
+
+    try {
       var url = Uri.parse(baseUrl + infoKelasEndpoint);
       var headers = {
         'Accept': 'application/json',
@@ -130,19 +92,40 @@
         ..fields['id_kelas'] = idKelas
         ..fields['pengumuman'] = description;
 
-      if (imagePath.isNotEmpty) {
-        request.files.add(await http.MultipartFile.fromPath('image', imagePath));
+      if (imageFile?.path.isNotEmpty ?? false) {
+        request.files.add(await http.MultipartFile.fromPath('image', imageFile!.path));
       }
 
-      try {
-        var response = await request.send();
-        if (response.statusCode == 201) {
-          print('Info kelas berhasil diunggah');
-        } else {
-          print('Gagal mengunggah info kelas: ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Error: $e');
+      var response = await request.send();
+      if (response.statusCode == 201) {
+        print('Info kelas berhasil diunggah');
+        fetchInformasiKelas();
+      } else {
+        print('Gagal mengunggah info kelas: ${response.statusCode}');
       }
+    } catch (e) {
+      print('Error: $e');
     }
   }
+
+  void deleteInfoKelas(int idInformasiKelas) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      if (token != null) {
+        final url = Uri.parse('${baseUrl}api/informasi_kelas/$idInformasiKelas');
+        final headers = {
+          'Authorization': 'Bearer $token',
+        };
+
+        await http.delete(url, headers: headers);
+        fetchInformasiKelas();
+      } else {
+        print('Token not found');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+}

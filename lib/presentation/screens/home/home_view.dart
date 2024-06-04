@@ -6,9 +6,9 @@ import 'package:kelas_kita/presentation/screens/home/home_controller.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/screens/home/shimmer_home.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../themes/FontsStyle.dart';
 import 'home_real_content.dart';
-
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           children: [
             Container(
@@ -30,11 +31,24 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.06),
+                    margin: EdgeInsets.only(
+                        bottom: screenHeight * 0.02, left: screenWidth * 0.06),
                     child: Obx(() {
-                      return Text('Hello, ${homeController.userName} 👋',
-                          style: tsHeader3(screenSize: screenWidth)
-                      );
+                      return homeController.isLoading.value
+                          ? Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          width: screenWidth * 0.6,
+                          height: 24.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                        ),
+                      )
+                          : Text('Hello, ${homeController.userName} 👋',
+                          style: tsHeader3(screenSize: screenWidth));
                     }),
                   ),
                   Obx(() => homeController.isLoading.value
@@ -74,17 +88,23 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Tagihan Kas Kelas", style: tsSubHeader3(screenSize: screenWidth)),
+                    Text("Tagihan Kas Kelas",
+                        style: tsSubHeader3(screenSize: screenWidth)),
                     Expanded(
                       child: Obx(() => homeController.isLoading.value
-                          ? ShimmerLoadingListView(screenWidth: screenWidth, screenHeight: screenHeight,
-                        ) : ListView.builder(
-                          itemCount: 9,
-                          itemBuilder: (BuildContext context, int index) {
+                          ? ShimmerLoadingListView(
+                        screenWidth: screenWidth,
+                        screenHeight: screenHeight,
+                      )
+                          : ListView.builder(
+                        itemCount: 9,
+                        itemBuilder: (BuildContext context, int index) {
                           return Padding(
-                            padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                            padding: EdgeInsets.symmetric(
+                                vertical: screenHeight * 0.01),
                             child: Container(
-                              padding: EdgeInsets.only(left: screenWidth * 0.05),
+                              padding: EdgeInsets.only(
+                                  left: screenWidth * 0.05),
                               height: screenHeight * 0.11,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -97,7 +117,8 @@ class HomeScreen extends StatelessWidget {
                                     width: screenWidth * 0.12,
                                     decoration: BoxDecoration(
                                       color: Color(0xFFEB4335),
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius:
+                                      BorderRadius.circular(15),
                                     ),
                                     child: Center(
                                       child: Icon(
@@ -109,8 +130,10 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   SizedBox(width: 20),
                                   Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Kas Pada Tanggal 3 Maret 2024',
@@ -121,11 +144,15 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         'Belum Dibayar',
-                                        style: tsParagraft4(screenSize: screenWidth),
+                                        style: tsParagraft4(
+                                            screenSize: screenWidth),
                                       ),
                                       Text(
                                         'Rp.5.000',
-                                        style: tsParagraft4(screenSize: screenWidth).copyWith(color: Color(0xFFBE1833)),
+                                        style: tsParagraft4(
+                                            screenSize: screenWidth)
+                                            .copyWith(
+                                            color: Color(0xFFBE1833)),
                                       ),
                                     ],
                                   ),
@@ -133,8 +160,8 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                           );
-                                                  },
-                                                )),
+                        },
+                      )),
                     ),
                   ],
                 ),
@@ -150,14 +177,13 @@ class HomeScreen extends StatelessWidget {
         width: 64,
         child: FloatingActionButton(
           onPressed: () {
-             Get.toNamed('/qrcodescreen'); 
+            Get.toNamed('/qrcodescreen');
           },
           backgroundColor: primeryColorMedium,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            side: BorderSide(width: 3, color: Colors.white),
-            borderRadius: BorderRadius.circular(30)
-          ),
+              side: BorderSide(width: 3, color: Colors.white),
+              borderRadius: BorderRadius.circular(30)),
           child: Icon(
             Icons.qr_code,
             color: Colors.white,
