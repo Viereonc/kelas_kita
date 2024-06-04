@@ -1,0 +1,134 @@
+
+import 'dart:convert';
+
+List<InfoBiografiModel> infoBiografiModelFromJson(String str) => List<InfoBiografiModel>.from(json.decode(str).map((x) => InfoBiografiModel.fromJson(x)));
+
+String infoBiografiModelToJson(List<InfoBiografiModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class InfoBiografiModel {
+  int idBiodata;
+  int userId;
+  int idKelas;
+  int idRole;
+  String nama;
+  int nis;
+  String alamat;
+  dynamic bio;
+  String status;
+  DateTime createdAt;
+  DateTime updatedAt;
+  User user;
+  Kelas kelas;
+
+  InfoBiografiModel({
+    required this.idBiodata,
+    required this.userId,
+    required this.idKelas,
+    required this.idRole,
+    required this.nama,
+    required this.nis,
+    required this.alamat,
+    required this.bio,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.user,
+    required this.kelas,
+  });
+
+  factory InfoBiografiModel.fromJson(Map<String, dynamic> json) => InfoBiografiModel(
+    idBiodata: json["id_biodata"],
+    userId: json["user_id"],
+    idKelas: json["id_kelas"],
+    idRole: json["id_role"],
+    nama: json["nama"],
+    nis: json["nis"],
+    alamat: json["alamat"],
+    bio: json["bio"],
+    status: json["status"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    user: User.fromJson(json["user"]),
+    kelas: Kelas.fromJson(json["kelas"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id_biodata": idBiodata,
+    "user_id": userId,
+    "id_kelas": idKelas,
+    "id_role": idRole,
+    "nama": nama,
+    "nis": nis,
+    "alamat": alamat,
+    "bio": bio,
+    "status": status,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "user": user.toJson(),
+    "kelas": kelas.toJson(),
+  };
+}
+
+class Kelas {
+  int idKelas;
+  String nama;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  Kelas({
+    required this.idKelas,
+    required this.nama,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory Kelas.fromJson(Map<String, dynamic> json) => Kelas(
+    idKelas: json["id_kelas"],
+    nama: json["nama"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id_kelas": idKelas,
+    "nama": nama,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+  };
+}
+
+class User {
+  int idUser;
+  String username;
+  String email;
+  int nomor;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  User({
+    required this.idUser,
+    required this.username,
+    required this.email,
+    required this.nomor,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    idUser: json["id_user"],
+    username: json["username"],
+    email: json["email"],
+    nomor: json["nomor"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id_user": idUser,
+    "username": username,
+    "email": email,
+    "nomor": nomor,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+  };
+}

@@ -41,6 +41,16 @@ dependencies:
   introduction_screen:
   get: ^4.6.5
   dio:
+  image_picker: ^1.1.1
+  mobile_scanner: ^5.1.1
+  shared_preferences:
+  iconify:
+  shimmer:
+  timeago:
+  http:
+  qr_flutter:
+  intl:
+  share_plus:
 
 dev_dependencies:
   flutter_test:
