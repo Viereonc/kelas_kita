@@ -73,7 +73,7 @@ class NotificationPage extends StatelessWidget {
                                     Container(
                                       width: screenWidth * 0.5,
                                       child: Text(
-                                        'Tugas CRUD',
+                                        'Tagihan Uang Kas',
                                         style: tsParagraft3(
                                           fontWeight: FontWeight.w600,
                                           screenSize: screenWidth
@@ -83,10 +83,10 @@ class NotificationPage extends StatelessWidget {
                                     Container(
                                       width: screenWidth * 0.5,
                                       child: Text(
-                                        'Tugas Laravel CRUD dari Fahmi sudah lewat deadline',
-                                        style: tsParagraft5(
-                                          screenSize: screenWidth
-                                        )
+
+                                        'Tagihan Kas Anda Bulan Ini Belum Lunas (Rp. 10.000.00)',
+                                        style: tsParagraft5()
+
                                       ),
                                     ),
                                   ],
