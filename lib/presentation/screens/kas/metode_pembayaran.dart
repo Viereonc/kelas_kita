@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
 class MetodePembayaran extends StatelessWidget {
@@ -36,10 +37,12 @@ class MetodePembayaran extends StatelessWidget {
                     {
                       'icon': Icons.photo,
                       'title': 'Dana',
+                      'route': '/path_to_dana',
                     },
                     {
                       'icon': Icons.qr_code,
                       'title': 'QRIS',
+                      'route': '/path_to_qris',
                     },
                   ];
 
@@ -47,7 +50,7 @@ class MetodePembayaran extends StatelessWidget {
 
                   return InkWell(
                     onTap: () {
-                      // Handle onTap
+                      Get.toNamed(item['route']);
                     },
                     child: ListTile(
                       leading: Icon(item['icon']),
@@ -72,4 +75,3 @@ class MetodePembayaran extends StatelessWidget {
     );
   }
 }
-
