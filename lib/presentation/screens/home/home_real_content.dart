@@ -55,7 +55,7 @@ class RealContent extends StatelessWidget {
                   children: [
                     Text('Total Kas Kelas 11 PPLG 2', style: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.white)),
                     Padding(padding: EdgeInsets.only(top: screenHeight * 0.01)),
-                    Text('Rp 50.000', style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white)),
+                    Text('Rp 100.000', style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white)),
                   ],
                 ),
               ],

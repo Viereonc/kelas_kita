@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/pending/pending_controller.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
 class PendingScreen extends StatelessWidget {
-  const PendingScreen({Key? key}) : super(key: key);
+  PendingScreen({Key? key}) : super(key: key);
+
+  final PendingController pendingController = Get.put(PendingController());
 
   @override
   Widget build(BuildContext context) {

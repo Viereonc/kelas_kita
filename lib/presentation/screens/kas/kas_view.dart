@@ -16,6 +16,7 @@ class KasScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Obx(() {
         if (kasController.isLoading.value) {
           return Center(
@@ -30,6 +31,7 @@ class KasScreen extends StatelessWidget {
               children: [
                 Container(
                   child: AppBar(
+                    backgroundColor: Colors.white,
                     surfaceTintColor: Colors.white,
                     title: Text(
                       "Kas",

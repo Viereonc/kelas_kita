@@ -72,20 +72,22 @@ class ProfileScreen extends StatelessWidget {
                                 color: Colors.grey[300],
                               ),
                             ),
-                          ) : Container(
+                          ) : ClipOval(
+                            child: Container(
                               width: screenWidth * 0.33,
                               height: screenWidth * 0.33,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(80),
-                                  image: DecorationImage(
-                                      image: editProfileController.selectedImagePath.value != null ?
-                                      FileImage(editProfileController.selectedImagePath.value!) :
-                                      NetworkImage("https://picsum.photos/500/300") as ImageProvider,
-                                      fit: BoxFit.cover
-                                  )
-                                ),
+                              child: editProfileController.selectedImagePath.value != null
+                                  ? Image.file(
+                                editProfileController.selectedImagePath.value!,
+                                fit: BoxFit.cover,
+                              )
+                                  : SvgPicture.asset(
+                                "libassets/images/example.svg",
+                                fit: BoxFit.cover,
+                                color: Colors.red,
                               ),
-                            )
+                            ),
+                            ))
                           ]),
                     ),
                   ],
@@ -357,7 +359,7 @@ class ProfileScreen extends StatelessWidget {
                                     CupertinoDialogAction(child: Text('Ya', style: tsSubHeader4(
                                       screenSize: screenWidth,
                                     ).copyWith(color: Colors.red),),  onPressed: () async {
-                                      await profileController.logout();
+                                      profileController.logout();
                                       Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(builder: (context) => LoginView()),

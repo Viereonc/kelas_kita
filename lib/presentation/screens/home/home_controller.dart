@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../registration/biografi/kelas_model.dart';
 
 class HomeController extends GetxController {
   var isLoading = true.obs;
-  var userName = 'User'.obs;
+  RxString userName = ''.obs;
+  var selectedKelas = KelasModel(idKelas: 0, nama: '').obs;
 
   @override
   void onInit() {
@@ -16,19 +21,19 @@ class HomeController extends GetxController {
 
   Future<void> loadUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName.value = prefs.getString('nama') ?? 'User';
+    userName.value = prefs.getString('nama') ?? '';
   }
 
-  Future<void> saveUserName(String name) async {
+  Future<void> saveUserName(String nama) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('nama', name);
-    userName.value = name;
+    await prefs.setString('nama', nama);
+    userName.value = nama;
   }
 
   Future<void> refreshHome() async {
     isLoading.value = true;
     await loadUserName();
-    await Future.delayed(Duration(seconds: 2)); // Simulasi pemuatan data
+    await Future.delayed(Duration(seconds: 2));
     isLoading.value = false;
   }
 }

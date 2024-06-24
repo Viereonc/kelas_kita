@@ -163,6 +163,7 @@ class BiografiView extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(5.0),
                                       ),
                                       child: DropdownButtonFormField<String>(
+                                        dropdownColor: Colors.white,
                                         value: biografiController.selectedKelas.value.nama.isNotEmpty ? biografiController.selectedKelas.value.nama : null,
                                         items: biografiController.kelasList.map((KelasModel kelas) {
                                           return DropdownMenuItem<String>(
@@ -211,39 +212,49 @@ class BiografiView extends StatelessWidget {
                           screenWidth: screenWidth,
                         ),
                         SizedBox(height: screenHeight * 0.05),
-                        GestureDetector(
-                          onTap: _getImageFromGallery,
-                          child: Obx(() => Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: screenHeight * 0.01),
-                              height: screenHeight * 0.2,
-                              decoration: BoxDecoration(
-                                color: biografiController.selectedImagePath.value !=
-                                    null
-                                    ? Colors.grey.shade200
-                                    : Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(5),
-                                image: biografiController.selectedImagePath.value !=
-                                    null
-                                    ? DecorationImage(
-                                  image: FileImage(
-                                      biografiController.selectedImagePath
-                                          .value!),
-                                  fit: BoxFit.cover,
-                                )
-                                    : null,
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: _getImageFromGallery,
+                              child: Obx(() => Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: screenHeight * 0.01),
+                                  height: screenHeight * 0.2,
+                                  decoration: BoxDecoration(
+                                    color: biografiController.selectedImagePath.value !=
+                                        null
+                                        ? Colors.grey.shade200
+                                        : Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(5),
+                                    image: biografiController.selectedImagePath.value !=
+                                        null
+                                        ? DecorationImage(
+                                      image: FileImage(
+                                          biografiController.selectedImagePath
+                                              .value!),
+                                      fit: BoxFit.cover,
+                                    )
+                                        : null,
+                                  ),
+                                  child: biografiController.selectedImagePath.value ==
+                                      null
+                                      ? Container(
+                                    margin: EdgeInsets.all(15),
+                                    child: SvgPicture.asset(
+                                        "lib/assets/icons/pe_camera.svg"),
+                                  )
+                                      : null,
+                                  width: double.infinity,
+                                ),
                               ),
-                              child: biografiController.selectedImagePath.value ==
-                                  null
-                                  ? Container(
-                                margin: EdgeInsets.all(15),
-                                child: SvgPicture.asset(
-                                    "lib/assets/icons/pe_camera.svg"),
-                              )
-                                  : null,
-                              width: double.infinity,
                             ),
-                          ),
+                            Text('Isi dengan foto anda atau ID Card anda', style: TextStyle(
+                              fontFamily: 'tsParagraft3',
+                              fontWeight: FontWeight.bold,
+                              fontSize: screenWidth * 0.0375,
+                              color: Colors.black.withOpacity(0.5),
+                            ),)
+                          ],
                         ),
                       ],
                     ),
@@ -281,7 +292,7 @@ class BiografiView extends StatelessWidget {
               screenWidth: screenWidth,
               onTap: () async {
                 String imagePath = biografiController.selectedImagePath.value?.path ?? '';
-                String userId = (await SharedPreferences.getInstance()).getInt('user_id').toString();
+                String userId = (await SharedPreferences.getInstance()).getInt('id_user').toString();
 
                 await biografiController.submitBiografi(
                   biografiController.namaController.text,
@@ -347,6 +358,18 @@ class BiografiView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(
                   color: Colors.black.withOpacity(0.4),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black.withOpacity(0.5),
+                  width: 2.0,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black.withOpacity(0.2),
+                  width: 2.0,
                 ),
               ),
             ),

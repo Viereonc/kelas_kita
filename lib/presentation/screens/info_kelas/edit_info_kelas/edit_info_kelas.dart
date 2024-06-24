@@ -5,7 +5,6 @@ import '../../../../constants.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
 import '../../../widgets/Button.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'edit_info_kelas_controller.dart';
 
@@ -67,20 +66,22 @@ class EditInfoKelasScreen extends StatelessWidget {
                       onTap: () => editInfoKelasController.getImageFromGallery(),
                       child: Obx(() {
                         var selectedImagePath = editInfoKelasController.selectedImagePath.value;
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-                          height: screenHeight * 0.2,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(5),
-                            image: DecorationImage(
-                              image: selectedImagePath != null && File(selectedImagePath.path).existsSync()
-                                  ? FileImage(selectedImagePath)
-                                  : NetworkImage(baseUrl + storage + imagePath) as ImageProvider,
-                              fit: BoxFit.cover,
+                        return ClipRRect(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                            height: screenHeight * 0.2,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(5),
+                              image: DecorationImage(
+                                image: selectedImagePath != null && File(selectedImagePath.path).existsSync()
+                                    ? FileImage(selectedImagePath)
+                                    : NetworkImage(baseUrl + storage + editInfoKelasController.imageUrl.value) as ImageProvider,
+                                fit: BoxFit.cover,
+                              ),
                             ),
+                            width: double.infinity,
                           ),
-                          width: double.infinity,
                         );
                       }),
                     ),

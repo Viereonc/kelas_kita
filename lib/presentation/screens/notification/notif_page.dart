@@ -15,6 +15,7 @@ class NotificationPage extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
         child: Column(
@@ -83,10 +84,8 @@ class NotificationPage extends StatelessWidget {
                                     Container(
                                       width: screenWidth * 0.5,
                                       child: Text(
-
                                         'Tagihan Kas Anda Bulan Ini Belum Lunas (Rp. 10.000.00)',
-                                        style: tsParagraft5()
-
+                                        style: tsParagraft5(screenSize: screenWidth)
                                       ),
                                     ),
                                   ],

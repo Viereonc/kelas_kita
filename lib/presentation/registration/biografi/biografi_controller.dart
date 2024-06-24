@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:kelas_kita/routes/app_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:kelas_kita/routes/app_routes.dart';
 
 import '../../../constants.dart';
 import 'kelas_model.dart';
@@ -60,9 +60,9 @@ class BiografiController extends GetxController {
   Future<void> submitBiografi(String nama, String kelas, String nis, String alamat, String idUser, String imagePath) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
-    int? userId = prefs.getInt('user_id');
+    int? idUser = prefs.getInt('id_user');
 
-    if (userId != null) {
+    if (idUser != null) {
       var uri = Uri.parse(baseUrl + biodataEndpoint);
       var request = http.MultipartRequest('POST', uri);
 
@@ -72,13 +72,13 @@ class BiografiController extends GetxController {
       });
 
       request.fields.addAll(<String, String>{
-        'user_id': userId.toString(),
-        'id_role': '1',
+        'id_user': idUser.toString(),
+        'id_role': '6',
         'alamat': alamat,
         'nama': nama,
-        'id_kelas': kelas,
+        'id_kelas': '4',
         'nis': nis,
-        'status': pending,
+        'status': accept,
       });
 
       if (imagePath.isNotEmpty) {
@@ -108,12 +108,15 @@ class BiografiController extends GetxController {
           Get.offNamed(Path.BIOGRAFI_PAGE);
         }
       } else {
+        var responseData = await http.Response.fromStream(response);
+        var decodedData = json.decode(responseData.body);
         print('Error: ${response.statusCode}');
-        print(nama);
-        print(nis);
-        print(alamat);
-        print(userId);
-        print(imagePath);
+        print('Response body: ${decodedData}');
+        print('Nama: $nama');
+        print('NIS: $nis');
+        print('Alamat: $alamat');
+        print('User ID: $idUser');
+        print('Image Path: $imagePath');
       }
     } else {
       print('User ID is null. Unable to submit biografi.');

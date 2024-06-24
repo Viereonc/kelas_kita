@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kelas_kita/constants.dart';
+import 'package:kelas_kita/presentation/widgets/shimmer_loading/list_shimmer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
 import 'add_info_kelas/add_info_kelas.dart';
@@ -22,7 +24,6 @@ class InfoKelasScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -63,9 +64,7 @@ class InfoKelasScreen extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 if (infoKelasController.isLoading.value) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return buildShimmer();
                 } else {
                   final reversedList = infoKelasController.infoKelasList.reversed.toList();
                   return RefreshIndicator(
@@ -81,8 +80,14 @@ class InfoKelasScreen extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         final infoKelas = reversedList[index];
 
-                        DateTime createdAt = DateTime.parse(infoKelas.createdAt.toString());
-                        String formattedDate = DateFormat('yyyy MMMM dd, EEEE').format(createdAt);
+                        DateTime createdAt = DateTime.parse(infoKelas.createdAt.toString()).toLocal();
+                        DateTime? updatedAt = infoKelas.updatedAt != null ? DateTime.parse(infoKelas.updatedAt.toString()).toLocal() : null;
+
+                        String formattedDate = DateFormat('yyyy MMMM dd, EEEE, HH:mm', 'id_ID').format(createdAt);
+
+                        if (updatedAt != null && updatedAt.isAfter(createdAt)) {
+                          formattedDate = DateFormat('yyyy MMMM dd, EEEE, HH:mm', 'id_ID').format(updatedAt) + " (telah diedit)";
+                        }
 
                         return GestureDetector(
                           onTap: () {
@@ -186,6 +191,7 @@ class InfoKelasScreen extends StatelessWidget {
               String? token = prefs.getString('token');
               String idKelas = "1";
               if (token != null) {
+                infoKelasController.isLoading.value = true;
                 final result = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddInfoKelas()),
@@ -196,7 +202,9 @@ class InfoKelasScreen extends StatelessWidget {
                     result["description"],
                     idKelas,
                     token,
-                  );
+                  ).then((_) {
+                    infoKelasController.isLoading.value = false;
+                  });
                 }
               } else {
                 print('Token not found');
@@ -206,7 +214,6 @@ class InfoKelasScreen extends StatelessWidget {
             backgroundColor: primeryColorMedium,
             child: Icon(Icons.add, color: Colors.white, size: 34),
           );
-
         } else {
           return SizedBox.shrink();
         }

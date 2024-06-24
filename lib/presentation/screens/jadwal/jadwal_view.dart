@@ -22,6 +22,7 @@ class JadwalScreen extends StatelessWidget {
     return GetBuilder<JadwalController>(
       builder: (controller) {
         return Scaffold(
+          backgroundColor: Colors.white,
           body: SingleChildScrollView(
             child: Column(
               children: [

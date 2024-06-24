@@ -13,7 +13,6 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
 
   Future<void> loginUser(String email, String password) async {
-
     var url = Uri.parse(baseUrl + loginEndpoint);
     var headers = {
       'Content-Type': 'application/json',
@@ -34,20 +33,25 @@ class LoginController extends GetxController {
         final jsonResponse = jsonDecode(response.body);
         final token = jsonResponse['token'];
         final userData = jsonResponse['user'];
-        final hasBiodata = userData['biodata'] != null;
+
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
         prefs.setString('token', token);
 
-        if (hasBiodata) {
+        if (userData['biodata'] != null) {
+          final name = userData['biodata']['nama'];
+          prefs.setString('nama', name);
           Get.offNamed(Path.HOME_PAGE);
         } else {
           Get.offNamed(Path.BIOGRAFI_PAGE);
         }
 
-        prefs.setInt('user_id', userData['id_user']);
+        prefs.setInt('id_user', userData['id_user']);
         prefs.setString('email', userData['email']);
+
+        emailController.clear();
+        passwordController.clear();
 
         print('Login berhasil');
         print('Bearer Token: $token');

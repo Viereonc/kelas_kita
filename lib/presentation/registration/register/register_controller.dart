@@ -48,18 +48,11 @@ class RegisterController extends GetxController {
         print(response.body);
         Get.toNamed(Path.LOGIN_PAGE);
 
-        // Check if the response is the success message
         if (response.body == '"Registrasi Berhasil"') {
-          // Success handling logic
-          // You might not need to do anything here, as the registration is already successful
-          // If needed, you can add further logic here
         } else {
-          // Handle unexpected response content
           print('Unexpected response content: ${response.body}');
-          // Handle the error accordingly, e.g., show an error message to the user
         }
       } else {
-        // Registrasi gagal
         print('Registrasi gagal');
         print(response.body);
       }

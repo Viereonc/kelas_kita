@@ -19,7 +19,7 @@ class ProfileController extends GetxController {
 
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+    prefs.clear();
   }
 
   Future<void> loadUserName() async {
