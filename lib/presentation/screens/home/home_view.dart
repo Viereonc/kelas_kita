@@ -21,6 +21,7 @@ class HomeScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -32,25 +33,10 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.only(
-                        bottom: screenHeight * 0.02, left: screenWidth * 0.06),
-                    child: Obx(() {
-                      return homeController.isLoading.value
-                          ? Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          width: screenWidth * 0.6,
-                          height: 24.0,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                        ),
-                      )
-                          : Text('Hello, ${homeController.userName} 👋',
-                          style: tsHeader3(screenSize: screenWidth));
-                    }),
-                  ),
+                        bottom: screenHeight * 0.02, left: screenWidth * 0.04),
+                    child: Obx(() => Text('Hello, ${homeController.userName.value} 👋',
+                        style: tsHeader3(screenSize: screenWidth))),
+                   ),
                   Obx(() => homeController.isLoading.value
                       ? ShimmerLoadingContainer1(
                     screenWidth: screenWidth,

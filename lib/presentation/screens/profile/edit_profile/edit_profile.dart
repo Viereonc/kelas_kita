@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
@@ -36,11 +37,13 @@ class EditProfileScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(66),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: AppBar(
+            backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
             title: Text(
               "Edit Profile",
@@ -89,15 +92,28 @@ class EditProfileScreen extends StatelessWidget {
                       width: screenWidth * 0.43,
                       height: screenWidth * 0.4,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                              image: editProfileController.selectedImagePath.value != null
-                                  ? FileImage(editProfileController.selectedImagePath.value!)
-                                  : NetworkImage("https://picsum.photos/500/300") as ImageProvider,
-                              fit: BoxFit.cover)),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.withOpacity(0.2)
+                      ),
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: editProfileController.selectedImagePath.value != null
+                                ? Image.file(
+                              editProfileController.selectedImagePath.value!,
+                              width: screenWidth * 0.43,
+                              height: screenWidth * 0.4,
+                              fit: BoxFit.cover,
+                            ) : Center(
+                              child: SvgPicture.asset(
+                                "lib/assets/icons/pe_camera.svg",
+                                height: screenWidth * 0.25,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                           Positioned(
                             bottom: -screenWidth * 0.05,
                             left: (screenWidth * 0.43 - screenWidth * 0.1) / 2,
@@ -113,11 +129,13 @@ class EditProfileScreen extends StatelessWidget {
                                   width: screenWidth * 0.085,
                                   height: screenWidth * 0.085,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(35),
-                                      color: primeryColorMedium),
+                                    borderRadius: BorderRadius.circular(35),
+                                    color: primeryColorMedium,
+                                  ),
                                   child: GestureDetector(
-                                      onTap: _getImageFromGallery,
-                                      child: Icon(Icons.edit, color: Colors.white)),
+                                    onTap: _getImageFromGallery,
+                                    child: Icon(Icons.edit, color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
@@ -144,15 +162,6 @@ class EditProfileScreen extends StatelessWidget {
                                 screenSize: screenWidth,
                               ),
                               height: screenHeight * 0.06,
-                              onChanged: (value) {
-                                editProfileController.ctrEmail.value = value;
-                              },
-                              validator: (value) {
-                                if (value == null || !value.contains('@gmail.com')) {
-                                  return 'Email tidak valid';
-                                }
-                                return null;
-                              }
                           ),
                         ),
                       ],
@@ -165,12 +174,22 @@ class EditProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Nomor Telephone', style: tsSubHeader4(fontWeight: FontWeight.w700, screenSize: screenWidth,)),
+                        Text('Nomor Handphone', style: tsSubHeader4(fontWeight: FontWeight.w700, screenSize: screenWidth,)),
                         Container(
                           margin: EdgeInsets.only(bottom: screenHeight * 0.02),
                           child: textFormField(
-                              label: "Nomor Telephone",
+                              label: "Nomor Handphone",
                               controller: ctrPhone,
+                              textInputType: TextInputType.phone,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Nomor Telepon tidak boleh kosong';
+                                }
+                                if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                                  return 'Masukkan nomor telepon yang valid';
+                                }
+                                return null;
+                              },
                               labelStyle: tsParagraft3(
                                 color: Colors.black.withOpacity(0.3),
                                 screenSize: screenWidth,
@@ -224,18 +243,15 @@ class EditProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Obx(() => Button(
+                  Button(
                     label: "Simpan Perubahan",
                     textStyle: tsSubHeader4(
                       screenSize: screenWidth,
                     ),
                     textColor: Colors.white,
-                    backgroundColor: editProfileController.ctrEmail.value.contains('@gmail.com')
-                        ? primeryColorMedium
-                        : Colors.grey,
+                    backgroundColor: primeryColorMedium,
                     side: BorderSide.none,
-                    onPressed: editProfileController.ctrEmail.value.contains('@gmail.com')
-                        ? () {
+                    onPressed:  () {
                       editProfileController.ctrEdit(
                         ctrEmail.text,
                         ctrPhone.text,
@@ -243,16 +259,8 @@ class EditProfileScreen extends StatelessWidget {
                         ctrBio.text,
                         editProfileController.selectedImagePath.value,
                       );
-                      Get.to(() => ProfileScreen())?.then((value) {
-                        ctrEmail.clear();
-                        ctrPhone.clear();
-                        ctrAddress.clear();
-                        ctrBio.clear();
-                        editProfileController.selectedImagePath.value = null;
-                      });
-                    }
-                        : () {}, // Default to an empty function if null
-                  ),
+                      Get.to(ProfileScreen());
+                    }, // Default to an empty function if null
                   )
                 ],
               ),

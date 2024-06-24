@@ -10,7 +10,9 @@ class JadwalPiket extends StatelessWidget {
 
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           flexibleSpace: Container(
             alignment: Alignment.bottomCenter,
             padding: EdgeInsets.only(

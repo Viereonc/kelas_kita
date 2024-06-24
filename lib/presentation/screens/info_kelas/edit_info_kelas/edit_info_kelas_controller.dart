@@ -10,12 +10,12 @@ import 'package:http/http.dart' as http;
 class EditInfoKelasController extends GetxController {
   final TextEditingController descriptionController = TextEditingController();
   final Rx<File?> selectedImagePath = Rx<File?>(null);
+  final RxString imageUrl = ''.obs;
   RxList<InfoKelasModel> infoKelasList = <InfoKelasModel>[].obs;
   var isLoading = true.obs;
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     fetchInformasiKelas();
   }
@@ -50,7 +50,7 @@ class EditInfoKelasController extends GetxController {
     print(description);
     print(imagePath);
     if (imagePath.isNotEmpty) {
-      selectedImagePath.value = File(imagePath);
+      imageUrl.value = imagePath; // Store the initial image URL
     }
     descriptionController.text = description;
   }
@@ -67,39 +67,41 @@ class EditInfoKelasController extends GetxController {
   Future<void> editInfoKelas(int index, File? imageFile, String description, String idKelas, String token, int idInformasiKelas) async {
     final DateTime currentTime = DateTime.now();
 
-      InfoKelasModel updatedInfoKelas = InfoKelasModel(
-        idInformasiKelas: idInformasiKelas,
-        idKelas: int.parse(idKelas),
-        image: imageFile?.path ?? "",
-        pengumuman: description,
-        createdAt: currentTime,
-        updatedAt: currentTime,
-      );
+    String imagePath = imageFile?.path ?? imageUrl.value; // Use the initial URL if no new image is selected
 
-      var url = Uri.parse('${baseUrl}api/informasi_kelas/${idInformasiKelas}');
-      var headers = {
-        'Authorization': 'Bearer $token',
-      };
-      var request = http.MultipartRequest('POST', url)
-        ..headers.addAll(headers)
-        ..fields['id_informasi_kelas'] = updatedInfoKelas.idInformasiKelas.toString()
-        ..fields['id_kelas'] = idKelas
-        ..fields['pengumuman'] = description;
+    InfoKelasModel updatedInfoKelas = InfoKelasModel(
+      idInformasiKelas: idInformasiKelas,
+      idKelas: int.parse(idKelas),
+      image: imagePath,
+      pengumuman: description,
+      createdAt: currentTime,
+      updatedAt: currentTime,
+    );
 
-      if (imageFile != null) {
-        request.files.add(await http.MultipartFile.fromPath('image', updatedInfoKelas.image));
-      }
+    var url = Uri.parse('${baseUrl}api/informasi_kelas/${idInformasiKelas}');
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    var request = http.MultipartRequest('POST', url)
+      ..headers.addAll(headers)
+      ..fields['id_informasi_kelas'] = updatedInfoKelas.idInformasiKelas.toString()
+      ..fields['id_kelas'] = idKelas
+      ..fields['pengumuman'] = description;
 
-      try {
-        var response = await request.send();
-        if (response.statusCode == 200) {
-          print('Info kelas berhasil diedit');
-          fetchInformasiKelas();
-        } else {
-          print('Gagal mengedit info kelas: ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Error: $e');
-      }
+    if (imageFile != null) {
+      request.files.add(await http.MultipartFile.fromPath('image', updatedInfoKelas.image));
     }
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        print('Info kelas berhasil diedit');
+        fetchInformasiKelas();
+      } else {
+        print('Gagal mengedit info kelas: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 }

@@ -22,7 +22,7 @@ Widget textFormField({
           : label == "Email"
           ? TextInputType.emailAddress
           : TextInputType.text,
-      inputFormatters: label == "Nomor Telephone"
+      inputFormatters: label == "Nomor Handphone"
           ? <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly,
       ]
@@ -37,6 +37,18 @@ Widget textFormField({
           borderSide: BorderSide(
             color: Colors.black,
             width: 2,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black.withOpacity(0.5),
+            width: 2.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black.withOpacity(0.2),
+            width: 2.0,
           ),
         ),
       ),

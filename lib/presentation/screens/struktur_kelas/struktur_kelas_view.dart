@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:kelas_kita/data/models/struktur_kelas.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_controller.dart';
 import 'package:kelas_kita/presentation/themes/Backdrop.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
@@ -39,6 +38,7 @@ class StrukturKelasScreen extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
           child: AppBar(
+            backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
             title: Text(
               "Struktur Kelas",
@@ -84,9 +84,9 @@ class StrukturKelasScreen extends StatelessWidget {
                   return Center(child: CircularProgressIndicator());
                 } else {
                   return ListView.builder(
-                    itemCount: strukturKelasList.length,
+                    itemCount: strukturKelasController.infoStrukturKelasList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final strukturKelas = strukturKelasList[index];
+                      final strukturKelas = strukturKelasController.infoStrukturKelasList[index];
                       return Padding(
                         padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02, horizontal: screenWidth * 0.02),
                         child: Container(
@@ -108,7 +108,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      strukturKelas.name,
+                                      strukturKelas.nama,
                                       style: tsSubHeader4(
                                           fontWeight: FontWeight.bold,
                                           screenSize: screenWidth
@@ -116,7 +116,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                       maxLines: 2,
                                     ),
                                     SizedBox(height: screenHeight * 0.008,),
-                                    Text(strukturKelas.role, style: tsParagraft5(fontWeight: FontWeight.w500, screenSize: screenWidth * 1.3).copyWith(color: Colors.grey.withOpacity(0.9))),
+                                    Text(strukturKelas.roleName, style: tsParagraft5(fontWeight: FontWeight.w500, screenSize: screenWidth * 1.3).copyWith(color: Colors.grey.withOpacity(0.9))),
                                   ],
                                 ),
                                 leading: Container(
@@ -142,11 +142,11 @@ class StrukturKelasScreen extends StatelessWidget {
                               Container(
                                 margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                                 child: Row(
-                                  mainAxisAlignment: strukturKelas.role == 'Wali Kelas'
+                                  mainAxisAlignment: strukturKelas.nama == 'Wali Kelas'
                                       ? MainAxisAlignment.start
                                       : MainAxisAlignment.spaceBetween,
                                   children: [
-                                    if (strukturKelas.role != 'Wali Kelas')
+                                    if (strukturKelas.nama != 'Wali Kelas')
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,7 +161,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                           Container(
                                             margin: EdgeInsets.only(top: screenHeight * 0.01),
                                             child: Text(
-                                              strukturKelas.absen.toString(),
+                                              strukturKelas.nama.toString(),
                                               style: tsParagraft5(
                                                   screenSize: screenWidth * 1.3
                                               ).copyWith(color: primeryColorMedium),
@@ -190,7 +190,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    if (strukturKelas.role != 'Wali Kelas')
+                                    if (strukturKelas.nama != 'Wali Kelas')
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -225,10 +225,10 @@ class StrukturKelasScreen extends StatelessWidget {
                                         Container(
                                           margin: EdgeInsets.only(top: screenHeight * 0.01),
                                           child: Text(
-                                            strukturKelas.noHP.toString(),
+                                            '0${strukturKelas.user.nomor.toString()}',
                                             style: tsParagraft5(
                                                 screenSize: screenWidth * 1.3
-                                            ).copyWith(color: Color(0xFF473CC6)
+                                              ).copyWith(color: Color(0xFF473CC6)
                                             ),
                                           ),
                                         ),
