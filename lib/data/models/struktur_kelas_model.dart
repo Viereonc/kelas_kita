@@ -19,6 +19,7 @@ class InfoStrukturKelasModel {
   User user;
   Kelas kelas;
   Role role;
+  int? absen; // New property
 
   InfoStrukturKelasModel({
     required this.idBiodata,
@@ -35,6 +36,7 @@ class InfoStrukturKelasModel {
     required this.user,
     required this.kelas,
     required this.role,
+    this.absen, 
   });
 
   factory InfoStrukturKelasModel.fromJson(Map<String, dynamic> json) => InfoStrukturKelasModel(
@@ -52,6 +54,7 @@ class InfoStrukturKelasModel {
     user: User.fromJson(json["user"]),
     kelas: Kelas.fromJson(json["kelas"]),
     role: Role.fromJson(json["role"]),
+    absen: json["absen"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -69,8 +72,10 @@ class InfoStrukturKelasModel {
     "user": user.toJson(),
     "kelas": kelas.toJson(),
     "role": role.toJson(),
+    "absen": absen, 
   };
 }
+
 
 class Kelas {
   int idKelas;
