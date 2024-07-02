@@ -8,6 +8,7 @@ abstract class Route {
   static const BIOGRAFIVIEW_PAGE = Path.BIOGRAFI_PAGE;
   static const PENDING_PAGE = Path.PENDING_PAGE;
   static const HOMEVIEW_PAGE = Path.HOME_PAGE;
+  static const HOMEGURUVIEW_PAGE = Path.HOMEGURU_PAGE;
   static const NOTIFICATIONVIEW_PAGE = Path.NOTIFICATION_PAGE;
   static const STRUKTURKELASVIEW_PAGE = Path.STRUKTURKELAS_PAGE;
   static const INFOKELASVIEW_PAGE = Path.INFOKELAS_PAGE;
@@ -30,6 +31,7 @@ abstract class Path {
   static const BIOGRAFI_PAGE = "/biografiView";
   static const PENDING_PAGE = "/pendingView";
   static const HOME_PAGE = "/homescreen";
+  static const HOMEGURU_PAGE = "/homeguruscreen";
   static const NOTIFICATION_PAGE = "/notification";
   static const STRUKTURKELAS_PAGE = "/strukturkelasscreen";
   static const INFOKELAS_PAGE = "/infokelasscreen";

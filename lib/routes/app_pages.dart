@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/registration/biografi/form_biografi.dart';
+import 'package:kelas_kita/presentation/screens/home_guru/home_guru_view.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/pending/pending_view.dart';
 import 'package:kelas_kita/presentation/screens/splashscreen/SplashScreen.dart';
@@ -27,6 +28,7 @@ class AppPages {
   static const BIOGRAFI = Route.BIOGRAFIVIEW_PAGE;
   static const PENDING = Route.PENDING_PAGE;
   static const HOME = Route.HOMEVIEW_PAGE;
+  static const HOMEGURU = Route.HOMEGURUVIEW_PAGE;
   static const NOTIFICATION = Route.NOTIFICATIONVIEW_PAGE;
   static const STRUKTURKELAS = Route.STRUKTURKELASVIEW_PAGE;
   static const INFOKELAS = Route.INFOKELASVIEW_PAGE;
@@ -67,6 +69,10 @@ class AppPages {
     GetPage(
         name: Path.HOME_PAGE,
         page: () => HomeScreen(),
+        transition: Transition.noTransition),
+    GetPage(
+        name: Path.HOMEGURU_PAGE,
+        page: () => HomeScreenGuru(),
         transition: Transition.noTransition),
     GetPage(
         name: Path.NOTIFICATION_PAGE,
