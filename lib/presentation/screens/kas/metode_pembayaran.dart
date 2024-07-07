@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
 class MetodePembayaran extends StatelessWidget {
@@ -11,6 +12,7 @@ class MetodePembayaran extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
+      // color: Colors.white,
       height: screenHeight / 2.5,
       width: double.infinity,
       child: Padding(
@@ -38,11 +40,11 @@ class MetodePembayaran extends StatelessWidget {
                 itemBuilder: (context, index) {
                   List<Map<String, dynamic>> items = [
                     {
-                      'icon': Icons.photo,
+                      'image': 'lib/assets/images/logos_dana.png',
                       'title': 'Dana',
                     },
                     {
-                      'icon': Icons.qr_code,
+                      'image': 'lib/assets/images/logos_qris.png',
                       'title': 'QRIS',
                     },
                   ];
@@ -54,7 +56,7 @@ class MetodePembayaran extends StatelessWidget {
                       // Handle onTap
                     },
                     child: ListTile(
-                      leading: Icon(item['icon']),
+                      leading: Image.asset(item['image'],),
                       title: Text(
                         item['title'],
                         style: tsSubHeader4(

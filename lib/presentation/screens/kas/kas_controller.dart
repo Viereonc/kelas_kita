@@ -17,8 +17,8 @@ class KasController extends GetxController {
   }
 
   final Map<String, List<String>> paymentHistory = {
-    'Januari': ['Pembayaran ke-1', 'Pembayaran ke-2', 'Pembayaran ke-3', 'Pembayaran ke-4',],
-    'Februari': ['Pembayaran ke-1', 'Pembayaran ke-2'],
+    'Maret 2024': ['Gopay • 14 Maret 2024 08.45 AM', 'Gopay • 14 Maret 2024 08.45 AM', 'Gopay • 14 Maret 2024 08.45 AM', 'Gopay • 14 Maret 2024 08.45 AM',],
+    'April 2024': ['Gopay • 14 Maret 2024 08.45 AM', 'Gopay • 14 Maret 2024 08.45 AM'],
   };
 
   void openIconButtonpressed (BuildContext context) {
