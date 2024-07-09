@@ -47,7 +47,7 @@ class RealContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SvgPicture.asset(
-                    "lib/assets/icons/he_cash.svg", width: screenWidth * 0.05,
+                    "lib/assets/icons/he_info_user.svg", width: screenWidth * 0.05,
                     height: screenHeight * 0.05),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,

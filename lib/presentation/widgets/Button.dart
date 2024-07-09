@@ -9,6 +9,8 @@ class Button extends StatelessWidget {
   // final ShapeBorder shape;
   final BorderSide side;
   final VoidCallback onPressed;
+  final double? height;
+  final double? width;
 
   const Button({
     Key? key,
@@ -19,6 +21,8 @@ class Button extends StatelessWidget {
     // required this.shape,
     required this.side,
     required this.onPressed,
+    this.height,
+    this.width
   }) : super(key: key);
 
   @override
