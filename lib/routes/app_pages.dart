@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/registration/biografi/form_biografi.dart';
 import 'package:kelas_kita/presentation/screens/home_guru/home_guru_view.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas.dart';
+import 'package:kelas_kita/presentation/screens/lupa_password/input_email/input_email.dart';
 import 'package:kelas_kita/presentation/screens/pending/pending_view.dart';
 import 'package:kelas_kita/presentation/screens/splashscreen/SplashScreen.dart';
 import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
@@ -24,6 +25,7 @@ class AppPages {
   static const INITIAL = Route.SPLASHSCREEN_PAGE;
   static const ONBOARDING = Route.ONBOARDINGVIEW_PAGE;
   static const LOGIN = Route.LOGINVIEW_PAGE;
+  static const INPUTEMAIL = Route.INPUTEMAILVIEW_PAGE;
   static const REGISTER = Route.REGISTERVIEW_PAGE;
   static const BIOGRAFI = Route.BIOGRAFIVIEW_PAGE;
   static const PENDING = Route.PENDING_PAGE;
@@ -53,6 +55,10 @@ class AppPages {
     GetPage(
         name: Path.LOGIN_PAGE,
         page: () => LoginView(),
+        transition: Transition.noTransition),
+    GetPage(
+        name: Path.INPUTEMAIL_PAGE,
+        page: () => InputEmailScreen(),
         transition: Transition.noTransition),
     GetPage(
         name: Path.REGISTER_PAGE,

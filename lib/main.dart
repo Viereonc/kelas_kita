@@ -15,7 +15,7 @@ class MyApp extends GetMaterialApp {
     return GetMaterialApp(
       title: 'Kelas Kita',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppPages.HOMEGURU,
+      initialRoute: AppPages.INPUTEMAIL,
       getPages: AppPages.routes,
     );
   }

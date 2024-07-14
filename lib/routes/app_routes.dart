@@ -4,6 +4,7 @@ abstract class Route {
   static const SPLASHSCREEN_PAGE = Path.SPLASHSCREEN_PAGE;
   static const ONBOARDINGVIEW_PAGE = Path.ONBOARDING_PAGE;
   static const LOGINVIEW_PAGE = Path.LOGIN_PAGE;
+  static const INPUTEMAILVIEW_PAGE = Path.INPUTEMAIL_PAGE;
   static const REGISTERVIEW_PAGE = Path.REGISTER_PAGE;
   static const BIOGRAFIVIEW_PAGE = Path.BIOGRAFI_PAGE;
   static const PENDING_PAGE = Path.PENDING_PAGE;
@@ -27,6 +28,7 @@ abstract class Path {
   static const SPLASHSCREEN_PAGE = "/";
   static const ONBOARDING_PAGE = "/onboarding";
   static const LOGIN_PAGE = "/loginView";
+  static const INPUTEMAIL_PAGE = "/inputemailView";
   static const REGISTER_PAGE = "/registerview";
   static const BIOGRAFI_PAGE = "/biografiView";
   static const PENDING_PAGE = "/pendingView";
