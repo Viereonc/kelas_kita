@@ -131,7 +131,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                   width: screenWidth * 0.12,
                                   height: screenWidth * 0.12,
                                   decoration: BoxDecoration(
-                                    color: iconColors[index % iconColors.length], // Set the color based on the index
+                                    color: iconColors[index % iconColors.length], 
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
