@@ -13,11 +13,11 @@ class JadwalController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchStrukturKelas();
+    fetchJadwalPelajaran();
     selectDay('Sel');
   }
 
-  void fetchStrukturKelas() async {
+  void fetchJadwalPelajaran() async {
     isLoading.value = true;
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();

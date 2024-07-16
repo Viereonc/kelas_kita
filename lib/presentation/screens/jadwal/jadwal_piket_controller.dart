@@ -1,14 +1,20 @@
 import 'package:get/get.dart';
-import 'package:kelas_kita/presentation/screens/jadwal/jadwal_piket_model.dart';
+import 'package:kelas_kita/data/models/jadwal_piket_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../constants.dart';
 
 class JadwalPiketController extends GetxController {
+  RxList<JadwalPiketModel> jadwalPiketList = <JadwalPiketModel>[].obs;
   var isLoading = true.obs;
-  var selectedDay = 'Sen';
+  var selectedDay = '';
 
   @override
   void onInit() {
     super.onInit();
     loadLoading();
+    fetchJadwalPiket();
   }
 
   void loadLoading() async {
@@ -16,29 +22,41 @@ class JadwalPiketController extends GetxController {
     isLoading.value = false;
   }
 
-  final List<ScheduleItem> scheduleItems = [
-    ScheduleItem(name: 'Abid', day: 'Sen'),
-    ScheduleItem(name: 'Adam', day: 'Sen'),
-    ScheduleItem(name: 'Baratha', day: 'Sen'),
-    ScheduleItem(name: 'Yasa', day: 'Sel'),
-    ScheduleItem(name: 'Piu', day: 'Sel'),
-    ScheduleItem(name: 'Nares', day: 'Sel'),
-    ScheduleItem(name: 'Adit', day: 'Rab'),
-    ScheduleItem(name: 'Kia', day: 'Rab'),
-    ScheduleItem(name: 'Asyela', day: 'Rab'),
-    ScheduleItem(name: 'Calista', day: 'Kam'),
-    ScheduleItem(name: 'Arvi', day: 'Kam'),
-    ScheduleItem(name: 'Mario', day: 'Kam'),
-    ScheduleItem(name: 'Zidan', day: 'Jum'),
-    ScheduleItem(name: 'Faris', day: 'Jum'),
-    ScheduleItem(name: 'Mario', day: 'Jum'),
-    ScheduleItem(name: 'Vicko', day: 'Sab'),
-    ScheduleItem(name: 'Caesa', day: 'Sab'),
-    ScheduleItem(name: 'Izal', day: 'Sab'),
-  ];
+  void fetchJadwalPiket() async {
+    isLoading.value = true;
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? idKelas = prefs.getInt('id_kelas');
 
-  List<ScheduleItem> getScheduleForDay(String day) {
-    return scheduleItems.where((item) => item.day == day).toList();
+      if (idKelas != null) {
+        final response = await http.get(
+          Uri.parse(baseUrl + getJadwalPiketEndPoint + '$idKelas'),
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var fetchedData = jadwalPiketModelFromJson(response.body);
+          jadwalPiketList.value = fetchedData;
+          print('Data fetched successfully: ${jadwalPiketList.length} items');
+          print('First item: ${fetchedData.isNotEmpty ? fetchedData[0].toJson() : 'No data'}');
+        } else {
+          print('Failed to fetch data: ${response.statusCode}');
+        }
+      } else {
+        print('id_kelas is null');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  List<JadwalPiketModel> getScheduleForDay(String day) {
+    return jadwalPiketList.where((item) => item.hari == day).toList();
   }
 
   void selectDay(String day) {
