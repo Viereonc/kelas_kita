@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/jadwal/jadwal_view.dart';
 import 'jadwal_piket_controller.dart';
 
 class JadwalPiket extends StatelessWidget {
@@ -62,7 +64,7 @@ class JadwalPiket extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => JadwalPiket()),
+                      MaterialPageRoute(builder: (context) => JadwalScreen()),
                     );
                   },
                   child: Container(
@@ -89,10 +91,10 @@ class JadwalPiket extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.all(screenWidth * 0.02),
-                          child: Icon(
-                            Icons.swap_horiz,
-                            color: Colors.white,
-                            size: screenWidth * 0.05,
+                          child: SvgPicture.asset(
+                            'lib/assets/icons/ep_switch (1).svg',
+                            width: screenWidth * 0.03,
+                            height: screenHeight * 0.03,
                           ),
                         ),
                       ],
@@ -136,7 +138,7 @@ class JadwalPiket extends StatelessWidget {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    item.name,
+                                    item.nama,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontFamily: 'tsParagraft1',
