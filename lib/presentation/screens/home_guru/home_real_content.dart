@@ -9,12 +9,14 @@ class RealContent extends StatelessWidget {
   final double screenWidth;
   final double screenHeight;
   final Color primeryColorDark;
+  final RxString advancedClassSchedule; 
 
   const RealContent({
     Key? key,
     required this.screenWidth,
     required this.screenHeight,
     required this.primeryColorDark,
+    required this.advancedClassSchedule, 
   }) : super(key: key);
 
   @override
@@ -55,7 +57,7 @@ class RealContent extends StatelessWidget {
                   children: [
                     Text('Jumlah Absensi', style: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.white)),
                     Padding(padding: EdgeInsets.only(top: screenHeight * 0.01)),
-                    Text('11 PPLG 2', style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white)),
+                    Obx(() => Text(advancedClassSchedule.value, style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white))), // Modify this line
                   ],
                 ),
               ],
