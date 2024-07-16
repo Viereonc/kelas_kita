@@ -4,6 +4,7 @@ import 'package:kelas_kita/presentation/screens/home_guru/home_guru_view.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/lupa_password/input_email/input_email.dart';
 import 'package:kelas_kita/presentation/screens/pending/pending_view.dart';
+import 'package:kelas_kita/presentation/screens/qr_code_siswa/qr_code_siswa.dart';
 import 'package:kelas_kita/presentation/screens/splashscreen/SplashScreen.dart';
 import 'package:kelas_kita/presentation/screens/agenda/agenda_view.dart';
 import 'package:kelas_kita/presentation/screens/home/home_view.dart';
@@ -40,7 +41,7 @@ class AppPages {
   static const AGENDA = Route.AGENDAVIEW_PAGE;
   static const PROFILE = Route.PROFILEVIEW_PAGE;
   static const JADWAL = Route.JADWALVIEW_PAGE;
-
+  static const QRCODESISWA = Route.QRCODESISWAVIEW_PAGE;
 
   static final routes = [
     GetPage(
@@ -119,6 +120,10 @@ class AppPages {
     GetPage(
         name: Path.QRCODE,
         page: () => QrCodeScreen(),
+        transition: Transition.noTransition),
+    GetPage(
+        name: Path.QRCODESISWA,
+        page: () => QrCodeSiswaScreen(),
         transition: Transition.noTransition),
   ];
 }

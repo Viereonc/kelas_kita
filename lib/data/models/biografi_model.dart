@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 List<InfoBiografiModel> infoBiografiModelFromJson(String str) => List<InfoBiografiModel>.from(json.decode(str).map((x) => InfoBiografiModel.fromJson(x)));
