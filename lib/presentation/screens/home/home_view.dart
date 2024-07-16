@@ -163,7 +163,7 @@ class HomeScreen extends StatelessWidget {
         width: 64,
         child: FloatingActionButton(
           onPressed: () {
-            Get.toNamed('/qrcodescreen');
+            Get.toNamed('/qrcodesiswascreen');
           },
           backgroundColor: primeryColorMedium,
           elevation: 0,

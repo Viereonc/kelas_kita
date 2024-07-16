@@ -10,6 +10,7 @@ const infoGetKelasEndpoint = 'api/informasi_kelas';
 const storage = 'storage/';
 const infoTugasEndPoint = 'api/tugas/store';
 const infoGetTugasEndPoint = 'api/tugas';
+const getJadwalKelasEndPoint = 'api/jadwal-pelajaran/kelas/';
 
 const pending = 'P';
 const accept = 'A';
