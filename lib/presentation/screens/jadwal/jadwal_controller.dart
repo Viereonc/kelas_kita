@@ -21,7 +21,7 @@ class JadwalController extends GetxController {
   ScheduleItem(
     time: '07.40',
     subject: 'Bahasa Inggris',
-    teacher: 'Mrs Ristina',
+    teacher: 'Mrs Ristina', 
     duration: '07.40 - 09.40',
     day: 'Sen',
   ),
