@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:kelas_kita/presentation/screens/qr_code_siswa/qr_code_siswa_controller.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
+import 'package:kelas_kita/presentation/screens/qr_code_siswa/qr_code_siswa_controller.dart';
 
 class QrCodeSiswaScreen extends StatelessWidget {
   QrCodeSiswaScreen({Key? key}) : super(key: key);
 
+  final MobileScannerController cameraController = MobileScannerController();
   final QrCodeSiswaController qrCodeSiswaController = Get.put(QrCodeSiswaController());
 
   @override
@@ -74,7 +75,9 @@ class QrCodeSiswaScreen extends StatelessWidget {
                       Text(
                         'Scan Disini',
                         style: tsSubHeader4(
-                            screenSize: screenWidth, fontWeight: FontWeight.w700),
+                          screenSize: screenWidth,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       Container(
                         height: screenHeight * 0.3,
@@ -91,34 +94,43 @@ class QrCodeSiswaScreen extends StatelessWidget {
                             ),
                           ],
                           border: Border.all(
-                            color: Colors.black, // Warna border
-                            width: 1, // Lebar border dalam pixel
+                            color: Colors.black,
+                            width: 1,
                           ),
                         ),
                         child: Center(
-                          child: Obx(() {
-                            if (qrCodeSiswaController.biografiList.isNotEmpty) {
-                              final biografi = qrCodeSiswaController.biografiList.first;
-                              final qrData = 'ID User: ${biografi.idUser}, Nama: ${biografi.nama}, ID Kelas: ${biografi.kelas.idKelas}, Kelas: ${biografi.kelas.nama}';
-                              return QrImageView(
-                                data: qrData,
-                                version: QrVersions.auto,
-                                size: screenHeight * 0.3,
-                              );
-                            } else {
-                              return Center(
-                                child: Text('Loading QR Code...'),
-                              );
-                            }
-                          }),
+                          child: MobileScanner(
+                            controller: cameraController,
+                            onDetect: (barcodeCapture) {
+                              final Barcode? barcode = barcodeCapture.barcodes.first;
+                              final String? code = barcode?.rawValue;
+                              if (code != null) {
+                                Navigator.pop(context, code);
+                              }
+                            },
+                          ),
                         ),
                       ),
                       Obx(() {
                         return Column(
                           children: qrCodeSiswaController.biografiList.map((biografi) {
                             return ListTile(
-                              title: Text(biografi.nama, style: tsSubHeader3(screenSize: screenWidth * 0.8, fontWeight: FontWeight.w900), textAlign: TextAlign.center,),
-                              subtitle: Text(biografi.kelas.nama, style: tsSubHeader3(screenSize: screenWidth * 0.8, fontWeight: FontWeight.w900), textAlign: TextAlign.center,),
+                              title: Text(
+                                biografi.nama,
+                                style: tsSubHeader3(
+                                  screenSize: screenWidth * 0.8,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              subtitle: Text(
+                                biografi.kelas.nama,
+                                style: tsSubHeader3(
+                                  screenSize: screenWidth * 0.8,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             );
                           }).toList(),
                         );
