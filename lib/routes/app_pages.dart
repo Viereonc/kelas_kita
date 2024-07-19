@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/registration/biografi/form_biografi.dart';
-import 'package:kelas_kita/presentation/screens/home_guru/home_guru_view.dart';
+import 'package:kelas_kita/presentation/screens/guru/struktur_kelas_guru/struktur_kelas_view.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/lupa_password/input_email/input_email.dart';
 import 'package:kelas_kita/presentation/screens/pending/pending_view.dart';
@@ -21,6 +21,7 @@ import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_vi
 import 'package:kelas_kita/routes/app_routes.dart';
 
 import '../presentation/registration/register/register_view.dart';
+import '../presentation/screens/guru/home_guru/home_guru_view.dart';
 
 class AppPages {
   static const INITIAL = Route.SPLASHSCREEN_PAGE;
@@ -34,6 +35,7 @@ class AppPages {
   static const HOMEGURU = Route.HOMEGURUVIEW_PAGE;
   static const NOTIFICATION = Route.NOTIFICATIONVIEW_PAGE;
   static const STRUKTURKELAS = Route.STRUKTURKELASVIEW_PAGE;
+  static const STRUKTURKELASGURU = Route.STRUKTURKELASGURUVIEW_PAGE;
   static const INFOKELAS = Route.INFOKELASVIEW_PAGE;
   static const INFOTUGAS = Route.INFOTUGASVIEW_PAGE;
   static const PEMBUKUAN = Route.PEMBUKUANVIEW_PAGE;
@@ -88,6 +90,10 @@ class AppPages {
     GetPage(
         name: Path.STRUKTURKELAS_PAGE,
         page: () => StrukturKelasScreen(),
+        transition: Transition.noTransition),
+    GetPage(
+        name: Path.STRUKTURKELASGURU_PAGE,
+        page: () => StrukturKelasGuruScreen(),
         transition: Transition.noTransition),
     GetPage(
         name: Path.INFOKELAS_PAGE,
