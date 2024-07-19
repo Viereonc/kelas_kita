@@ -139,7 +139,7 @@ class RealIcons extends StatelessWidget {
             svgAsset: "lib/assets/icons/he_struktur.svg",
             text: 'Struktur',
             onTap: () {
-              Get.toNamed(Path.STRUKTURKELAS_PAGE);
+              Get.toNamed(Path.STRUKTURKELASGURU_PAGE);
             },
           ),
         ],

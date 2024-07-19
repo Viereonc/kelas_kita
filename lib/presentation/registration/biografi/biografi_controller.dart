@@ -76,7 +76,7 @@ class BiografiController extends GetxController {
         'id_role': '6',
         'alamat': alamat,
         'nama': nama,
-        'id_kelas': '4',
+        'id_kelas': '3',
         'nis': nis,
         'status': accept,
       });
