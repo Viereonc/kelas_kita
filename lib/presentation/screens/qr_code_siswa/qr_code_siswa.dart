@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/screens/qr_code_siswa/qr_code_siswa_controller.dart';
@@ -99,16 +100,21 @@ class QrCodeSiswaScreen extends StatelessWidget {
                           ),
                         ),
                         child: Center(
-                          child: MobileScanner(
-                            controller: cameraController,
-                            onDetect: (barcodeCapture) {
-                              final Barcode? barcode = barcodeCapture.barcodes.first;
-                              final String? code = barcode?.rawValue;
-                              if (code != null) {
-                                Navigator.pop(context, code);
-                              }
-                            },
-                          ),
+                          child:  Obx(() {
+                            if (qrCodeSiswaController.biografiList.isNotEmpty) {
+                              final biografi = qrCodeSiswaController.biografiList.first;
+                              final qrData = 'ID User: ${biografi.idUser}, Nama: ${biografi.nama}, ID Kelas: ${biografi.kelas.idKelas}, Kelas: ${biografi.kelas.nama}';
+                              return QrImageView(
+                                data: qrData,
+                                version: QrVersions.auto,
+                                size: screenHeight * 0.3,
+                              );
+                            } else {
+                              return Center(
+                                child: Text('Loading QR Code...'),
+                              );
+                            }
+                          }),
                         ),
                       ),
                       Obx(() {

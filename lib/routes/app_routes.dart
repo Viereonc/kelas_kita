@@ -22,6 +22,7 @@ abstract class Route {
   static const JADWALVIEW_PAGE = Path.JADWAL_PAGE;
   static const QRCODEVIEW_PAGE = Path.QRCODE;
   static const QRCODESISWAVIEW_PAGE = Path.QRCODESISWA;
+  static const QRCODEGURUVIEW_PAGE = Path.QRCODEGURU;
 }
 
 abstract class Path {
@@ -48,4 +49,5 @@ abstract class Path {
   static const JADWAL_PAGE = "/jadwalscreen";
   static const QRCODE = "/qrcodescreen";
   static const QRCODESISWA = "/qrcodesiswascreen";
+  static const QRCODEGURU = "/qrcodeguruscreen";
 }
