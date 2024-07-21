@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/registration/biografi/form_biografi.dart';
+import 'package:kelas_kita/presentation/screens/guru/scan_qr_absensi/qr_code.dart';
 import 'package:kelas_kita/presentation/screens/guru/struktur_kelas_guru/struktur_kelas_view.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/lupa_password/input_email/input_email.dart';
@@ -44,6 +45,7 @@ class AppPages {
   static const PROFILE = Route.PROFILEVIEW_PAGE;
   static const JADWAL = Route.JADWALVIEW_PAGE;
   static const QRCODESISWA = Route.QRCODESISWAVIEW_PAGE;
+  static const QRCODEGURU = Route.QRCODEGURUVIEW_PAGE;
 
   static final routes = [
     GetPage(
@@ -130,6 +132,10 @@ class AppPages {
     GetPage(
         name: Path.QRCODESISWA,
         page: () => QrCodeSiswaScreen(),
+        transition: Transition.noTransition),
+    GetPage(
+        name: Path.QRCODEGURU,
+        page: () => ScanQrAbsensi(),
         transition: Transition.noTransition),
   ];
 }

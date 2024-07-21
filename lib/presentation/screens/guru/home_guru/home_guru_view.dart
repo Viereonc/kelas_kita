@@ -217,7 +217,7 @@ class HomeScreenGuru extends StatelessWidget {
         width: 64,
         child: FloatingActionButton(
           onPressed: () {
-            Get.toNamed('/qrcodescreen');
+            Get.toNamed('/qrcodeguruscreen');
           },
           backgroundColor: primeryColorMedium,
           elevation: 0,
