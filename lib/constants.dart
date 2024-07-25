@@ -1,6 +1,7 @@
 const baseUrl = 'https://kelaskita.site/';
 const registerEndpoint = 'api/register';
 const loginEndpoint = 'api/login';
+const loginGoogleEndpoint = 'api/login/google';
 const biodataEndpoint = 'api/biodata/store';
 const biodataEndpointGet = 'api/biodata/';
 const kelasEndpoint = 'api/kelas';

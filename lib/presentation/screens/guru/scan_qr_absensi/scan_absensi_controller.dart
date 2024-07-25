@@ -6,11 +6,18 @@ import '../../../../constants.dart';
 
 class ScanAbsensiController extends GetxController {
   var isLoading = false.obs;
+  var scannedData = {}.obs;
 
-  Future<void> postAbsensi(String code) async {
+  void setScannedData(String code) {
     final data = _parseScannedData(code);
-    if (data == null) {
-      print("Failed to parse scanned data");
+    if (data != null) {
+      scannedData.value = data;
+    }
+  }
+
+  Future<void> postAbsensi() async {
+    if (scannedData.isEmpty) {
+      print("No data to post");
       return;
     }
 
@@ -36,7 +43,7 @@ class ScanAbsensiController extends GetxController {
       var response = await http.post(
         url,
         headers: headers,
-        body: jsonEncode(data),
+        body: jsonEncode(scannedData),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -64,21 +71,27 @@ class ScanAbsensiController extends GetxController {
         return null;
       }
 
-      final idUserPart = parts.firstWhere((part) => part.startsWith('ID User:'), orElse: () => '');
+      final idBiodataPart = parts.firstWhere((part) => part.startsWith('ID Biodata:'), orElse: () => '');
       final idKelasPart = parts.firstWhere((part) => part.startsWith('ID Kelas:'), orElse: () => '');
+      final namaPart = parts.firstWhere((part) => part.startsWith('Nama:'), orElse: () => '');
+      final kelasPart = parts.firstWhere((part) => part.startsWith('Kelas:'), orElse: () => '');
 
-      if (idUserPart.isEmpty || idKelasPart.isEmpty) {
-        print('ID User or ID Kelas part is missing');
+      if (idBiodataPart.isEmpty || idKelasPart.isEmpty || namaPart.isEmpty || kelasPart.isEmpty) {
+        print('One of the required parts is missing');
         return null;
       }
 
-      final idUser = idUserPart.split(': ')[1];
+      final idBiodata = idBiodataPart.split(': ')[1];
       final idKelas = idKelasPart.split(': ')[1];
+      final nama = namaPart.split(': ')[1];
+      final kelas = kelasPart.split(': ')[1];
       final waktuAbsen = DateTime.now().toIso8601String();
 
       return {
-        "id_biodata": idUser,
-        "id_pelajaran": idKelas,  // Assuming id_pelajaran is mapped to ID Kelas
+        "id_biodata": idBiodata,
+        "id_pelajaran": idKelas,
+        "nama": nama,
+        "kelas": kelas,
         "waktu_absen": waktuAbsen,
         "updated_at": DateTime.now().toIso8601String(),
         "created_at": DateTime.now().toIso8601String(),
@@ -88,5 +101,4 @@ class ScanAbsensiController extends GetxController {
       return null;
     }
   }
-
 }

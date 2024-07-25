@@ -1,14 +1,18 @@
+// To parse this JSON data, do
+//
+//     final infoBiografiModel = infoBiografiModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
-List<InfoBiografiModel> infoBiografiModelFromJson(String str) => List<InfoBiografiModel>.from(json.decode(str).map((x) => InfoBiografiModel.fromJson(x)));
+InfoBiografiModel infoBiografiModelFromJson(String str) => InfoBiografiModel.fromJson(json.decode(str));
 
-String infoBiografiModelToJson(List<InfoBiografiModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String infoBiografiModelToJson(InfoBiografiModel data) => json.encode(data.toJson());
 
 class InfoBiografiModel {
   int idBiodata;
   int idUser;
   int idKelas;
-  int idRole;
   String nama;
   int nis;
   String alamat;
@@ -16,14 +20,15 @@ class InfoBiografiModel {
   String status;
   DateTime createdAt;
   DateTime updatedAt;
+  String roleName;
   User user;
   Kelas kelas;
+  Role role;
 
   InfoBiografiModel({
     required this.idBiodata,
     required this.idUser,
     required this.idKelas,
-    required this.idRole,
     required this.nama,
     required this.nis,
     required this.alamat,
@@ -31,15 +36,16 @@ class InfoBiografiModel {
     required this.status,
     required this.createdAt,
     required this.updatedAt,
+    required this.roleName,
     required this.user,
     required this.kelas,
+    required this.role,
   });
 
   factory InfoBiografiModel.fromJson(Map<String, dynamic> json) => InfoBiografiModel(
     idBiodata: json["id_biodata"],
     idUser: json["id_user"],
     idKelas: json["id_kelas"],
-    idRole: json["id_role"],
     nama: json["nama"],
     nis: json["nis"],
     alamat: json["alamat"],
@@ -47,15 +53,16 @@ class InfoBiografiModel {
     status: json["status"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
+    roleName: json["role_name"],
     user: User.fromJson(json["user"]),
     kelas: Kelas.fromJson(json["kelas"]),
+    role: Role.fromJson(json["role"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id_biodata": idBiodata,
     "id_user": idUser,
     "id_kelas": idKelas,
-    "id_role": idRole,
     "nama": nama,
     "nis": nis,
     "alamat": alamat,
@@ -63,8 +70,10 @@ class InfoBiografiModel {
     "status": status,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
+    "role_name": roleName,
     "user": user.toJson(),
     "kelas": kelas.toJson(),
+    "role": role.toJson(),
   };
 }
 
@@ -91,6 +100,38 @@ class Kelas {
   Map<String, dynamic> toJson() => {
     "id_kelas": idKelas,
     "nama": nama,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+  };
+}
+
+class Role {
+  int idRole;
+  String nama;
+  String code;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  Role({
+    required this.idRole,
+    required this.nama,
+    required this.code,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory Role.fromJson(Map<String, dynamic> json) => Role(
+    idRole: json["id_role"],
+    nama: json["nama"],
+    code: json["code"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id_role": idRole,
+    "nama": nama,
+    "code": code,
     "created_at": createdAt,
     "updated_at": updatedAt,
   };

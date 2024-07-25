@@ -7,6 +7,7 @@ import 'package:kelas_kita/presentation/screens/jadwal/jadwal_piket_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 
+import '../../../constants.dart';
 import '../../../data/models/jadwal_kelas_model.dart';
 
 class JadwalScreen extends StatelessWidget {
@@ -167,6 +168,7 @@ class JadwalScreen extends StatelessWidget {
                 screenHeight,
                 screenWidth,
                 scheduleItems,
+                context
               );
             }),
           ],
@@ -195,7 +197,7 @@ class JadwalScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildScheduleContainer(double screenHeight, double screenWidth, List<JadwalKelasModel> scheduleItems) {
+  Widget _buildScheduleContainer(double screenHeight, double screenWidth, List<JadwalKelasModel> scheduleItems, BuildContext context) {
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
@@ -207,12 +209,10 @@ class JadwalScreen extends StatelessWidget {
           children: List.generate(scheduleItems.length, (index) {
             var item = scheduleItems[index];
             return _buildScheduleItem(
-              screenWidth,
-              screenHeight,
-              item.namaPelajaran,
-              item.guru,
-              item.jamMulai,
-              item.jamSelesai,
+                screenWidth,
+                screenHeight,
+                item,
+                context
             );
           }),
         ),
@@ -220,111 +220,125 @@ class JadwalScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildScheduleItem(double screenWidth, double screenHeight, String subject, String teacher, String startTime, String endTime) {
+  Widget _buildScheduleItem(double screenWidth, double screenHeight, JadwalKelasModel item, BuildContext context,) {
     final JadwalController jadwalController = Get.find();
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
-              child: Text(
-                '${jadwalController.formatTime(startTime)}',
-                style: TextStyle(
-                  fontFamily: 'tsSubHeader2',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              width: 1,
-              height: 103,
-              color: Colors.grey,
-              margin: EdgeInsets.only(left: screenWidth * 0.01),
-            ),
-          ],
-        ),
-        SizedBox(width: screenWidth * 0.05),
-        Align(
-          alignment: Alignment.topLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () => _showAbsensiDialog(context, item.absensi),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
             children: [
-              Container(
-                width: screenWidth * 0.73,
-                height: 124,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromARGB(255, 56, 122, 223),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.08),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        subject,
-                        style: TextStyle(
-                          fontFamily: 'tsParagraft2',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(height: 2),
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            'lib/assets/icons/teacher.svg',
-                            width: 16,
-                            height: 16,
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            teacher,
-                            style: TextStyle(
-                              fontFamily: 'tsParagraft3',
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 3),
-                      Row(
-                        children: [
-                          Icon(CupertinoIcons.clock, color: Colors.white, size: 19,),
-                          SizedBox(width: 5),
-                          Text(
-                            '${jadwalController.formatTime(startTime)} - ${jadwalController.formatTime(endTime)}',
-                            style: TextStyle(
-                              fontFamily: 'tsParagraft3',
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 9),
-                      SvgPicture.asset(
-                        'lib/assets/icons/abidhitam.svg',
-                        width: 20,
-                        height: 20,
-                      ),
-                    ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                child: Text(
+                  '${jadwalController.formatTime(item.jamMulai)}',
+                  style: TextStyle(
+                    fontFamily: 'tsSubHeader2',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
                   ),
                 ),
               ),
+              SizedBox(height: 10),
+              Container(
+                width: 1,
+                height: 103,
+                color: Colors.grey,
+                margin: EdgeInsets.only(left: screenWidth * 0.01),
+              ),
             ],
           ),
-        ),
-      ],
+          SizedBox(width: screenWidth * 0.05),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  width: screenWidth * 0.73,
+                  height: 124,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color.fromARGB(255, 56, 122, 223),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: screenWidth * 0.08),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          item.namaPelajaran,
+                          style: TextStyle(
+                            fontFamily: 'tsParagraft2',
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              'lib/assets/icons/teacher.svg',
+                              width: 16,
+                              height: 16,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              item.guru,
+                              style: TextStyle(
+                                fontFamily: 'tsParagraft3',
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 3),
+                        Row(
+                          children: [
+                            Icon(CupertinoIcons.clock, color: Colors.white, size: 19,),
+                            SizedBox(width: 5),
+                            Text(
+                              '${jadwalController.formatTime(item.jamMulai)} - ${jadwalController.formatTime(item.jamSelesai)}',
+                              style: TextStyle(
+                                fontFamily: 'tsParagraft3',
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 3),
+                        Row(
+                          children: item.absensi.map((absen) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.0),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 15,
+                                child: Image.network(
+                                  baseUrl + storage + absen.image,
+                                  width: screenWidth * 0.05,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -333,6 +347,8 @@ class JadwalScreen extends StatelessWidget {
       bool isSelected = controller.selectedDay.value == day;
       Color containerColor =
       isSelected ? Color.fromARGB(255, 56, 122, 223) : Colors.white;
+      Color textColor =
+      isSelected ? Colors.white : Color.fromARGB(255, 56, 122, 223);
 
       return GestureDetector(
         onTap: () {
@@ -354,7 +370,7 @@ class JadwalScreen extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'tsSubHeader1',
                 fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : Color.fromARGB(255, 56, 122, 223),
+                color: textColor,
                 fontSize: screenHeight * 0.022,
               ),
               textAlign: TextAlign.center,
@@ -363,5 +379,43 @@ class JadwalScreen extends StatelessWidget {
         ),
       );
     });
+  }
+
+
+  void _showAbsensiDialog(BuildContext context, List<Absensi> absensiList) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('List Absensi'),
+          content: Container(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: absensiList.length,
+              itemBuilder: (BuildContext context, int index) {
+                Absensi absensi = absensiList[index];
+                return ListTile(
+                  leading: CircleAvatar(
+                      backgroundImage: NetworkImage(baseUrl + storage + absensi.image),
+                      backgroundColor: Colors.white,
+                  ),
+                  title: Text(absensi.nama),
+                  subtitle: Text(absensi.waktuAbsen),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

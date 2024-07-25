@@ -51,6 +51,9 @@ dependencies:
   qr_flutter:
   intl:
   share_plus:
+  google_sign_in:
+  firebase_core:
+  firebase_auth:
 
 dev_dependencies:
   flutter_test:

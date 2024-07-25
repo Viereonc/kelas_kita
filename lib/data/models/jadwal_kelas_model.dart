@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final jadwalKelasModel = jadwalKelasModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<JadwalKelasModel> jadwalKelasModelFromJson(String str) => List<JadwalKelasModel>.from(json.decode(str).map((x) => JadwalKelasModel.fromJson(x)));
@@ -11,7 +16,7 @@ class JadwalKelasModel {
   String jamSelesai;
   dynamic kelas;
   String guru;
-  List<dynamic> absensi;
+  List<Absensi> absensi;
 
   JadwalKelasModel({
     required this.namaPelajaran,
@@ -30,7 +35,7 @@ class JadwalKelasModel {
     jamSelesai: json["jam_selesai"],
     kelas: json["kelas"],
     guru: json["guru"],
-    absensi: List<dynamic>.from(json["absensi"].map((x) => x)),
+    absensi: List<Absensi>.from(json["absensi"].map((x) => Absensi.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -40,6 +45,30 @@ class JadwalKelasModel {
     "jam_selesai": jamSelesai,
     "kelas": kelas,
     "guru": guru,
-    "absensi": List<dynamic>.from(absensi.map((x) => x)),
+    "absensi": List<dynamic>.from(absensi.map((x) => x.toJson())),
+  };
+}
+
+class Absensi {
+  String nama;
+  String image;
+  String waktuAbsen;
+
+  Absensi({
+    required this.nama,
+    required this.image,
+    required this.waktuAbsen,
+  });
+
+  factory Absensi.fromJson(Map<String, dynamic> json) => Absensi(
+    nama: json["nama"],
+    image: json["image"],
+    waktuAbsen: json["waktu_absen"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "nama": nama,
+    "image": image,
+    "waktu_absen": waktuAbsen,
   };
 }
