@@ -103,7 +103,7 @@ class QrCodeSiswaScreen extends StatelessWidget {
                           child:  Obx(() {
                             if (qrCodeSiswaController.biografiList.isNotEmpty) {
                               final biografi = qrCodeSiswaController.biografiList.first;
-                              final qrData = 'ID User: ${biografi.idUser}, Nama: ${biografi.nama}, ID Kelas: ${biografi.kelas.idKelas}, Kelas: ${biografi.kelas.nama}';
+                              final qrData = 'ID Biodata: ${biografi.idBiodata}, Nama: ${biografi.nama}, ID Kelas: ${biografi.kelas.idKelas}, Kelas: ${biografi.kelas.nama}';
                               return QrImageView(
                                 data: qrData,
                                 version: QrVersions.auto,

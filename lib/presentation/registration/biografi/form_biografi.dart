@@ -282,7 +282,7 @@ class BiografiView extends StatelessWidget {
               borderColor: Colors.red,
               screenWidth: screenWidth,
               onTap: () {
-                Navigator.pop(context);
+                Get.toNamed('/loginView');
               },
             ),
             buildButton(

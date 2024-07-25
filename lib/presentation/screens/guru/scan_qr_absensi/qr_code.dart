@@ -13,8 +13,11 @@ class ScanQrAbsensi extends StatelessWidget {
 
   ScanQrAbsensi({super.key});
 
-  void handleQRCode(String code) async {
-    await scanAbsensiController.postAbsensi(code);
+  void handleQRCode(String code) {
+    scanAbsensiController.setScannedData(code);
+    if (scanAbsensiController.scannedData.isNotEmpty) {
+      Get.dialog(ScannedDataDialog());
+    }
   }
 
   @override
@@ -117,6 +120,48 @@ class ScanQrAbsensi extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ScannedDataDialog extends StatelessWidget {
+  final ScanAbsensiController scanAbsensiController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Data yang Dipindai'),
+      content: Obx(() {
+        if (scanAbsensiController.scannedData.isEmpty) {
+          return Text('Tidak ada data yang dipindai');
+        } else {
+          final data = scanAbsensiController.scannedData;
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Nama: ${data["nama"]}'),
+              Text('Kelas: ${data["kelas"]}'),
+              Text('Waktu Absen: ${data["waktu_absen"]}'),
+            ],
+          );
+        }
+      }),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Get.back(); // Close dialog
+          },
+          child: Text('Batal'),
+        ),
+        TextButton(
+          onPressed: () {
+            scanAbsensiController.postAbsensi();
+            Get.back(); // Close dialog
+          },
+          child: Text('Post'),
+        ),
+      ],
     );
   }
 }
