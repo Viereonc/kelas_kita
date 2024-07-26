@@ -59,9 +59,4 @@ class StrukturKelasController extends GetxController{
   }
 }
 
-
-  void saveIdKelasToSharedPreferences(int idKelas) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('id_kelas', idKelas);
-  }
 }

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kelas_kita/presentation/screens/pembukuan/pembukuan_controller.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/program_kelas_view.dart';
+import 'package:get/get.dart';
 
 class PembukuanView extends StatelessWidget {
+  final PembukuanKasController pembukuanKasController = Get.put(PembukuanKasController());
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -139,7 +143,24 @@ class PembukuanView extends StatelessWidget {
                     color: Color(0xFFF2F2F2),
                   ),
                   SizedBox(height: screenHeight * 0.015),
-                  _buildListItem('Buka Bersama', 'Maret 21 2024', 'Rp500.000', 'Mempunyai 80% Kedisiplinan Kas', Colors.blue, hasDietPlanIcon: true),
+                  Obx(() {
+                    if (pembukuanKasController.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return Column(
+                        children: pembukuanKasController.programKelasList.map((program) {
+                          return _buildListItem(
+                            program.nama,
+                            _formatDate(program.jadwal),
+                            'Rp${program.jumlah}',
+                            'Mempunyai 80% Kedisiplinan Kas',
+                            Colors.blue,
+                            hasDietPlanIcon: true,
+                          );
+                        }).toList(),
+                      );
+                    }
+                  }),
                   SizedBox(height: screenHeight * 0.03),
                   SizedBox(height: screenHeight * 0.01),
                   _buildDateContainer('Maret 14, 2024'),
@@ -247,7 +268,7 @@ class PembukuanView extends StatelessWidget {
                       ),
                     if (hasMinusIcon)
                       SvgPicture.asset(
-                        'lib/assets/icons/ks_minus.svg',
+                        'lib/assets/icons/ks_minus.svg'
                       ),
                   ],
                 ),
@@ -267,25 +288,25 @@ class PembukuanView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(height: 5),
                   Text(
                     date,
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
                         fontSize: 10,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: Colors.black.withOpacity(0.5),
                       ),
                     ),
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(height: 5),
                   if (subtitle.isNotEmpty) ...[
                     Text(
                       subtitle,
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                           fontSize: 9,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           color: Colors.black.withOpacity(0.5),
                         ),
                       ),
@@ -314,6 +335,42 @@ class PembukuanView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    String monthName = _getMonthName(date.month);
+    return '${monthName} ${date.day}, ${date.year}';
+  }
+
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'Januari';
+      case 2:
+        return 'Februari';
+      case 3:
+        return 'Maret';
+      case 4:
+        return 'April';
+      case 5:
+        return 'Mei';
+      case 6:
+        return 'Juni';
+      case 7:
+        return 'Juli';
+      case 8:
+        return 'Agustus';
+      case 9:
+        return 'September';
+      case 10:
+        return 'Oktober';
+      case 11:
+        return 'November';
+      case 12:
+        return 'Desember';
+      default:
+        return '';
+    }
   }
 
   Widget _buildDivider() {

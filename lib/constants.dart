@@ -15,6 +15,7 @@ const infoGetTugasEndPoint = 'api/tugas';
 const getJadwalKelasEndPoint = 'api/jadwal-pelajaran/kelas/';
 const getJadwalPiketEndPoint = 'api/piket/kelas/';
 const absensiEndPoint = 'api/absensi/store';
+const programKasKelasEndPoint = 'api/program_kas/kelas/';
 
 const pending = 'P';
 const accept = 'A';
