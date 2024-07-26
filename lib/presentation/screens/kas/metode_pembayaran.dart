@@ -25,15 +25,19 @@ class MetodePembayaran extends StatelessWidget {
               child: Center(
                 child: Text(
                   "Pilih Metode Pembayaran",
-                  style: tsSubHeader3(
-                    screenSize: screenWidth
-                  ),
+                  style: tsSubHeader3(screenSize: screenWidth),
                 ),
               ),
             ),
-            Text("e-wallet", style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth)),
+            Text(
+              "e-wallet",
+              style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth),
+            ),
             SizedBox(height: screenHeight * 0.02),
-            Text("Untuk pembayaran secara online dikenakan pajak 10.000", style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth,).copyWith(color: Colors.grey)),
+            Text(
+              "Untuk pembayaran secara online dikenakan pajak 10.000",
+              style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth).copyWith(color: Colors.grey),
+            ),
             SizedBox(height: screenHeight * 0.04),
             Expanded(
               child: ListView.separated(
@@ -47,6 +51,11 @@ class MetodePembayaran extends StatelessWidget {
                       'image': 'lib/assets/images/logos_qris.png',
                       'title': 'QRIS',
                     },
+                    {
+                      'image': 'lib/assets/images/iconoir_hand-cash.png',
+                      'title': 'Tunai',
+                      'description': 'Minimal pembayaran tunai Rp 10.000',
+                    },
                   ];
 
                   final item = items[index];
@@ -56,13 +65,21 @@ class MetodePembayaran extends StatelessWidget {
                       // Handle onTap
                     },
                     child: ListTile(
-                      leading: Image.asset(item['image'],),
+                      leading: Image.asset(
+                        item['image'],
+                        width: 30.0, 
+                        height: 30.0, 
+                      ),
                       title: Text(
                         item['title'],
-                        style: tsSubHeader4(
-                          screenSize: screenWidth
-                        ),
+                        style: tsSubHeader4(screenSize: screenWidth),
                       ),
+                      subtitle: item.containsKey('description')
+                          ? Text(
+                              item['description'],
+                              style: tsSubHeader5(screenSize: screenWidth).copyWith(color: Colors.grey),
+                            )
+                          : null,
                       trailing: Icon(Icons.arrow_forward_ios),
                     ),
                   );
@@ -71,7 +88,7 @@ class MetodePembayaran extends StatelessWidget {
                   padding: EdgeInsets.only(left: screenWidth * 0.1, right: screenWidth * 0.05),
                   child: Divider(),
                 ),
-                itemCount: 2,
+                itemCount: 3, // Updated item count
               ),
             ),
           ],
@@ -80,4 +97,3 @@ class MetodePembayaran extends StatelessWidget {
     );
   }
 }
-
