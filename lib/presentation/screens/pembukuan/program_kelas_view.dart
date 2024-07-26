@@ -5,6 +5,7 @@ class ProgramKelasView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -210,7 +211,7 @@ class ProgramKelasView extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.5),
                   spreadRadius: 2,
                   blurRadius: 5,
-                  offset: Offset(0, 3), 
+                  offset: Offset(0, 3),
                 ),
               ],
             ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
+import '../qr/qr_code.dart';
+
 class MetodePembayaran extends StatelessWidget {
   const MetodePembayaran({Key? key}) : super(key: key);
 
@@ -52,7 +54,7 @@ class MetodePembayaran extends StatelessWidget {
                       'title': 'QRIS',
                     },
                     {
-                      'image': 'lib/assets/images/iconoir_hand-cash.png',
+                      'image': 'lib/assets/icons/cash.png',
                       'title': 'Tunai',
                       'description': 'Minimal pembayaran tunai Rp 10.000',
                     },
@@ -62,13 +64,18 @@ class MetodePembayaran extends StatelessWidget {
 
                   return InkWell(
                     onTap: () {
-                      // Handle onTap
+                      if (item['title'] == 'QRIS') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => QrCodeScreen()),
+                        );
+                      }
                     },
                     child: ListTile(
                       leading: Image.asset(
                         item['image'],
-                        width: 30.0, 
-                        height: 30.0, 
+                        width: 60.0,
+                        height: 60.0,
                       ),
                       title: Text(
                         item['title'],
