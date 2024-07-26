@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/program_kelas_view.dart';
 
 class PembukuanView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Get screen dimensions
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        foregroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: Container(
@@ -39,137 +42,136 @@ class PembukuanView extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: screenHeight * 0.02),
-            Center(
-              child: Container(
-                width: screenWidth * 0.9,
-                height: screenHeight * 0.12,
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.02),
-                decoration: BoxDecoration(
-                  color: Color(0xFF142847),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Total Uang Kas',
-                      style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.01),
-                    Text(
-                      'Rp 50.000',
-                      style: GoogleFonts.manrope(
-                        textStyle: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 15),
+            width: screenWidth * 0.9,
+            height: screenHeight * 0.12,
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.02),
+            decoration: BoxDecoration(
+              color: Color(0xFF142847),
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            SizedBox(height: screenHeight * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: screenWidth * 0.35,
-                  height: screenHeight * 0.05,
-                  margin: EdgeInsets.only(left: screenWidth * 0.05),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFE8E8E8),
-                    borderRadius: BorderRadius.circular(45.0),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Program Kelas',
-                      style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
-                      ),
+                Text(
+                  'Total Uang Kas',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProgramKelasView()),
-                    );
-                  },
-                  child: Container(
-                    width: 39,
-                    height: 39,
-                    margin: EdgeInsets.only(right: screenWidth * 0.05),
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 56, 122, 223),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.add,
+                SizedBox(height: screenHeight * 0.01),
+                Text(
+                  'Rp 50.000',
+                  style: GoogleFonts.manrope(
+                    textStyle: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: screenHeight * 0.013),
-            Container(
-              height: 1.0,
-              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-              color: Color(0xFFF2F2F2),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: screenHeight * 0.04),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: screenWidth * 0.35,
+                        height: screenHeight * 0.05,
+                        margin: EdgeInsets.only(left: screenWidth * 0.05),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFE8E8E8),
+                          borderRadius: BorderRadius.circular(45.0),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Program Kelas',
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ProgramKelasView()),
+                          );
+                        },
+                        child: Container(
+                          width: 39,
+                          height: 39,
+                          margin: EdgeInsets.only(right: screenWidth * 0.05),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 56, 122, 223),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.013),
+                  Container(
+                    height: 1.0,
+                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                    color: Color(0xFFF2F2F2),
+                  ),
+                  SizedBox(height: screenHeight * 0.015),
+                  _buildListItem('Buka Bersama', 'Maret 21 2024', 'Rp500.000', 'Mempunyai 80% Kedisiplinan Kas', Colors.blue, hasDietPlanIcon: true),
+                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDateContainer('Maret 14, 2024'),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDivider(),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDateContainer('Maret 16, 2024'),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDivider(),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDateContainer('Maret 17, 2024'),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDivider(),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDivider(),
+                ],
+              ),
             ),
-            SizedBox(height: screenHeight * 0.015),
-            _buildListItem('Buka Bersama', 'Maret 21 2024', 'Rp500.000', 'Mempunyai 80% Kedisiplinan Kas', Colors.blue, hasDietPlanIcon: true),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDivider(),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDateContainer('Maret 14, 2024'),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDivider(),
-            SizedBox(height: screenHeight * 0.01),
-            _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
-            SizedBox(height: screenHeight * 0.01),
-            _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
-            _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDivider(),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDateContainer('Maret 16, 2024'),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDivider(),
-            SizedBox(height: screenHeight * 0.01),
-            _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
-            _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDivider(),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDateContainer('Maret 17, 2024'),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDivider(),
-            SizedBox(height: screenHeight * 0.01),
-            _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
-            _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
-            SizedBox(height: screenHeight * 0.01),
-            _buildDivider(),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -205,98 +207,108 @@ class PembukuanView extends StatelessWidget {
 
   Widget _buildListItem(String title, String date, String amount, String subtitle, Color iconColor,
       {bool hasIcon = false, bool hasMinusIcon = false, bool hasDietPlanIcon = false}) {
+    Color amountColor = Colors.black;
+
+    if (hasIcon) {
+      amountColor = Colors.green;
+    } else if (hasMinusIcon) {
+      amountColor = Colors.red;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: iconColor,
-            ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                if (hasDietPlanIcon)
-                  Image.asset(
-                    'lib/assets/images/fluent-mdl2_diet-plan-notebook.png',
-                    width: 20, 
-                    height: 20, 
-                    color: Colors.white, 
-                  ),
-                if (hasIcon)
-                  Image.asset(
-                    'lib/assets/images/iconuangplus.png',
-                    width: 26,
-                    height: 26, 
-                    color: Colors.white, 
-                  ),
-                if (hasMinusIcon)
-                  Image.asset(
-                    'lib/assets/images/iconuangmin.png',
-                    width: 26, 
-                    height: 26, 
-                    color: Colors.white,
-                  ),
-              ],
-            ),
-          ),
-          SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                title,
-                style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
+              Container(
+                width: 35,
+                height: 35,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: iconColor,
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (hasDietPlanIcon)
+                      Image.asset(
+                        'lib/assets/images/list.png',
+                        width: 20,
+                        height: 20,
+                        color: Colors.white,
+                      ),
+                    if (hasIcon)
+                      SvgPicture.asset(
+                        'lib/assets/icons/ks_plus.svg',
+                      ),
+                    if (hasMinusIcon)
+                      SvgPicture.asset(
+                        'lib/assets/icons/ks_minus.svg',
+                      ),
+                  ],
                 ),
               ),
-              SizedBox(height: 4),
-              Row(
+              SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5,),
                   Text(
                     date,
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.4),
+                        color: Colors.black.withOpacity(0.5),
                       ),
                     ),
                   ),
-                  SizedBox(width: 135),
-                  Text(
-                    amount,
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                  SizedBox(height: 5,),
+                  if (subtitle.isNotEmpty) ...[
+                    Text(
+                      subtitle,
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
                       ),
                     ),
-                  ),
+                  ]
                 ],
               ),
-              if (subtitle.isNotEmpty) ...[
-                SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: GoogleFonts.poppins(
-                    textStyle: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black.withOpacity(0.4),
-                    ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                amount,
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: amountColor,
                   ),
                 ),
-              ],
+              ),
             ],
           ),
         ],
@@ -306,8 +318,8 @@ class PembukuanView extends StatelessWidget {
 
   Widget _buildDivider() {
     return Container(
-      height: 2.0,
-      margin: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+      height: 1.0,
+      margin: EdgeInsets.symmetric(horizontal: 20.0),
       color: Color(0xFFF2F2F2),
     );
   }

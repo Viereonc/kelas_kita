@@ -387,6 +387,8 @@ class JadwalScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white,
           title: Text('List Absensi'),
           content: Container(
             width: double.maxFinite,
