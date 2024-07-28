@@ -184,7 +184,7 @@ class InfoKelasScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() {
-        if (infoKelasController.userStatus.value == 'sekretaris') {
+        if (infoKelasController.userStatus.value == 'Sekretaris') {
           return FloatingActionButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -7,8 +7,9 @@ import '../../../../constants.dart';
 import '../../../../data/models/biografi_model.dart';
 
 class DetailProfileController extends GetxController {
+  RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   var isLoading = true.obs;
-  var userName = 'User'.obs;
+  var userName = ''.obs;
   var className = ''.obs;
   var bio = ''.obs;
   var email = ''.obs;
@@ -36,7 +37,7 @@ class DetailProfileController extends GetxController {
 
       if (userId != null) {
         final response = await http.get(
-          Uri.parse(baseUrl + biodataEndpointGet + '$userId'),
+          Uri.parse('$baseUrl$biodataEndpointGet$userId'),
           headers: <String, String>{
             'Authorization': 'Bearer $token',
           },
@@ -44,24 +45,20 @@ class DetailProfileController extends GetxController {
 
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(response.body);
-          InfoBiografiModel biografiModel = InfoBiografiModel.fromJson(jsonResponse);
+          print('JSON Response: $jsonResponse');
 
-          prefs.setString('nama', biografiModel.nama);
-          prefs.setInt('nis', biografiModel.nis);
-          prefs.setString('alamat', biografiModel.alamat);
-          prefs.setInt('id_kelas', biografiModel.idKelas);
-          prefs.setString('status', biografiModel.status);
-          prefs.setString('email', biografiModel.user.email);
-          prefs.setInt('nomor', biografiModel.user.nomor);
+          var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
+          biografiList.value = [fetchedData];
 
-          userName.value = biografiModel.nama;
-          nis.value = biografiModel.nis.toString();
-          address.value = biografiModel.alamat;
-          className.value = biografiModel.kelas.nama;
-          bio.value = biografiModel.bio ?? '';
-          email.value = biografiModel.user.email;
-          phoneNumber.value = biografiModel.user.nomor.toString();
+          userName.value = fetchedData.nama ?? '';
+          className.value = fetchedData.kelas.nama ?? '';
+          bio.value = fetchedData.bio ?? '';
+          email.value = fetchedData.user.email ?? '';
+          phoneNumber.value = fetchedData.user.nomor.toString() ?? '';
+          address.value = fetchedData.alamat ?? '';
+          nis.value = fetchedData.nis.toString() ?? '';
 
+          print('Successfully loaded biografi data: ${biografiList.length}');
         } else {
           print('Failed to load biografi, status code: ${response.statusCode}');
           throw Exception('Failed to load biografi');

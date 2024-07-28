@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/guru/struktur_kelas_guru/struktur_kelas_controller.dart';
-import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_controller.dart';
 import 'package:kelas_kita/presentation/themes/Backdrop.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
@@ -85,12 +84,23 @@ class StrukturKelasGuruScreen extends StatelessWidget {
                 if (strukturKelasGuruController.isLoading.value) {
                   return Center(child: CircularProgressIndicator());
                 } else {
-                  var sortedList = strukturKelasGuruController.infoStrukturKelasList..sort((a, b) => a.nama.compareTo(b.nama));
+                  var sortedList = strukturKelasGuruController.infoStrukturKelasList
+                    ..sort((a, b) {
+                      if (a.role.nama == RoleName.WALI_KELAS && b.role.nama != RoleName.WALI_KELAS) {
+                        return -1;
+                      } else if (a.role.nama != RoleName.WALI_KELAS && b.role.nama == RoleName.WALI_KELAS) {
+                        return 1;
+                      } else {
+                        return a.nama.compareTo(b.nama);
+                      }
+                    });
 
                   return ListView.builder(
                     itemCount: sortedList.length,
                     itemBuilder: (BuildContext context, int index) {
                       final strukturKelas = sortedList[index];
+                      bool isWaliKelas = strukturKelas.role.nama == RoleName.WALI_KELAS;
+
                       return Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: screenHeight * 0.02,
@@ -121,20 +131,20 @@ class StrukturKelasGuruScreen extends StatelessWidget {
                                       maxLines: 2,
                                     ),
                                     SizedBox(height: screenHeight * 0.008),
-                                    // Text(
-                                    //   strukturKelas.roleName,
-                                    //   style: tsParagraft5(
-                                    //     fontWeight: FontWeight.w500,
-                                    //     screenSize: screenWidth * 1.3,
-                                    //   ).copyWith(color: Colors.grey.withOpacity(0.9)),
-                                    // ),
+                                    Text(
+                                      roleNameValues.reverse[strukturKelas.role.nama]!,
+                                      style: tsParagraft5(
+                                        fontWeight: FontWeight.w500,
+                                        screenSize: screenWidth * 1.3,
+                                      ).copyWith(color: Colors.grey.withOpacity(0.9)),
+                                    ),
                                   ],
                                 ),
                                 leading: Container(
                                   width: screenWidth * 0.12,
                                   height: screenWidth * 0.12,
                                   decoration: BoxDecoration(
-                                    color: iconColors[index % iconColors.length], 
+                                    color: iconColors[index % iconColors.length],
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
@@ -156,9 +166,7 @@ class StrukturKelasGuruScreen extends StatelessWidget {
                               Container(
                                 margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                                 child: Row(
-                                  mainAxisAlignment: strukturKelas.nama == 'Wali Kelas'
-                                      ? MainAxisAlignment.start
-                                      : MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +182,7 @@ class StrukturKelasGuruScreen extends StatelessWidget {
                                         Container(
                                           margin: EdgeInsets.only(top: screenHeight * 0.01),
                                           child: Text(
-                                            strukturKelas.absen.toString(),
+                                            isWaliKelas ? '' : strukturKelas.absen.toString(),
                                             style: tsParagraft5(
                                               screenSize: screenWidth * 1.3,
                                             ).copyWith(color: primeryColorMedium),
@@ -195,7 +203,7 @@ class StrukturKelasGuruScreen extends StatelessWidget {
                                         Container(
                                           margin: EdgeInsets.only(top: screenHeight * 0.01),
                                           child: Text(
-                                            alamatValues.reverse[strukturKelas.alamat] ?? '',
+                                            strukturKelas.alamat,
                                             style: tsParagraft5(
                                               screenSize: screenWidth * 1.3,
                                             ).copyWith(color: Color(0xFFFFA800)),
@@ -203,7 +211,7 @@ class StrukturKelasGuruScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    if (strukturKelas.nama != 'Wali Kelas')
+                                    if (!isWaliKelas)
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [

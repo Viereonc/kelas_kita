@@ -33,6 +33,7 @@ class BiografiView extends StatelessWidget {
     double imageWidth = screenWidth * 0.4;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(

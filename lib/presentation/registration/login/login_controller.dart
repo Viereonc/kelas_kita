@@ -147,12 +147,21 @@ class LoginController extends GetxController {
 
           var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
           final name = fetchedData.nama;
+          final role = jsonResponse['role_name'];
 
           if (name != null && name.isNotEmpty) {
-            Get.offNamed(Path.HOME_PAGE);
+            if (role == 'Wali Kelas') {
+              Get.offNamed(Path.HOMEGURU_PAGE);
+            } else {
+              Get.offNamed(Path.HOME_PAGE);
+            }
           } else {
             Get.offNamed(Path.BIOGRAFI_PAGE);
           }
+
+          int idKelas = jsonResponse['id_kelas'];
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setInt('id_kelas', idKelas);
 
           print('Successfully loaded biografi data');
         } else {
