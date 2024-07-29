@@ -6,6 +6,7 @@ import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
 import '../../../widgets/Button.dart';
 import 'package:get/get.dart';
+import '../info_kelas_controller.dart';
 import 'edit_info_kelas_controller.dart';
 
 class EditInfoKelasScreen extends StatelessWidget {
@@ -127,21 +128,31 @@ class EditInfoKelasScreen extends StatelessWidget {
                     onPressed: () async {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       String? token = prefs.getString('token');
-                      String idKelas = "1";
 
-                      if (token != null) {
-                        await editInfoKelasController.editInfoKelas(
-                            index,
-                            editInfoKelasController.selectedImagePath.value,
-                            editInfoKelasController.descriptionController.text,
-                            idKelas,
-                            token,
-                            idInformasiKelas
-                        );
-                        editInfoKelasController.selectedImagePath.value = null;
-                        Navigator.pop(context);
+                      // Access the InfoKelasController instance
+                      final infoKelasController = Get.find<InfoKelasController>();
+
+                      // Ensure biografiList is not empty before accessing it
+                      if (infoKelasController.biografiList.isNotEmpty) {
+                        // Get idKelas from the first item in biografiList
+                        String idKelas = infoKelasController.biografiList[0].idKelas.toString();
+
+                        if (token != null && idKelas.isNotEmpty) {
+                          await editInfoKelasController.editInfoKelas(
+                              index,
+                              editInfoKelasController.selectedImagePath.value,
+                              editInfoKelasController.descriptionController.text,
+                              idKelas,
+                              token,
+                              idInformasiKelas
+                          );
+                          editInfoKelasController.selectedImagePath.value = null;
+                          Navigator.pop(context);
+                        } else {
+                          print('Token or idKelas not found');
+                        }
                       } else {
-                        print('Token not found');
+                        print('biografiList is empty');
                       }
                     }
                 ),

@@ -52,11 +52,18 @@ class SplashController extends GetxController {
             print('Successfully loaded biografi data');
 
             String? lastPage = prefs.getString('last_page');
+
+            final role = jsonResponse['role_name'];
+
             if (lastPage != null) {
               Get.offNamed(lastPage);
             } else {
               if (biografiModel.status == 'A') {
-                Get.offNamed(Path.HOME_PAGE);
+                if (role == 'Wali Kelas') {
+                  Get.offNamed(Path.HOMEGURU_PAGE);
+                } else {
+                  Get.offNamed(Path.HOME_PAGE);
+                }
               } else if (biografiModel.status == 'P') {
                 Get.offNamed(Path.PENDING_PAGE);
               } else {

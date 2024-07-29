@@ -182,7 +182,7 @@ class StrukturKelasGuruScreen extends StatelessWidget {
                                         Container(
                                           margin: EdgeInsets.only(top: screenHeight * 0.01),
                                           child: Text(
-                                            isWaliKelas ? '' : strukturKelas.absen.toString(),
+                                            isWaliKelas ? '-' : strukturKelas.absen.toString(),
                                             style: tsParagraft5(
                                               screenSize: screenWidth * 1.3,
                                             ).copyWith(color: primeryColorMedium),

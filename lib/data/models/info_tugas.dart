@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final infoTugasModel = infoTugasModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<InfoTugasModel> infoTugasModelFromJson(String str) => List<InfoTugasModel>.from(json.decode(str).map((x) => InfoTugasModel.fromJson(x)));
@@ -13,7 +18,6 @@ class InfoTugasModel {
   String ketentuan;
   DateTime createdAt;
   DateTime updatedAt;
-  Kelas kelas;
 
   InfoTugasModel({
     required this.idTugas,
@@ -24,7 +28,6 @@ class InfoTugasModel {
     required this.ketentuan,
     required this.createdAt,
     required this.updatedAt,
-    required this.kelas,
   });
 
   factory InfoTugasModel.fromJson(Map<String, dynamic> json) => InfoTugasModel(
@@ -36,7 +39,6 @@ class InfoTugasModel {
     ketentuan: json["ketentuan"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    kelas: Kelas.fromJson(json["kelas"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -48,34 +50,5 @@ class InfoTugasModel {
     "ketentuan": ketentuan,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
-    "kelas": kelas.toJson(),
-  };
-}
-
-class Kelas {
-  int idKelas;
-  String nama;
-  dynamic createdAt;
-  dynamic updatedAt;
-
-  Kelas({
-    required this.idKelas,
-    required this.nama,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  factory Kelas.fromJson(Map<String, dynamic> json) => Kelas(
-    idKelas: json["id_kelas"],
-    nama: json["nama"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id_kelas": idKelas,
-    "nama": nama,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
   };
 }

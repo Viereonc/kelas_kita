@@ -9,12 +9,18 @@ class JadwalController extends GetxController {
   RxList<JadwalKelasModel> jadwalKelasList = <JadwalKelasModel>[].obs;
   var isLoading = true.obs;
   var selectedDay = ''.obs;
+  List<JadwalKelasModel> senin = [];
+  List<JadwalKelasModel> selasa = [];
+  List<JadwalKelasModel> rabu = [];
+  List<JadwalKelasModel> kamis = [];
+  List<JadwalKelasModel> jumat = [];
+  List<JadwalKelasModel> sabtu = [];
 
   @override
   void onInit() {
     super.onInit();
     fetchJadwalPelajaran();
-    selectDay('Sel');
+    selectDay(getCurrentDay());
   }
 
   void fetchJadwalPelajaran() async {
@@ -61,5 +67,47 @@ class JadwalController extends GetxController {
   String formatTime(String time) {
     DateTime parsedTime = DateFormat("HH:mm:ss").parse(time);
     return DateFormat("HH:mm").format(parsedTime);
+  }
+
+  String getCurrentDay() {
+    switch (DateTime.now().weekday) {
+      case DateTime.monday:
+        return 'Sen';
+      case DateTime.tuesday:
+        return 'Sel';
+      case DateTime.wednesday:
+        return 'Rab';
+      case DateTime.thursday:
+        return 'Kam';
+      case DateTime.friday:
+        return 'Jum';
+      case DateTime.saturday:
+        return 'Sab';
+      default:
+        return 'Sel'; // Default to Tuesday if something goes wrong
+    }
+  }
+
+  void selecDay(String day) {
+    selectedDay.value = day;
+  }
+
+  List<JadwalKelasModel> getScheduleDay(String day) {
+    switch (day) {
+      case 'Sen':
+        return senin;
+      case 'Sel':
+        return selasa;
+      case 'Rab':
+        return rabu;
+      case 'Kam':
+        return kamis;
+      case 'Jum':
+        return jumat;
+      case 'Sab':
+        return sabtu;
+      default:
+        return [];
+    }
   }
 }
