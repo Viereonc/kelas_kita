@@ -17,8 +17,7 @@ const getJadwalPiketEndPoint = 'api/piket/kelas/';
 const absensiEndPoint = 'api/absensi/store';
 const programKasKelasEndPoint = 'api/program_kas/kelas/';
 const programKasEndPoint = 'api/program_kas/store';
-
-
+const noteUserEndPoint = 'api/note';
 
 const pending = 'P';
 const accept = 'A';

@@ -128,11 +128,7 @@ class AgendaScreen extends StatelessWidget {
                     },
                     itemBuilder: (BuildContext context, int index) {
                       final agenda = agendaController.agendaList[index];
-                      DateTime lastEdited = DateTime.now(); // Default value
-
-                      if (agenda.containsKey("lastEdited") && agenda["lastEdited"] != null) {
-                        lastEdited = DateTime.parse(agenda["lastEdited"]);
-                      }
+                      DateTime lastEdited = agenda.updatedAt; // Use updatedAt for last edited
 
                       return GestureDetector(
                         onTap: () {
@@ -140,16 +136,15 @@ class AgendaScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DetailAgenda(
-                                title: agenda["title"],
-                                content: agenda["content"],
+                                title: agenda.judul,
+                                content: agenda.isi,
                               ),
                             ),
                           );
                         },
                         onLongPress: () {
-                          final agenda = agendaController.agendaList[index];
-                          final description = agenda["title"];
-                          final imagePath = agenda["content"];
+                          final description = agenda.judul;
+                          final imagePath = agenda.isi;
                           agendaController.openIconButtonpressed(context, index, description, imagePath);
                         },
                         child: Padding(
@@ -189,16 +184,16 @@ class AgendaScreen extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        agenda["title"],
+                                        agenda.judul,
                                         style: tsHeader3(
-                                          screenSize: screenWidth
+                                            screenSize: screenWidth
                                         ),
                                       ),
                                       SizedBox(height: 5,),
                                       Text(
-                                        agenda["content"],
+                                        agenda.isi,
                                         style: tsParagraft4(
-                                          screenSize: screenWidth
+                                            screenSize: screenWidth
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
