@@ -174,8 +174,6 @@ class InfoTugasScreen extends StatelessWidget {
               DateTime? createdAt; // Initialize or set the createdAt date
               DateTime? updatedAt; // Initialize or set the updatedAt date
 
-              Kelas kelas = Kelas(idKelas: idKelas, nama: nama, createdAt: createdAt, updatedAt: updatedAt);
-
               final result = await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AddInfoTugas()),
@@ -188,7 +186,6 @@ class InfoTugasScreen extends StatelessWidget {
                     result["deadlineTugas"],
                     result["ketentuanTugas"],
                     idKelas.toString(), // Convert idKelas back to string if necessary
-                    kelas,
                     token ?? "default_token_value" // Provide a default value if token is null
                 );
               }

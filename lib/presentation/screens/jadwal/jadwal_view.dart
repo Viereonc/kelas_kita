@@ -13,10 +13,6 @@ import '../../../data/models/jadwal_kelas_model.dart';
 class JadwalScreen extends StatelessWidget {
   final JadwalController jadwalController = Get.put(JadwalController());
 
-  JadwalScreen() {
-    jadwalController.selectDay('Sel');
-  }
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -222,6 +218,10 @@ class JadwalScreen extends StatelessWidget {
 
   Widget _buildScheduleItem(double screenWidth, double screenHeight, JadwalKelasModel item, BuildContext context,) {
     final JadwalController jadwalController = Get.find();
+    int absensiCount = item.absensi.length;
+    int visibleCount = absensiCount > 3 ? 3 : absensiCount;
+    int hiddenCount = absensiCount - 3;
+
     return GestureDetector(
       onTap: () => _showAbsensiDialog(context, item.absensi),
       child: Row(
@@ -314,21 +314,60 @@ class JadwalScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 3),
-                        Row(
-                          children: item.absensi.map((absen) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 4.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 15,
-                                child: Image.network(
-                                  baseUrl + storage + absen.image,
-                                  width: screenWidth * 0.05,
-                                ),
+                        SizedBox(height: 7),
+                        Container(
+                          height: screenHeight * 0.03,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              // Stack for the first 3 CircleAvatars
+                              ...List.generate(
+                                visibleCount,
+                                    (index) {
+                                  return Positioned(
+                                    left: 20.0 * index,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(color: Colors.black, width: 0.5),
+                                      ),
+                                      child: CircleAvatar(
+                                        backgroundImage: NetworkImage(baseUrl + storage + item.absensi[index].image),
+                                        radius: 13,
+                                        backgroundColor: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          }).toList(),
+                              // Indicator for hidden items
+                              if (hiddenCount > 0)
+                                Positioned(
+                                  left: 20.0 * visibleCount, // Positioned right after the visible avatars
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black, width: 0.5),
+                                    ),
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 13,
+                                      child: Center(
+                                        child: Text(
+                                          '+ $hiddenCount',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

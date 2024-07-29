@@ -147,18 +147,29 @@ class AddInfoKelas extends StatelessWidget {
                   onPressed: () async {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     String? token = prefs.getString('token'); // Adjust token retrieval as needed
-                    String idKelas = "1"; // Replace with the actual class ID
-                    if (token != null) {
-                      await infoKelasController.addAndPostInfoKelas(
-                        infoKelasController.selectedImagePath.value,
-                        descriptionController.text,
-                        idKelas,
-                        token,
-                      );
-                      infoKelasController.selectedImagePath.value = null;
-                      Navigator.pop(context);
+
+                    // Access the InfoKelasController instance
+                    final infoKelasController = Get.find<InfoKelasController>();
+
+                    // Ensure biografiList is not empty before accessing it
+                    if (infoKelasController.biografiList.isNotEmpty) {
+                      // Get idKelas from the first item in biografiList
+                      String idKelas = infoKelasController.biografiList[0].idKelas.toString();
+
+                      if (token != null && idKelas.isNotEmpty) {
+                        await infoKelasController.addAndPostInfoKelas(
+                          infoKelasController.selectedImagePath.value,
+                          descriptionController.text,
+                          idKelas,
+                          token,
+                        );
+                        infoKelasController.selectedImagePath.value = null;
+                        Navigator.pop(context);
+                      } else {
+                        print('Token or idKelas not found');
+                      }
                     } else {
-                      print('Token not found');
+                      print('biografiList is empty');
                     }
                   },
                 ),

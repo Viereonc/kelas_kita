@@ -234,27 +234,31 @@ class AddInfoTugas extends StatelessWidget {
 
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     String? token = prefs.getString('token');
-                    String idKelas = "1";
-                    Kelas kelasInstance = Kelas(
-                        idKelas: int.parse(idKelas),
-                        nama: namaTugasController.text,
-                        createdAt: DateTime.now(),
-                        updatedAt: DateTime.now()
-                    );
 
-                    if (token != null) {
-                      await infoTugasController.addAndPostInfoTugas(
+                    final infoTugasController = Get.find<InfoTugasController>();
+
+                    if (infoTugasController.biografiList.isEmpty) {
+                      await infoTugasController.fetchBiografi();
+                    }
+
+                    if (infoTugasController.biografiList.isNotEmpty) {
+                      String idKelas = infoTugasController.biografiList[0].idKelas.toString();
+
+                      if (token != null) {
+                        await infoTugasController.addAndPostInfoTugas(
                           namaTugasController.text,
                           guruPemberiTugas,
                           deadlineTugas,
                           ketentuanTugasController.text,
                           idKelas,
-                          kelasInstance,
-                          token
-                      );
-                      Navigator.pop(context);
+                          token,
+                        );
+                        Navigator.pop(context);
+                      } else {
+                        print('Token not found');
+                      }
                     } else {
-                      print('Token not found');
+                      print('Biografi list is still empty after fetching');
                     }
                   },
                 ),

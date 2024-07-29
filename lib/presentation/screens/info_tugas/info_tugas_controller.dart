@@ -9,11 +9,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../constants.dart';
+import '../../../data/models/biografi_model.dart';
 
 class InfoTugasController extends GetxController {
   RxList<InfoTugasModel> infoTugasList = <InfoTugasModel>[].obs;
+  RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   var isLoading = true.obs;
   var userStatus = ''.obs;
+  RxString currentIdKelas = ''.obs;
 
   @override
   void onInit() {
@@ -25,6 +28,43 @@ class InfoTugasController extends GetxController {
 
   void setUserStatus() {
     userStatus.value = 'sekretaris';
+  }
+
+  Future<void> fetchBiografi() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? userId = prefs.getInt('id_user');
+
+      if (userId != null) {
+        final response = await http.get(
+          Uri.parse('$baseUrl$biodataEndpointGet$userId'),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          print('JSON Response: $jsonResponse');
+
+          var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
+          biografiList.value = [fetchedData];
+
+          userStatus.value = fetchedData.roleName;
+
+          print('Successfully loaded biografi data: ${biografiList.length}');
+        } else {
+          print('Failed to load biografi, status code: ${response.statusCode}');
+          throw Exception('Failed to load biografi');
+        }
+      } else {
+        print('User ID is null. Unable to fetch biografi.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
   }
 
   void openIconButtonpressed(BuildContext context, int index, String namaTugas, String guruPemberiTugas, String deadlineTugas, String ketentuanTugas, int idTugas) {
@@ -58,9 +98,15 @@ class InfoTugasController extends GetxController {
     }
   }
 
-  Future<void> addAndPostInfoTugas(String namaTugas, String guruPemberiTugas, String deadlineTugas, String ketentuanTugas, String idKelas, Kelas kelas, String token) async {
+  Future<void> addAndPostInfoTugas(
+      String namaTugas,
+      String guruPemberiTugas,
+      String deadlineTugas,
+      String ketentuanTugas,
+      String idKelas,
+      String token,
+      ) async {
     final DateTime currentTime = DateTime.now();
-
     int parsedIdKelas = int.parse(idKelas);
     DateTime parsedDeadline = DateTime.parse(deadlineTugas);
 
@@ -73,7 +119,6 @@ class InfoTugasController extends GetxController {
       ketentuan: ketentuanTugas,
       createdAt: currentTime,
       updatedAt: currentTime,
-      kelas: kelas,
     );
 
     infoTugasList.add(infoTugas);
@@ -97,12 +142,15 @@ class InfoTugasController extends GetxController {
         print('Info tugas berhasil diunggah');
         fetchInformasiTugas();
       } else {
+        final responseBody = await response.stream.bytesToString();
         print('Gagal mengunggah info tugas: ${response.statusCode}');
+        print('Response body: $responseBody');
       }
     } catch (e) {
       print('Error: $e');
     }
   }
+
 
   void deleteInfoTugas(int idTugas) async {
     try {

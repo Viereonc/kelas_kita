@@ -57,7 +57,7 @@ class EditInfoTugasController extends GetxController {
     ketentuanTugasController.text = ketentuanTugas;
   }
 
-  Future<void> editInfoTugas(int index, String namaTugas, String guruPemberiTugas, String deadlineTugas, String ketentuanTugas, String idKelas, Kelas kelas, String token, int idTugas) async {
+  Future<void> editInfoTugas(int index, String namaTugas, String guruPemberiTugas, String deadlineTugas, String ketentuanTugas, String idKelas, String token, int idTugas) async {
     final DateTime currentTime = DateTime.now();
 
     int parsedIdKelas = int.parse(idKelas);
@@ -73,7 +73,6 @@ class EditInfoTugasController extends GetxController {
         ketentuan: ketentuanTugas,
         createdAt: currentTime,
         updatedAt: currentTime,
-        kelas: kelas
     );
 
     var url = Uri.parse('${baseUrl}api/tugas/${idTugas}');
