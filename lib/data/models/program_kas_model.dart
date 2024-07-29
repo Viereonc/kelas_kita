@@ -42,7 +42,7 @@ class ProgramKelasModel {
     "nama": nama,
     "status": status,
     "jumlah": jumlah,
-    "jadwal": "${jadwal.year.toString().padLeft(4, '0')}-${jadwal.month.toString().padLeft(2, '0')}-${jadwal.day.toString().padLeft(2, '0')}",
+    "jadwal": jadwal.toIso8601String(),
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };
