@@ -19,6 +19,7 @@ class AddAgendaScreen extends StatelessWidget {
     final AgendaController agendaController = Get.find();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
@@ -26,6 +27,7 @@ class AddAgendaScreen extends StatelessWidget {
             children: [
               Container(
                 child: AppBar(
+                  backgroundColor: Colors.white,
                   surfaceTintColor: Colors.white,
                   title: Container(
                     margin: EdgeInsets.only(top: screenHeight * 0.05),
@@ -59,7 +61,7 @@ class AddAgendaScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Center(
-                            child: Icon(Icons.arrow_back_ios_new, color: Colors.white)), // Ganti ikon dengan icon save
+                            child: Icon(Icons.arrow_back_ios_new, color: Colors.white)),
                       ),
                     ),
                   ),

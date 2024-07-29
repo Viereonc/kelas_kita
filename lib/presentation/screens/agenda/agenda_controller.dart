@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/data/models/agenda_model.dart';
 import 'package:kelas_kita/presentation/screens/agenda/option_edit_delete.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import '../../../constants.dart';
 
 class AgendaController extends GetxController {
-  var agendaList = [].obs;
+  RxList<InfoAgendaModel> agendaList = <InfoAgendaModel>[].obs;
   var isLoading = true.obs;
 
   TextEditingController titleController = TextEditingController();
@@ -15,12 +19,99 @@ class AgendaController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadAgendas();
+    getAgendas();
   }
 
-  void addAgenda(String title, String content) {
-    agendaList.add({"title": title, "content": content});
-    saveAgendas();
+  Future<void> getAgendas() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    int? userId = prefs.getInt('id_user');
+
+    final url = Uri.parse('$baseUrl$noteUserEndPoint');
+    try {
+      var response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        List<InfoAgendaModel> fetchedData = (jsonResponse as List)
+            .map((data) => InfoAgendaModel.fromJson(data))
+            .toList();
+        agendaList.value = fetchedData;
+        isLoading.value = false;
+
+        print('Agendas fetched successfully');
+      } else {
+        print('Failed to fetch agendas: ${response.body}');
+      }
+    } catch (e) {
+      print('Error occurred while fetching agendas: $e');
+    }
+  }
+
+  Future<void> addAgenda(String title, String content) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    int? userId = prefs.getInt('id_user');
+
+    var newAgenda = {
+      "id_user": userId,
+      "judul": title,
+      "isi": content,
+    };
+
+    final url = Uri.parse('$baseUrl$noteUserEndPoint');
+    try {
+      var response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(newAgenda),
+      );
+
+      if (response.statusCode == 201) {
+        print('Agenda added successfully');
+        getAgendas();
+      } else {
+        print('Failed to add agenda: ${response.body}');
+      }
+    } catch (e) {
+      print('Error occurred while adding agenda: $e');
+    }
+  }
+
+  Future<void> deleteAgenda(int index) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    int? userId = prefs.getInt('id_user');
+
+    final agenda = agendaList[index];
+    final agendaId = agenda.idNote;
+
+    final url = Uri.parse('$baseUrl$noteUserEndPoint/$agendaId');
+    try {
+      var response = await http.delete(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('Agenda deleted successfully');
+        agendaList.removeAt(index); // Remove from local list
+      } else {
+        print('Failed to delete agenda: ${response.body}');
+      }
+    } catch (e) {
+      print('Error occurred while deleting agenda: $e');
+    }
   }
 
   void openIconButtonpressed(BuildContext context, int index, String title, String content) {
@@ -35,30 +126,39 @@ class AgendaController extends GetxController {
     contentController.text = content;
   }
 
-  void editAgenda(int index, String title, String content) {
-    agendaList[index] = {"title": title, "content": content ?? ""};
-    saveAgendas();
-  }
-
-  void deleteAgenda(int index) {
-    agendaList.removeAt(index);
-    saveAgendas();
-  }
-
-  void saveAgendas() async {
+  Future<void> editAgenda(int index, String title, String content) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonString = jsonEncode(agendaList);
-    prefs.setString('agenda_list', jsonString);
-  }
+    String? token = prefs.getString('token');
+    int? userId = prefs.getInt('id_user');
 
-  void loadAgendas() async {
-    await Future.delayed(Duration(seconds: 3));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? jsonString = prefs.getString('agenda_list');
-    if (jsonString != null) {
-      List<dynamic> jsonList = jsonDecode(jsonString);
-      agendaList.value = jsonList.map((item) => item as Map<String, dynamic>).toList();
+    final agenda = agendaList[index];
+    final agendaId = agenda.idNote; // Assuming `InfoAgendaModel` has an `id` field
+
+    var updatedAgenda = {
+      "judul": title,
+      "isi": content,
+    };
+
+    final url = Uri.parse('$baseUrl$noteUserEndPoint/$agendaId');
+    try {
+      var response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(updatedAgenda),
+      );
+
+      if (response.statusCode == 200) {
+        print('Agenda updated successfully');
+        agendaList[index] = InfoAgendaModel.fromJson(json.decode(response.body));
+      } else {
+        print('Failed to update agenda: ${response.body}');
+      }
+    } catch (e) {
+      print('Error occurred while updating agenda: $e');
     }
-    isLoading.value = false;
   }
 }
+

@@ -38,6 +38,7 @@ class EditInfoTugasScreen extends StatelessWidget {
           child: Column(
             children: [
               AppBar(
+                backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
                 title: Text(
                   "Edit Info Tugas",
@@ -118,6 +119,7 @@ class EditInfoTugasScreen extends StatelessWidget {
                         builder: (context, value, child) {
                           return DropdownButtonFormField<String>(
                             value: value,
+                            dropdownColor: Colors.white,
                             items: editInfoTugasController.guruList.map((guru) {
                               return DropdownMenuItem<String>(
                                 value: guru,
@@ -172,6 +174,20 @@ class EditInfoTugasScreen extends StatelessWidget {
                             initialDate: DateTime.now(),
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2101),
+                            builder: (BuildContext context, Widget? child) {
+                              return Theme(
+                                data: ThemeData.light().copyWith(
+                                  primaryColor: Colors.blue,
+                                  hintColor: Colors.blue,
+                                  buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                                  datePickerTheme: DatePickerThemeData(
+                                      surfaceTintColor: Colors.white,
+                                      backgroundColor: Colors.white
+                                  ),
+                                ),
+                                child: child!,
+                              );
+                            },
                           );
                           if (pickedDate != null) {
                             String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
