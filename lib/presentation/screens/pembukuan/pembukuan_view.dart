@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/pembukuan_controller.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/program_kelas_view.dart';
+import 'package:kelas_kita/presentation/screens/pembukuan/edit_pembukuan/edit_delete_option.dart';
 import 'package:get/get.dart';
 
 class PembukuanView extends StatelessWidget {
@@ -150,6 +151,7 @@ class PembukuanView extends StatelessWidget {
                       return Column(
                         children: pembukuanKasController.programKelasList.map((program) {
                           return _buildListItem(
+                            program.idProgram,
                             program.nama,
                             _formatDate(program.jadwal),
                             'Rp${program.jumlah}',
@@ -167,25 +169,25 @@ class PembukuanView extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.01),
                   _buildDivider(),
                   SizedBox(height: screenHeight * 0.01),
-                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
-                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
-                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  _buildListItem(1, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  _buildListItem(2, 'Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                  _buildListItem(3, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
                   SizedBox(height: screenHeight * 0.03),
                   SizedBox(height: screenHeight * 0.01),
                   _buildDateContainer('Maret 16, 2024'),
                   SizedBox(height: screenHeight * 0.01),
                   _buildDivider(),
                   SizedBox(height: screenHeight * 0.01),
-                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
-                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  _buildListItem(4, 'Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                  _buildListItem(5, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
                   SizedBox(height: screenHeight * 0.03),
                   SizedBox(height: screenHeight * 0.01),
                   _buildDateContainer('Maret 17, 2024'),
                   SizedBox(height: screenHeight * 0.01),
                   _buildDivider(),
                   SizedBox(height: screenHeight * 0.01),
-                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
-                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  _buildListItem(6, 'Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                  _buildListItem(7, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
                   SizedBox(height: screenHeight * 0.01),
                   _buildDivider(),
                 ],
@@ -226,18 +228,45 @@ class PembukuanView extends StatelessWidget {
     );
   }
 
-  Widget _buildListItem(String title, String date, String amount, String subtitle, Color iconColor,
-      {bool hasIcon = false, bool hasMinusIcon = false, bool hasDietPlanIcon = false}) {
-    Color amountColor = Colors.black;
+Widget _buildListItem(
+  int index,
+  String title,
+  String date,
+  String amount,
+  String subtitle,
+  Color iconColor, {
+  bool hasIcon = false,
+  bool hasMinusIcon = false,
+  bool hasDietPlanIcon = false,
+}) {
+  Color amountColor = Colors.black;
 
-    if (hasIcon) {
-      amountColor = Colors.green;
-    } else if (hasMinusIcon) {
-      amountColor = Colors.red;
-    }
+  if (hasIcon) {
+    amountColor = Colors.green;
+  } else if (hasMinusIcon) {
+    amountColor = Colors.red;
+  }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+    child: GestureDetector(
+      onLongPress: () {
+        showModalBottomSheet(
+          context: Get.context!, // Use Get.context to access context
+          builder: (context) {
+            return OptionEditDeletePembukuanKas(
+              index: index, // Replace with actual index or identifier
+              idKelas: '', // Replace with actual data
+              nama: title,
+              status: '', // Replace with actual data
+              jumlah: amount,
+              jadwal: DateTime.now(), // Replace with actual data
+              createdAt: DateTime.now(), // Replace with actual data
+              updatedAt: DateTime.now(), // Replace with actual data
+            );
+          },
+        );
+      },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -268,7 +297,7 @@ class PembukuanView extends StatelessWidget {
                       ),
                     if (hasMinusIcon)
                       SvgPicture.asset(
-                        'lib/assets/icons/ks_minus.svg'
+                        'lib/assets/icons/ks_minus.svg',
                       ),
                   ],
                 ),
@@ -334,44 +363,9 @@ class PembukuanView extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  String _formatDate(DateTime date) {
-    String monthName = _getMonthName(date.month);
-    return '${monthName} ${date.day}, ${date.year}';
-  }
-
-  String _getMonthName(int month) {
-    switch (month) {
-      case 1:
-        return 'Januari';
-      case 2:
-        return 'Februari';
-      case 3:
-        return 'Maret';
-      case 4:
-        return 'April';
-      case 5:
-        return 'Mei';
-      case 6:
-        return 'Juni';
-      case 7:
-        return 'Juli';
-      case 8:
-        return 'Agustus';
-      case 9:
-        return 'September';
-      case 10:
-        return 'Oktober';
-      case 11:
-        return 'November';
-      case 12:
-        return 'Desember';
-      default:
-        return '';
-    }
-  }
+    ),
+  );
+}
 
   Widget _buildDivider() {
     return Container(
@@ -379,5 +373,9 @@ class PembukuanView extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 20.0),
       color: Color(0xFFF2F2F2),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.month}/${date.day}/${date.year}';
   }
 }
