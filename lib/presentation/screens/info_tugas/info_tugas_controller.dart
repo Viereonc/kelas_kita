@@ -22,12 +22,8 @@ class InfoTugasController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    setUserStatus();
     fetchInformasiTugas();
-  }
-
-  void setUserStatus() {
-    userStatus.value = 'sekretaris';
+    fetchBiografi();
   }
 
   Future<void> fetchBiografi() async {
@@ -79,9 +75,10 @@ class InfoTugasController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
+      int? idKelas = prefs.getInt('id_kelas');
 
       final response = await http.get(
-        Uri.parse(baseUrl + infoGetTugasEndPoint),
+        Uri.parse('$baseUrl$infoGetTugasEndPoint$idKelas'),
         headers: {
           'Authorization': 'Bearer $token',
         },

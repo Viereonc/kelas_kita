@@ -345,29 +345,50 @@ class ProfileScreen extends StatelessWidget {
                             side: BorderSide.none,
                             onPressed: () {
                               showCupertinoDialog<void>(
-                                  context: context, builder: (BuildContext context) => CupertinoAlertDialog(
-                                  title: Text('Peringatan', style: tsParagraft2(
-                                    screenSize: screenWidth,
-                                  ),),
-                                  content: Text('Apakah anda ingin Log Out?', style: tsParagraft5(
-                                    screenSize: screenWidth,
-                                  ),),
-                                  actions: <CupertinoDialogAction>[
-                                    CupertinoDialogAction(child: Text('Tidak', style: tsSubHeader4(
-                                      screenSize: screenWidth,
-                                    )), isDestructiveAction: true, onPressed: () {Navigator.pop(context);},),
-                                    CupertinoDialogAction(child: Text('Ya', style: tsSubHeader4(
-                                      screenSize: screenWidth,
-                                    ).copyWith(color: Colors.red),),  onPressed: () async {
-                                      profileController.logout();
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => LoginView()),
-                                            (Route<dynamic> route) => false,
-                                        );
-                                      },
+                                context: context,
+                                builder: (BuildContext context) => Theme(
+                                  data: ThemeData(
+                                    cupertinoOverrideTheme: CupertinoThemeData(
+                                      brightness: Brightness.light, // Use light brightness to get a white background
+                                      barBackgroundColor: Colors.white, // Customize the background color
                                     ),
-                                  ],
+                                  ),
+                                  child: CupertinoAlertDialog(
+                                    title: Text(
+                                      'Peringatan',
+                                      style: tsParagraft2(screenSize: screenWidth),
+                                    ),
+                                    content: Text(
+                                      'Apakah anda ingin Log Out?',
+                                      style: tsParagraft5(screenSize: screenWidth),
+                                    ),
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                        child: Text(
+                                          'Tidak',
+                                          style: tsSubHeader4(screenSize: screenWidth),
+                                        ),
+                                        isDestructiveAction: true,
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      CupertinoDialogAction(
+                                        child: Text(
+                                          'Ya',
+                                          style: tsSubHeader4(screenSize: screenWidth).copyWith(color: Colors.red),
+                                        ),
+                                        onPressed: () async {
+                                          profileController.logout();
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => LoginView()),
+                                                (Route<dynamic> route) => false,
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             }
