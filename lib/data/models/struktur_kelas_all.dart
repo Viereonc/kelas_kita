@@ -5,9 +5,9 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-List<StrukturKelasAllModel> strukturKelasAllModelFromJson(String str) => List<StrukturKelasAllModel>.from(json.decode(str).map((x) => StrukturKelasAllModel.fromJson(x)));
+Map<String, List<StrukturKelasAllModel>> strukturKelasAllModelFromJson(String str) => Map.from(json.decode(str)).map((k, v) => MapEntry<String, List<StrukturKelasAllModel>>(k, List<StrukturKelasAllModel>.from(v.map((x) => StrukturKelasAllModel.fromJson(x)))));
 
-String strukturKelasAllModelToJson(List<StrukturKelasAllModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String strukturKelasAllModelToJson(Map<String, List<StrukturKelasAllModel>> data) => json.encode(Map.from(data).map((k, v) => MapEntry<String, dynamic>(k, List<dynamic>.from(v.map((x) => x.toJson())))));
 
 class StrukturKelasAllModel {
   int idBiodata;
@@ -16,6 +16,7 @@ class StrukturKelasAllModel {
   String nama;
   int nis;
   String alamat;
+  String? image;
   dynamic bio;
   Status status;
   DateTime createdAt;
@@ -33,6 +34,7 @@ class StrukturKelasAllModel {
     required this.nama,
     required this.nis,
     required this.alamat,
+    this.image,
     required this.bio,
     required this.status,
     required this.createdAt,
@@ -48,9 +50,10 @@ class StrukturKelasAllModel {
     idBiodata: json["id_biodata"],
     idUser: json["id_user"],
     idKelas: json["id_kelas"],
-    nama: json["nama"],
+    nama: json["nama"].toString(),
     nis: json["nis"],
     alamat: json["alamat"],
+    image: json["image"],
     bio: json["bio"],
     status: statusValues.map[json["status"]]!,
     createdAt: DateTime.parse(json["created_at"]),
@@ -59,7 +62,6 @@ class StrukturKelasAllModel {
     user: User.fromJson(json["user"]),
     kelas: Kelas.fromJson(json["kelas"]),
     role: Role.fromJson(json["role"]),
-    absen: json["absen"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -69,6 +71,7 @@ class StrukturKelasAllModel {
     "nama": nama,
     "nis": nis,
     "alamat": alamat,
+    "image": image,
     "bio": bio,
     "status": statusValues.reverse[status],
     "created_at": createdAt.toIso8601String(),
@@ -83,7 +86,7 @@ class StrukturKelasAllModel {
 
 class Kelas {
   int idKelas;
-  Nama nama;
+  String nama;
   dynamic createdAt;
   dynamic updatedAt;
 
@@ -96,28 +99,18 @@ class Kelas {
 
   factory Kelas.fromJson(Map<String, dynamic> json) => Kelas(
     idKelas: json["id_kelas"],
-    nama: namaValues.map[json["nama"]]!,
+    nama: json["nama"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
   );
 
   Map<String, dynamic> toJson() => {
     "id_kelas": idKelas,
-    "nama": namaValues.reverse[nama],
+    "nama": nama,
     "created_at": createdAt,
     "updated_at": updatedAt,
   };
 }
-
-enum Nama {
-  THE_11_PPLG_1,
-  THE_11_PPLG_2
-}
-
-final namaValues = EnumValues({
-  "11 PPLG 1": Nama.THE_11_PPLG_1,
-  "11 PPLG 2": Nama.THE_11_PPLG_2
-});
 
 class Role {
   int idRole;
