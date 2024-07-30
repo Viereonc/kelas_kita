@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final strukturKelasAllModel = strukturKelasAllModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<StrukturKelasAllModel> strukturKelasAllModelFromJson(String str) => List<StrukturKelasAllModel>.from(json.decode(str).map((x) => StrukturKelasAllModel.fromJson(x)));
@@ -8,23 +13,23 @@ class StrukturKelasAllModel {
   int idBiodata;
   int idUser;
   int idKelas;
-  int idRole;
   String nama;
   int nis;
-  Alamat alamat;
+  String alamat;
   dynamic bio;
   Status status;
   DateTime createdAt;
   DateTime updatedAt;
+  RoleName roleName;
   User user;
   Kelas kelas;
+  Role role;
   int? absen; // New property
 
   StrukturKelasAllModel({
     required this.idBiodata,
     required this.idUser,
     required this.idKelas,
-    required this.idRole,
     required this.nama,
     required this.nis,
     required this.alamat,
@@ -32,8 +37,10 @@ class StrukturKelasAllModel {
     required this.status,
     required this.createdAt,
     required this.updatedAt,
+    required this.roleName,
     required this.user,
     required this.kelas,
+    required this.role,
     this.absen,
   });
 
@@ -41,16 +48,17 @@ class StrukturKelasAllModel {
     idBiodata: json["id_biodata"],
     idUser: json["id_user"],
     idKelas: json["id_kelas"],
-    idRole: json["id_role"],
     nama: json["nama"],
     nis: json["nis"],
-    alamat: alamatValues.map[json["alamat"]]!,
+    alamat: json["alamat"],
     bio: json["bio"],
     status: statusValues.map[json["status"]]!,
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
+    roleName: roleNameValues.map[json["role_name"]]!,
     user: User.fromJson(json["user"]),
     kelas: Kelas.fromJson(json["kelas"]),
+    role: Role.fromJson(json["role"]),
     absen: json["absen"],
   );
 
@@ -58,31 +66,20 @@ class StrukturKelasAllModel {
     "id_biodata": idBiodata,
     "id_user": idUser,
     "id_kelas": idKelas,
-    "id_role": idRole,
     "nama": nama,
     "nis": nis,
-    "alamat": alamatValues.reverse[alamat],
+    "alamat": alamat,
     "bio": bio,
     "status": statusValues.reverse[status],
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
+    "role_name": roleNameValues.reverse[roleName],
     "user": user.toJson(),
     "kelas": kelas.toJson(),
+    "role": role.toJson(),
     "absen": absen,
   };
 }
-
-enum Alamat {
-  DEPOK,
-  KUDUS,
-  REMBANG
-}
-
-final alamatValues = EnumValues({
-  "Depok": Alamat.DEPOK,
-  "Kudus": Alamat.KUDUS,
-  "Rembang": Alamat.REMBANG
-});
 
 class Kelas {
   int idKelas;
@@ -120,6 +117,62 @@ enum Nama {
 final namaValues = EnumValues({
   "11 PPLG 1": Nama.THE_11_PPLG_1,
   "11 PPLG 2": Nama.THE_11_PPLG_2
+});
+
+class Role {
+  int idRole;
+  RoleName nama;
+  Code code;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  Role({
+    required this.idRole,
+    required this.nama,
+    required this.code,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory Role.fromJson(Map<String, dynamic> json) => Role(
+    idRole: json["id_role"],
+    nama: roleNameValues.map[json["nama"]]!,
+    code: codeValues.map[json["code"]]!,
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id_role": idRole,
+    "nama": roleNameValues.reverse[nama],
+    "code": codeValues.reverse[code],
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+  };
+}
+
+enum Code {
+  ANG,
+  BEN,
+  WAL
+}
+
+final codeValues = EnumValues({
+  "ANG": Code.ANG,
+  "BEN": Code.BEN,
+  "WAL": Code.WAL
+});
+
+enum RoleName {
+  ANGGOTA,
+  BENDAHARA,
+  WALI_KELAS
+}
+
+final roleNameValues = EnumValues({
+  "Anggota": RoleName.ANGGOTA,
+  "Bendahara": RoleName.BENDAHARA,
+  "Wali Kelas": RoleName.WALI_KELAS
 });
 
 enum Status {

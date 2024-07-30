@@ -33,6 +33,7 @@ class BiografiView extends StatelessWidget {
     double imageWidth = screenWidth * 0.4;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
@@ -282,7 +283,7 @@ class BiografiView extends StatelessWidget {
               borderColor: Colors.red,
               screenWidth: screenWidth,
               onTap: () {
-                Navigator.pop(context);
+                Get.toNamed('/loginView');
               },
             ),
             buildButton(

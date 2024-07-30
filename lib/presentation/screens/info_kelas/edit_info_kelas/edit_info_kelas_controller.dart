@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ class EditInfoKelasController extends GetxController {
   final RxString imageUrl = ''.obs;
   RxList<InfoKelasModel> infoKelasList = <InfoKelasModel>[].obs;
   var isLoading = true.obs;
+  var userStatus = ''.obs;
 
   @override
   void onInit() {

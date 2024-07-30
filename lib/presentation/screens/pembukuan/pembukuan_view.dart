@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kelas_kita/presentation/screens/pembukuan/pembukuan_controller.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/program_kelas_view.dart';
+import 'package:get/get.dart';
 
 class PembukuanView extends StatelessWidget {
+  final PembukuanKasController pembukuanKasController = Get.put(PembukuanKasController());
+
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        foregroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: Container(
@@ -38,314 +46,338 @@ class PembukuanView extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+      body: Column(
         children: [
-          SizedBox(height: 20),
-          Center(
-            child: Stack(
+          Container(
+            margin: EdgeInsets.only(top: 15),
+            width: screenWidth * 0.9,
+            height: screenHeight * 0.12,
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.02),
+            decoration: BoxDecoration(
+              color: Color(0xFF142847),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: screenWidth * 0.9,
-                  height: 100,
-                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF142847),
-                    borderRadius: BorderRadius.circular(10.0),
+                Text(
+                  'Total Uang Kas',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                SizedBox(height: screenHeight * 0.01),
+                Text(
+                  'Rp 50.000',
+                  style: GoogleFonts.manrope(
+                    textStyle: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: screenHeight * 0.04),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Total Uang Kas',
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                      Container(
+                        width: screenWidth * 0.35,
+                        height: screenHeight * 0.05,
+                        margin: EdgeInsets.only(left: screenWidth * 0.05),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFE8E8E8),
+                          borderRadius: BorderRadius.circular(45.0),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Program Kelas',
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Rp 50.000',
-                        style: GoogleFonts.manrope(
-                          textStyle: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ProgramKelasView()),
+                          );
+                        },
+                        child: Container(
+                          width: 39,
+                          height: 39,
+                          margin: EdgeInsets.only(right: screenWidth * 0.05),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 56, 122, 223),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.add,
                             color: Colors.white,
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                Positioned(
-                  left: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: Image.asset(
-                    'lib/assets/images/vector_credit_card.png',
-                    fit: BoxFit.contain,
+                  SizedBox(height: screenHeight * 0.013),
+                  Container(
+                    height: 1.0,
+                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                    color: Color(0xFFF2F2F2),
                   ),
-                ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: Image.asset(
-                    'lib/assets/images/vector_credit_card_2.png',
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ],
+                  SizedBox(height: screenHeight * 0.015),
+                  Obx(() {
+                    if (pembukuanKasController.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return Column(
+                        children: pembukuanKasController.programKelasList.map((program) {
+                          return _buildListItem(
+                            program.nama,
+                            _formatDate(program.jadwal),
+                            'Rp${program.jumlah}',
+                            'Mempunyai 80% Kedisiplinan Kas',
+                            Colors.blue,
+                            hasDietPlanIcon: true,
+                          );
+                        }).toList(),
+                      );
+                    }
+                  }),
+                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDateContainer('Maret 14, 2024'),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDivider(),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDateContainer('Maret 16, 2024'),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDivider(),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDateContainer('Maret 17, 2024'),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDivider(),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                  _buildListItem('Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                  SizedBox(height: screenHeight * 0.01),
+                  _buildDivider(),
+                ],
+              ),
             ),
           ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: screenWidth * 0.35,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: Color(0xFFE8E8E8),
-                  borderRadius: BorderRadius.circular(45.0),
-                ),
-                child: Center(
-                  child: Text(
-                    'Program Kelas',
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProgramKelasView()),
-                  );
-                },
-                child: Container(
-                  width: 39,
-                  height: 39,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 56, 122, 223),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDateContainer(String date) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: 130,
+          height: 35,
+          margin: EdgeInsets.only(left: 20.0),
+          decoration: BoxDecoration(
+            color: Color(0xFFE8E8E8),
+            borderRadius: BorderRadius.circular(45.0),
           ),
-          SizedBox(height: 13),
-          Divider(color: Color(0xFFF2F2F2), thickness: 1),
-          SizedBox(height: 15),
+          child: Center(
+            child: Text(
+              date,
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildListItem(String title, String date, String amount, String subtitle, Color iconColor,
+      {bool hasIcon = false, bool hasMinusIcon = false, bool hasDietPlanIcon = false}) {
+    Color amountColor = Colors.black;
+
+    if (hasIcon) {
+      amountColor = Colors.green;
+    } else if (hasMinusIcon) {
+      amountColor = Colors.red;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 width: 35,
                 height: 35,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color.fromARGB(255, 56, 122, 223),
+                  color: iconColor,
                 ),
-                child: Container(
-                  margin: EdgeInsets.all(8),
-                  child: SvgPicture.asset(
-                    'lib/assets/icons/list.svg',
-                  ),
-                ),
-              ),
-              SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Text(
-                      'Buka Bersama',
-                      style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
+                    if (hasDietPlanIcon)
+                      Image.asset(
+                        'lib/assets/images/list.png',
+                        width: 20,
+                        height: 20,
+                        color: Colors.white,
                       ),
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Maret 21 2024',
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black.withOpacity(0.4),
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'Rp500.000',
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      'Mempunyai 80% Kedisiplinan Kas',
-                      style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black.withOpacity(0.4),
-                        ),
+                    if (hasIcon)
+                      SvgPicture.asset(
+                        'lib/assets/icons/ks_plus.svg',
                       ),
-                    ),
+                    if (hasMinusIcon)
+                      SvgPicture.asset(
+                        'lib/assets/icons/ks_minus.svg'
+                      ),
                   ],
                 ),
               ),
-            ],
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: screenWidth * 0.35,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: Color(0xFFE8E8E8),
-                  borderRadius: BorderRadius.circular(45.0),
-                ),
-                child: Center(
-                  child: Text(
-                    'Maret 14, 2024',
+              SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
                         color: Colors.black,
                       ),
                     ),
                   ),
+                  SizedBox(height: 5),
+                  Text(
+                    date,
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  if (subtitle.isNotEmpty) ...[
+                    Text(
+                      subtitle,
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                      ),
+                    ),
+                  ]
+                ],
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                amount,
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: amountColor,
+                  ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 15),
-          _buildBazareMakananRow(
-              screenWidth, 'Rp10.000', Color.fromARGB(255, 227, 80, 80), 'lib/assets/icons/moneimin.svg'),
-          SizedBox(height: 13),
-          Divider(color: Color(0xFFF2F2F2), thickness: 2),
-          SizedBox(height: 15),
-          _buildBazareMakananRow(
-              screenWidth, 'Rp100.000', Color.fromARGB(255, 53, 190, 76), 'lib/assets/icons/moneiplus.svg'),
-          SizedBox(height: 13),
-          Divider(color: Color(0xFFF2F2F2), thickness: 2),
-          SizedBox(height: 15),
-          _buildBazareMakananRow(
-              screenWidth, 'Rp10.000', Color.fromARGB(255, 227, 80, 80), 'lib/assets/icons/moneimin.svg'),
-          SizedBox(height: 13),
-          Divider(color: Color(0xFFF2F2F2), thickness: 2),
-          SizedBox(height: 15),
-          _buildBazareMakananRow(
-              screenWidth, 'Rp10.000', Color.fromARGB(255, 53, 190, 76), 'lib/assets/icons/moneiplus.svg'),
         ],
       ),
     );
   }
 
-  Widget _buildBazareMakananRow(double screenWidth, String amount, Color iconColor, String iconPath) {
-    return Row(
-      children: [
-        Container(
-          width: 35,
-          height: 35,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: iconColor,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SvgPicture.asset(
-              iconPath,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-        SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Bazare Makanan',
-                style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Maret 21 2024',
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.4),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    amount,
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: iconColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 4),
-              Text(
-                'Gopay · 08.45 AM',
-                style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black.withOpacity(0.4),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+  String _formatDate(DateTime date) {
+    String monthName = _getMonthName(date.month);
+    return '${monthName} ${date.day}, ${date.year}';
+  }
+
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'Januari';
+      case 2:
+        return 'Februari';
+      case 3:
+        return 'Maret';
+      case 4:
+        return 'April';
+      case 5:
+        return 'Mei';
+      case 6:
+        return 'Juni';
+      case 7:
+        return 'Juli';
+      case 8:
+        return 'Agustus';
+      case 9:
+        return 'September';
+      case 10:
+        return 'Oktober';
+      case 11:
+        return 'November';
+      case 12:
+        return 'Desember';
+      default:
+        return '';
+    }
+  }
+
+  Widget _buildDivider() {
+    return Container(
+      height: 1.0,
+      margin: EdgeInsets.symmetric(horizontal: 20.0),
+      color: Color(0xFFF2F2F2),
     );
   }
 }

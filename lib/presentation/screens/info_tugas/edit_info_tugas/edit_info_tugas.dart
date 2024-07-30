@@ -9,6 +9,7 @@ import '../../../../data/models/info_tugas.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
 import '../../../widgets/Button.dart';
+import '../info_tugas_controller.dart';
 
 class EditInfoTugasScreen extends StatelessWidget {
   final int index;
@@ -37,6 +38,7 @@ class EditInfoTugasScreen extends StatelessWidget {
           child: Column(
             children: [
               AppBar(
+                backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
                 title: Text(
                   "Edit Info Tugas",
@@ -117,6 +119,7 @@ class EditInfoTugasScreen extends StatelessWidget {
                         builder: (context, value, child) {
                           return DropdownButtonFormField<String>(
                             value: value,
+                            dropdownColor: Colors.white,
                             items: editInfoTugasController.guruList.map((guru) {
                               return DropdownMenuItem<String>(
                                 value: guru,
@@ -171,6 +174,20 @@ class EditInfoTugasScreen extends StatelessWidget {
                             initialDate: DateTime.now(),
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2101),
+                            builder: (BuildContext context, Widget? child) {
+                              return Theme(
+                                data: ThemeData.light().copyWith(
+                                  primaryColor: Colors.blue,
+                                  hintColor: Colors.blue,
+                                  buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                                  datePickerTheme: DatePickerThemeData(
+                                      surfaceTintColor: Colors.white,
+                                      backgroundColor: Colors.white
+                                  ),
+                                ),
+                                child: child!,
+                              );
+                            },
                           );
                           if (pickedDate != null) {
                             String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
@@ -224,31 +241,36 @@ class EditInfoTugasScreen extends StatelessWidget {
                   onPressed: () async {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     String? token = prefs.getString('token');
-                    String idKelas = "1";
-                    Kelas kelasInstance = Kelas(
-                        idKelas: int.parse(idKelas),
-                        nama: namaTugas,
-                        createdAt: DateTime.now(),
-                        updatedAt: DateTime.now()
-                    );
 
-                    if (token != null) {
-                      await editInfoTugasController.editInfoTugas(
+                    final infoTugasController = Get.find<InfoTugasController>();
+
+                    if (infoTugasController.biografiList.isEmpty) {
+                      await infoTugasController.fetchBiografi();
+                    }
+
+                    if (infoTugasController.biografiList.isNotEmpty) {
+                      String idKelas = infoTugasController.biografiList[0].idKelas.toString();
+
+                      if (token != null) {
+                        await editInfoTugasController.editInfoTugas(
                           index,
                           editInfoTugasController.namaTugasController.text,
                           editInfoTugasController.selectedGuru.value!,
                           editInfoTugasController.deadlineTugasController.text,
                           editInfoTugasController.ketentuanTugasController.text,
                           idKelas,
-                          kelasInstance,
                           token,
-                          idTugas
-                      );
-                      Navigator.pop(context);
+                          idTugas,
+                        );
+                        Navigator.pop(context);
+                      } else {
+                        print('Token not found');
+                      }
                     } else {
-                      print('Token not found');
+                      print('Biografi list is still empty after fetching');
                     }
                   },
+
                 ),
               ),
             ],

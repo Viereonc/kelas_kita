@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "675449387691",
+    "project_id": "kelas-kita-a53ef",
+    "storage_bucket": "kelas-kita-a53ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675449387691:android:29cac4162f50967c3995ee",
+        "android_client_info": {
+          "package_name": "com.example.kelas_kita"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBmec6z4s8ZQ_JfTEQQRxozRg6A2zOIxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

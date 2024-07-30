@@ -34,6 +34,7 @@ class AddInfoTugas extends StatelessWidget {
           child: Column(
             children: [
               AppBar(
+                backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
                 title: Text(
                   "Tambah Info Tugas",
@@ -114,6 +115,7 @@ class AddInfoTugas extends StatelessWidget {
                         builder: (context, value, child) {
                           return DropdownButtonFormField<String>(
                             value: value,
+                            dropdownColor: Colors.white,
                             items: guruList.map((guru) {
                               return DropdownMenuItem<String>(
                                 value: guru,
@@ -168,6 +170,20 @@ class AddInfoTugas extends StatelessWidget {
                             initialDate: DateTime.now(),
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2101),
+                            builder: (BuildContext context, Widget? child) {
+                              return Theme(
+                                data: ThemeData.light().copyWith(
+                                  primaryColor: Colors.blue,
+                                  hintColor: Colors.blue,
+                                  buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                                  datePickerTheme: DatePickerThemeData(
+                                    surfaceTintColor: Colors.white,
+                                    backgroundColor: Colors.white
+                                  ),
+                                ),
+                                child: child!,
+                              );
+                            },
                           );
                           if (pickedDate != null) {
                             String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
@@ -234,27 +250,31 @@ class AddInfoTugas extends StatelessWidget {
 
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     String? token = prefs.getString('token');
-                    String idKelas = "1";
-                    Kelas kelasInstance = Kelas(
-                        idKelas: int.parse(idKelas),
-                        nama: namaTugasController.text,
-                        createdAt: DateTime.now(),
-                        updatedAt: DateTime.now()
-                    );
 
-                    if (token != null) {
-                      await infoTugasController.addAndPostInfoTugas(
+                    final infoTugasController = Get.find<InfoTugasController>();
+
+                    if (infoTugasController.biografiList.isEmpty) {
+                      await infoTugasController.fetchBiografi();
+                    }
+
+                    if (infoTugasController.biografiList.isNotEmpty) {
+                      String idKelas = infoTugasController.biografiList[0].idKelas.toString();
+
+                      if (token != null) {
+                        await infoTugasController.addAndPostInfoTugas(
                           namaTugasController.text,
                           guruPemberiTugas,
                           deadlineTugas,
                           ketentuanTugasController.text,
                           idKelas,
-                          kelasInstance,
-                          token
-                      );
-                      Navigator.pop(context);
+                          token,
+                        );
+                        Navigator.pop(context);
+                      } else {
+                        print('Token not found');
+                      }
                     } else {
-                      print('Token not found');
+                      print('Biografi list is still empty after fetching');
                     }
                   },
                 ),

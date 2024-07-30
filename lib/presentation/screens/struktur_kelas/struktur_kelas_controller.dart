@@ -23,45 +23,39 @@ class StrukturKelasController extends GetxController{
   }
 
   void fetchStrukturKelas() async {
-  try {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-    int? idKelas = prefs.getInt('id_kelas');
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? idKelas = prefs.getInt('id_kelas');
 
-    if (idKelas != null) {
-      final response = await http.get(
-        Uri.parse(baseUrl + strukturKelasEndpointGet + '$idKelas'),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
+      if (idKelas != null) {
+        final response = await http.get(
+          Uri.parse(baseUrl + strukturKelasEndpointGet + '$idKelas'),
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        );
+        if (response.statusCode == 200) {
+          var fetchedData = infoStrukturKelasModelFromJson(response.body);
 
-      if (response.statusCode == 200) {
-        var fetchedData = infoStrukturKelasModelFromJson(response.body);
-        
-        fetchedData.sort((a, b) => a.nama.compareTo(b.nama));
-        for (int i = 0; i < fetchedData.length; i++) {
-          fetchedData[i].absen = i + 1;
+          fetchedData.sort((a, b) => a.nama.compareTo(b.nama));
+          for (int i = 0; i < fetchedData.length; i++) {
+            fetchedData[i].absen = i + 1;
+          }
+
+          infoStrukturKelasList.value = fetchedData;
+          print('Data fetched successfully: ${infoStrukturKelasList.length} items');
+
+        } else {
+          print('Failed to fetch data: ${response.statusCode}');
         }
-
-        infoStrukturKelasList.value = fetchedData;
-        print('Data fetched successfully: ${infoStrukturKelasList.length} items');
       } else {
-        print('Failed to fetch data: ${response.statusCode}');
+        print('id_kelas is null');
       }
-    } else {
-      print('id_kelas is null');
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      isLoading.value = false;
     }
-  } catch (e) {
-    print('Error fetching data: $e');
-  } finally {
-    isLoading.value = false;
-  }
-}
-
-
-  void saveIdKelasToSharedPreferences(int idKelas) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('id_kelas', idKelas);
   }
 }

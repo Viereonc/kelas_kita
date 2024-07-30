@@ -22,6 +22,7 @@ class EditAgendaScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
@@ -29,6 +30,7 @@ class EditAgendaScreen extends StatelessWidget {
             children: [
               Container(
                 child: AppBar(
+                  backgroundColor: Colors.white,
                   surfaceTintColor: Colors.white,
                   title: Container(
                     margin: EdgeInsets.only(top: screenHeight * 0.05),
