@@ -292,6 +292,7 @@ class BiografiView extends StatelessWidget {
               textColor: Colors.white,
               screenWidth: screenWidth,
               onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
                 String imagePath = biografiController.selectedImagePath.value?.path ?? '';
                 String userId = (await SharedPreferences.getInstance()).getInt('id_user').toString();
 

@@ -86,14 +86,14 @@ class InfoTugasScreen extends StatelessWidget {
                         final infoTugas = reversedList[index];
 
                         return GestureDetector(
-                          onLongPress: () {
+                          onLongPress: infoTugasController.userStatus.value == 'Bendahara' ? () {
                             final namaTugas = infoTugas.nama;
                             final guruPemberiTugas = infoTugas.guru;
                             final deadlineTugas = infoTugas.deadline;
                             final ketentuanTugas = infoTugas.ketentuan;
                             final idTugas = infoTugas.idTugas;
                             infoTugasController.openIconButtonpressed(context, index, namaTugas, guruPemberiTugas, deadlineTugas.toString(), ketentuanTugas, idTugas);
-                          },
+                          } : null,
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01, vertical: screenHeight * 0.015),
                             child: Container(
@@ -163,16 +163,13 @@ class InfoTugasScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() {
-        if (infoTugasController.userStatus.value == 'sekretaris') {
+        if (infoTugasController.userStatus.value == 'Bendahara') {
           return FloatingActionButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               String? token = prefs.getString('token');
 
-              int idKelas = 2; // Ensure idKelas is an integer
-              String nama = "11 PPLG 2"; // Define the name of the class or retrieve it appropriately
-              DateTime? createdAt; // Initialize or set the createdAt date
-              DateTime? updatedAt; // Initialize or set the updatedAt date
+              String idKelas = '1';
 
               final result = await Navigator.push(
                 context,
@@ -185,8 +182,8 @@ class InfoTugasScreen extends StatelessWidget {
                     result["guruPemberiTugas"],
                     result["deadlineTugas"],
                     result["ketentuanTugas"],
-                    idKelas.toString(), // Convert idKelas back to string if necessary
-                    token ?? "default_token_value" // Provide a default value if token is null
+                    idKelas.toString(),
+                    token!
                 );
               }
             },

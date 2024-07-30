@@ -29,9 +29,10 @@ class InfoKelasController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
+      int? idKelas = prefs.getInt('id_kelas');
 
       final response = await http.get(
-        Uri.parse(baseUrl + infoGetKelasEndpoint),
+        Uri.parse('$baseUrl$infoGetKelasEndpoint$idKelas'),
         headers: {
           'Authorization': 'Bearer $token',
         },

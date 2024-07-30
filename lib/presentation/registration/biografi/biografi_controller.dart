@@ -73,10 +73,10 @@ class BiografiController extends GetxController {
 
       request.fields.addAll(<String, String>{
         'id_user': idUser.toString(),
-        'id_role': '6',
+        'id_role': '7',
         'alamat': alamat,
         'nama': nama,
-        'id_kelas': '3',
+        'id_kelas': idKelas.value,
         'nis': nis,
         'status': accept,
       });
@@ -97,8 +97,10 @@ class BiografiController extends GetxController {
         var responseData = await http.Response.fromStream(response);
         var decodedData = json.decode(responseData.body);
         String biografiStatus = decodedData['status'];
+        String biografiIdKelas = decodedData['id_kelas'];
 
         await prefs.setString('status', biografiStatus);
+        await prefs.setString('id_kelas', biografiIdKelas);
 
         if (biografiStatus == 'A') {
           Get.offNamed(Path.HOME_PAGE);

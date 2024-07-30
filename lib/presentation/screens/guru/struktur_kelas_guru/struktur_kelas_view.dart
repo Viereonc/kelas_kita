@@ -72,7 +72,27 @@ class StrukturKelasGuruScreen extends StatelessWidget {
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+              child: Obx(() {
+                if (strukturKelasGuruController.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  var kelasNames = strukturKelasGuruController.kelasList.isNotEmpty
+                      ? strukturKelasGuruController.kelasList
+                      .map((info) => info.nama)
+                      .join(', ')
+                      : 'No Kelas Data';
+
+                  return Text(
+                    kelasNames,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  );
+                }
+              }),
+            ),
             Container(
               child: Divider(
                 color: Colors.grey,
