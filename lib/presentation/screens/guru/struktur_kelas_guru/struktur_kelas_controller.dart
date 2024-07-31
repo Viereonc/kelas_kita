@@ -106,5 +106,4 @@ class StrukturKelasGuruController extends GetxController {
       isLoading.value = false;
     }
   }
-
 }
