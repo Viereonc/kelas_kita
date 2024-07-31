@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/data/models/jadwal_kelas_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../constants.dart';
+import '../../../data/models/biografi_model.dart';
 
 class JadwalController extends GetxController {
   RxList<JadwalKelasModel> jadwalKelasList = <JadwalKelasModel>[].obs;
+  RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
+  var userStatus = ''.obs;
   var isLoading = true.obs;
   var selectedDay = ''.obs;
   List<JadwalKelasModel> senin = [];
@@ -21,6 +26,7 @@ class JadwalController extends GetxController {
     super.onInit();
     fetchJadwalPelajaran();
     selectDay(getCurrentDay());
+    fetchBiografi();
   }
 
   void fetchJadwalPelajaran() async {
@@ -108,6 +114,43 @@ class JadwalController extends GetxController {
         return sabtu;
       default:
         return [];
+    }
+  }
+
+  Future<void> fetchBiografi() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? userId = prefs.getInt('id_user');
+
+      if (userId != null) {
+        final response = await http.get(
+          Uri.parse('$baseUrl$biodataEndpointGet$userId'),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          print('JSON Response: $jsonResponse');
+
+          var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
+          biografiList.value = [fetchedData];
+
+          userStatus.value = fetchedData.roleName;
+
+          print('Successfully loaded biografi data: ${biografiList.length}');
+        } else {
+          print('Failed to load biografi, status code: ${response.statusCode}');
+          throw Exception('Failed to load biografi');
+        }
+      } else {
+        print('User ID is null. Unable to fetch biografi.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
     }
   }
 }

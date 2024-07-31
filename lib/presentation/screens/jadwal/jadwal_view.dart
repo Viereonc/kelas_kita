@@ -9,6 +9,7 @@ import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNaviga
 
 import '../../../constants.dart';
 import '../../../data/models/jadwal_kelas_model.dart';
+import '../../widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
 
 class JadwalScreen extends StatelessWidget {
   final JadwalController jadwalController = Get.put(JadwalController());
@@ -189,7 +190,13 @@ class JadwalScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavbar(),
+      bottomNavigationBar: Obx(() {
+        if (jadwalController.userStatus.value == 'Wali Kelas') {
+          return BottomNavbarGuru();
+        } else {
+          return BottomNavbar();
+        }
+      }),
     );
   }
 

@@ -121,10 +121,6 @@ class InfoKelasScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "PENGUMUMAN",
-                                    style: tsHeader3(screenSize: screenWidth).copyWith(color: primeryColorMedium),
-                                  ),
                                   Container(
                                     height: screenHeight * 0.17,
                                     width: double.infinity,
@@ -136,11 +132,21 @@ class InfoKelasScreen extends StatelessWidget {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                infoKelas.pengumuman,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: tsSubHeader4(screenSize: screenWidth),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "PENGUMUMAN",
+                                                    style: tsSubHeader4(screenSize: screenWidth, fontWeight: FontWeight.w700).copyWith(color: primeryColorMedium),
+                                                  ),
+                                                  SizedBox(height: 10,),
+                                                  Text(
+                                                    infoKelas.pengumuman,
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: tsSubHeader4(screenSize: screenWidth),
+                                                  ),
+                                                ],
                                               ),
                                               Container(
                                                 width: screenWidth * 0.55,

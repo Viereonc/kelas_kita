@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../themes/Backdrop.dart';
+import '../../widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
 import 'edit_profile/edit_profile_controller.dart';
 import 'profile_controller.dart';
 
@@ -60,35 +61,36 @@ class ProfileScreen extends StatelessWidget {
                                   boxShadow: [primaryBackDrop(opacity: 0.3)]
                               ),
                             ),
-                          Obx(() => editProfileController.isLoading.value
-                              ? Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              width: screenWidth * 0.33,
-                              height: screenWidth * 0.33,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(80),
-                                color: Colors.grey[300],
-                              ),
+                        Obx(() => profileController.isLoading.value
+                            ? Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: screenWidth * 0.33,
+                            height: screenWidth * 0.33,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(80),
+                              color: Colors.grey[300],
                             ),
-                          ) : ClipOval(
-                            child: Container(
-                              width: screenWidth * 0.33,
-                              height: screenWidth * 0.33,
-                              child: editProfileController.selectedImagePath.value != null
-                                  ? Image.file(
-                                editProfileController.selectedImagePath.value!,
-                                fit: BoxFit.cover,
-                              )
-                                  : SvgPicture.asset(
-                                "libassets/images/example.svg",
-                                fit: BoxFit.cover,
-                                color: Colors.red,
-                              ),
+                          ),
+                        )
+                            : ClipOval(
+                          child: Container(
+                            width: screenWidth * 0.33,
+                            height: screenWidth * 0.33,
+                            child: profileController.profileImageUrl.value.isNotEmpty
+                                ? Image.network(
+                              profileController.profileImageUrl.value,
+                              fit: BoxFit.cover,
+                            )
+                                : SvgPicture.asset(
+                              "libassets/images/example.svg",
+                              fit: BoxFit.cover,
+                              color: Colors.red,
                             ),
-                            ))
-                          ]),
+                          ),
+                        ))
+                        ]),
                     ),
                   ],
                 ),
@@ -104,9 +106,11 @@ class ProfileScreen extends StatelessWidget {
                         );
                       }),
                       SizedBox(height: 5,),
-                      Text("Anggota Kelas", style: tsSubHeader4(
-                        screenSize: screenWidth,
-                      ),),
+                      Obx(() {
+                        return Text('${profileController.userStatus}',
+                            style: tsSubHeader4(screenSize: screenWidth)
+                        );
+                      }),
                       Container(
                         margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
                         width: double.infinity,
@@ -421,7 +425,13 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavbar(),
+      bottomNavigationBar: Obx(() {
+        if (profileController.userStatus.value == 'Wali Kelas') {
+          return BottomNavbarGuru();
+        } else {
+          return BottomNavbar();
+        }
+      }),
     );
   }
 }

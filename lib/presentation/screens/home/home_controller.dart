@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:kelas_kita/data/models/tagihan_kas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,11 +13,13 @@ class HomeController extends GetxController {
   RxString userName = ''.obs;
   var selectedKelas = KelasModel(idKelas: 0, nama: '').obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
+  RxList<InfoTagihanKasModel> tagihanKasList = <InfoTagihanKasModel>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     fetchBiografi();
+    fetchTagihanKas();
     Future.delayed(Duration(seconds: 4), () {
       isLoading.value = false;
     });
@@ -77,4 +80,40 @@ class HomeController extends GetxController {
       throw Exception('Error: $e');
     }
   }
+
+  Future<void> fetchTagihanKas() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? userId = prefs.getInt('id_user');
+
+      if (userId != null) {
+        final response = await http.get(
+          Uri.parse('$baseUrl$tagihanKasUserEndPoint$userId'),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body) as List<dynamic>;
+          print('JSON Response: $jsonResponse');
+
+          var fetchedData = jsonResponse.map((data) => InfoTagihanKasModel.fromJson(data)).toList();
+          tagihanKasList.value = fetchedData;
+
+          print('Successfully loaded tagihan kas data: ${tagihanKasList.length}');
+        } else {
+          print('Failed to load tagihan kas, status code: ${response.statusCode}');
+          throw Exception('Failed to load tagihan kas');
+        }
+      } else {
+        print('User ID is null. Unable to fetch tagihan kas.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
+  }
+
 }
