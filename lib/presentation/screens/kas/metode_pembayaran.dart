@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
-
+import 'package:kelas_kita/presentation/screens/qr_code_tunai/qr_code_tunai.dart';
 import '../qr/qr_code.dart';
 
 class MetodePembayaran extends StatelessWidget {
@@ -14,7 +14,6 @@ class MetodePembayaran extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      // color: Colors.white,
       height: screenHeight / 2.5,
       width: double.infinity,
       child: Padding(
@@ -52,11 +51,11 @@ class MetodePembayaran extends StatelessWidget {
                     {
                       'image': 'lib/assets/images/logos_qris.png',
                       'title': 'QRIS',
+                      'description': 'Minimal pembayaran tunai Rp 10.000',
                     },
                     {
                       'image': 'lib/assets/icons/cash.png',
                       'title': 'Tunai',
-                      'description': 'Minimal pembayaran tunai Rp 10.000',
                     },
                   ];
 
@@ -68,6 +67,11 @@ class MetodePembayaran extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => QrCodeScreen()),
+                        );
+                      } else if (item['title'] == 'Tunai') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => QrCodeTunaiScreen()),
                         );
                       }
                     },
@@ -95,7 +99,7 @@ class MetodePembayaran extends StatelessWidget {
                   padding: EdgeInsets.only(left: screenWidth * 0.1, right: screenWidth * 0.05),
                   child: Divider(),
                 ),
-                itemCount: 3, // Updated item count
+                itemCount: 3,
               ),
             ),
           ],

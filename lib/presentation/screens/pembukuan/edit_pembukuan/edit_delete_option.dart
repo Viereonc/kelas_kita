@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/pembukuan/edit_pembukuan/edit_pembukuan.dart';
+import 'package:kelas_kita/presentation/screens/pembukuan/edit_pembukuan/edit_pembukuan_controller.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/pembukuan_controller.dart';
-import 'package:kelas_kita/presentation/screens/pembukuan/pembukuan_view.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
 class OptionEditDeletePembukuanKas extends StatelessWidget {
   final int index;
-  final String idKelas;
+  final int idProgram;
   final String nama;
   final String status;
   final String jumlah;
@@ -18,7 +19,7 @@ class OptionEditDeletePembukuanKas extends StatelessWidget {
   const OptionEditDeletePembukuanKas({
     Key? key,
     required this.index,
-    required this.idKelas,
+    required this.idProgram,
     required this.nama,
     required this.status,
     required this.jumlah,
@@ -102,16 +103,7 @@ class OptionEditDeletePembukuanKas extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => PembukuanView(
-                                //index: index,
-                                //idKelas: idKelas,
-                                //nama: nama,
-                                //status: status,
-                                //jumlah: jumlah,
-                                //jadwal: jadwal,
-                                //createdAt: createdAt,
-                                //updatedAt: updatedAt,
-                                ),
+                            builder: (context) => EditProgramKelasView(index: index, nama: nama, status: status, jumlah: jumlah, jadwal: jadwal, createdAt: createdAt, updatedAt: updatedAt)
                           ),
                         );
                       }

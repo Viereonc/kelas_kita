@@ -19,6 +19,7 @@ import 'package:kelas_kita/presentation/screens/pembukuan/Pembukuan_view.dart';
 import 'package:kelas_kita/presentation/screens/profile/profile_view.dart';
 import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_view.dart';
+import 'package:kelas_kita/presentation/screens/qr_code_tunai/qr_code_tunai.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 
 import '../presentation/registration/register/register_view.dart';
@@ -46,13 +47,13 @@ class AppPages {
   static const JADWAL = Route.JADWALVIEW_PAGE;
   static const QRCODESISWA = Route.QRCODESISWAVIEW_PAGE;
   static const QRCODEGURU = Route.QRCODEGURUVIEW_PAGE;
+  static const QRCODETUNAI = Route.QRCODETUNAIVIEW_PAGE;
 
   static final routes = [
     GetPage(
         name: Path.SPLASHSCREEN_PAGE,
         page: () => SplashScreen(),
-        transition: Transition.noTransition
-    ),
+        transition: Transition.noTransition),
     GetPage(
         name: Path.ONBOARDING_PAGE,
         page: () => OnboardingScreen(),
@@ -136,6 +137,10 @@ class AppPages {
     GetPage(
         name: Path.QRCODEGURU,
         page: () => ScanQrAbsensi(),
+        transition: Transition.noTransition),
+    GetPage(
+        name: Path.QRCODETUNAI,
+        page: () => QrCodeTunaiScreen(),
         transition: Transition.noTransition),
   ];
 }
