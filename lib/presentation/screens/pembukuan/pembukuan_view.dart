@@ -251,21 +251,23 @@ Widget _buildListItem(
     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
     child: GestureDetector(
       onLongPress: () {
+        final program = pembukuanKasController.programKelasList.firstWhere((p) => p.idProgram == index);
         showModalBottomSheet(
           context: Get.context!, // Use Get.context to access context
           builder: (context) {
             return OptionEditDeletePembukuanKas(
-              index: index, // Replace with actual index or identifier
-              idKelas: '', // Replace with actual data
+              index: index,  
+              idProgram: program.idProgram,
               nama: title,
-              status: '', // Replace with actual data
-              jumlah: amount,
-              jadwal: DateTime.now(), // Replace with actual data
-              createdAt: DateTime.now(), // Replace with actual data
-              updatedAt: DateTime.now(), // Replace with actual data
+              status: '', 
+              jumlah: program.jumlah.toString(),
+              jadwal: program.jadwal,
+              createdAt: program.createdAt,
+              updatedAt: program.updatedAt,
             );
           },
         );
+        print('Index: $index');
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
