@@ -34,11 +34,10 @@ class StrukturKelasGuruScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(screenHeight * 0.07),
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-          child: AppBar(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
             title: Text(
@@ -46,248 +45,260 @@ class StrukturKelasGuruScreen extends StatelessWidget {
               style: tsHeader2(screenSize: screenWidth),
             ),
             centerTitle: true,
-            leading: Container(
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Container(
-                  decoration: BoxDecoration(
-                    color: primeryColorMedium,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                      size: screenWidth * 0.05,
-                    ),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Container(
+                decoration: BoxDecoration(
+                  color: primeryColorMedium,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
+                    size: screenWidth * 0.05,
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-      body: Container(
-        margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-              child: Obx(() {
-                if (strukturKelasGuruController.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  var kelasNames = strukturKelasGuruController.kelasList.isNotEmpty
-                      ? strukturKelasGuruController.kelasList
-                      .map((info) => info.nama)
-                      .join(', ')
-                      : 'No Kelas Data';
-
-                  return Text(
-                    kelasNames,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  );
-                }
-              }),
-            ),
-            Container(
-              child: Divider(
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(4.0),
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                 color: Colors.grey,
-                thickness: 1.5,
+                height: 1.5,
               ),
             ),
-            Expanded(
-              child: Obx(() {
-                if (strukturKelasGuruController.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  var sortedList = strukturKelasGuruController.infoStrukturKelasList
-                    ..sort((a, b) {
-                      if (a.role.nama == RoleName.WALI_KELAS && b.role.nama != RoleName.WALI_KELAS) {
-                        return -1;
-                      } else if (a.role.nama != RoleName.WALI_KELAS && b.role.nama == RoleName.WALI_KELAS) {
-                        return 1;
-                      } else {
-                        return a.nama.compareTo(b.nama);
-                      }
-                    });
+          ),
+          Obx(() {
+            if (strukturKelasGuruController.isLoading.value) {
+              return SliverToBoxAdapter(
+                child: Center(child: CircularProgressIndicator()),
+              );
+            } else {
+              var sortedList = strukturKelasGuruController.infoStrukturKelasList
+                ..sort((a, b) {
+                  if (a.role.nama == RoleName.WALI_KELAS && b.role.nama != RoleName.WALI_KELAS) {
+                    return -1;
+                  } else if (a.role.nama != RoleName.WALI_KELAS && b.role.nama == RoleName.WALI_KELAS) {
+                    return 1;
+                  } else {
+                    return a.nama.compareTo(b.nama);
+                  }
+                });
 
-                  return ListView.builder(
-                    itemCount: sortedList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final strukturKelas = sortedList[index];
-                      bool isWaliKelas = strukturKelas.role.nama == RoleName.WALI_KELAS;
+              // Group students by their class ID
+              var groupedStudents = {};
+              for (var student in sortedList) {
+                if (groupedStudents[student.idKelas] == null) {
+                  groupedStudents[student.idKelas] = [];
+                }
+                groupedStudents[student.idKelas].add(student);
+              }
 
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: screenHeight * 0.02,
-                          horizontal: screenWidth * 0.02,
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [primaryBackDrop(opacity: 0.1)],
-                            borderRadius: BorderRadius.circular(10),
+              // Filter out classes without students
+              var filteredKelasList = strukturKelasGuruController.kelasList.where((kelas) {
+                return groupedStudents[kelas.idKelas] != null && groupedStudents[kelas.idKelas]!.isNotEmpty;
+              }).toList();
+
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    final kelas = filteredKelasList[index];
+                    final students = groupedStudents[kelas.idKelas] ?? [];
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01, horizontal: screenWidth * 0.05),
+                          child: Text(
+                            kelas.nama,
+                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: screenWidth * 0.05),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      strukturKelas.nama,
-                                      style: tsSubHeader4(
-                                        fontWeight: FontWeight.bold,
-                                        screenSize: screenWidth,
-                                      ),
-                                      maxLines: 2,
-                                    ),
-                                    SizedBox(height: screenHeight * 0.008),
-                                    Text(
-                                      roleNameValues.reverse[strukturKelas.role.nama]!,
-                                      style: tsParagraft5(
-                                        fontWeight: FontWeight.w500,
-                                        screenSize: screenWidth * 1.3,
-                                      ).copyWith(color: Colors.grey.withOpacity(0.9)),
-                                    ),
-                                  ],
-                                ),
-                                leading: Container(
-                                  width: screenWidth * 0.12,
-                                  height: screenWidth * 0.12,
-                                  decoration: BoxDecoration(
-                                    color: iconColors[index % iconColors.length],
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.person,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 1,
+                          ),
+                        ),
+                        ...students.map((strukturKelas) {
+                          bool isWaliKelas = strukturKelas.role.nama == RoleName.WALI_KELAS;
+
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: screenHeight * 0.02,
+                              horizontal: screenWidth * 0.05,
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [primaryBackDrop(opacity: 0.1)],
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.05,
-                                  vertical: screenHeight * 0.005,
-                                ),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  thickness: 0.5,
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ListTile(
+                                    contentPadding: EdgeInsets.only(left: screenWidth * 0.05),
+                                    title: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Absen',
+                                          strukturKelas.nama,
                                           style: tsSubHeader4(
                                             fontWeight: FontWeight.bold,
                                             screenSize: screenWidth,
                                           ),
+                                          maxLines: 2,
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                          child: Text(
-                                            isWaliKelas ? '-' : strukturKelas.absen.toString(),
-                                            style: tsParagraft5(
-                                              screenSize: screenWidth * 1.3,
-                                            ).copyWith(color: primeryColorMedium),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
+                                        SizedBox(height: screenHeight * 0.008),
                                         Text(
-                                          'Alamat',
-                                          style: tsSubHeader4(
-                                            fontWeight: FontWeight.bold,
-                                            screenSize: screenWidth,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                          child: Text(
-                                            strukturKelas.alamat,
-                                            style: tsParagraft5(
-                                              screenSize: screenWidth * 1.3,
-                                            ).copyWith(color: Color(0xFFFFA800)),
-                                          ),
+                                          roleNameValues.reverse[strukturKelas.role.nama]!,
+                                          style: tsParagraft5(
+                                            fontWeight: FontWeight.w500,
+                                            screenSize: screenWidth * 1.3,
+                                          ).copyWith(color: Colors.grey.withOpacity(0.9)),
                                         ),
                                       ],
                                     ),
-                                    if (!isWaliKelas)
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'NIS',
-                                            style: tsSubHeader4(
-                                              fontWeight: FontWeight.bold,
-                                              screenSize: screenWidth,
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                            child: Text(
-                                              strukturKelas.nis.toString(),
-                                              style: tsParagraft5(
-                                                screenSize: screenWidth * 1.3,
-                                              ).copyWith(color: secondaryColorDark),
-                                            ),
-                                          ),
-                                        ],
+                                    leading: Container(
+                                      width: screenWidth * 0.12,
+                                      height: screenWidth * 0.12,
+                                      decoration: BoxDecoration(
+                                        color: iconColors[index % iconColors.length],
+                                        shape: BoxShape.circle,
                                       ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: screenWidth * 0.05,
+                                      vertical: screenHeight * 0.005,
+                                    ),
+                                    child: Divider(
+                                      color: Colors.grey,
+                                      thickness: 0.5,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          'No Telepon',
-                                          style: tsSubHeader4(
-                                            fontWeight: FontWeight.bold,
-                                            screenSize: screenWidth,
-                                          ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Absen',
+                                              style: tsSubHeader4(
+                                                fontWeight: FontWeight.bold,
+                                                screenSize: screenWidth,
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                              child: Text(
+                                                isWaliKelas ? '-' : strukturKelas.absen.toString(),
+                                                style: tsParagraft5(
+                                                  screenSize: screenWidth * 1.3,
+                                                ).copyWith(color: primeryColorMedium),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                          child: Text(
-                                            '0${strukturKelas.user.nomor.toString()}',
-                                            style: tsParagraft5(
-                                              screenSize: screenWidth * 1.3,
-                                            ).copyWith(color: Color(0xFF473CC6)),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Alamat',
+                                              style: tsSubHeader4(
+                                                fontWeight: FontWeight.bold,
+                                                screenSize: screenWidth,
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                              child: Text(
+                                                strukturKelas.alamat,
+                                                style: tsParagraft5(
+                                                  screenSize: screenWidth * 1.3,
+                                                ).copyWith(color: Color(0xFFFFA800)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        if (!isWaliKelas)
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'NIS',
+                                                style: tsSubHeader4(
+                                                  fontWeight: FontWeight.bold,
+                                                  screenSize: screenWidth,
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                                child: Text(
+                                                  strukturKelas.nis.toString(),
+                                                  style: tsParagraft5(
+                                                    screenSize: screenWidth * 1.3,
+                                                  ).copyWith(color: secondaryColorDark),
+                                                ),
+                                              ),
+                                            ],
                                           ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'No Telepon',
+                                              style: tsSubHeader4(
+                                                fontWeight: FontWeight.bold,
+                                                screenSize: screenWidth,
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                              child: Text(
+                                                '0${strukturKelas.user.nomor.toString()}',
+                                                style: tsParagraft5(
+                                                  screenSize: screenWidth * 1.3,
+                                                ).copyWith(color: Color(0xFF473CC6)),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
-              }),
-            ),
-          ],
-        ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ],
+                    );
+                  },
+                  childCount: filteredKelasList.length,
+                ),
+              );
+            }
+          }),
+        ],
       ),
     );
   }
