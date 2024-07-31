@@ -9,6 +9,7 @@ import '../../../../data/models/biografi_model.dart';
 class DetailProfileController extends GetxController {
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   var isLoading = true.obs;
+  var profileImageUrl = ''.obs;
   var userName = ''.obs;
   var className = ''.obs;
   var bio = ''.obs;
@@ -48,17 +49,20 @@ class DetailProfileController extends GetxController {
           print('JSON Response: $jsonResponse');
 
           var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
-          biografiList.value = [fetchedData];
 
           userName.value = fetchedData.nama ?? '';
-          className.value = fetchedData.kelas.nama ?? '';
           bio.value = fetchedData.bio ?? '';
+          className.value = fetchedData.kelas.nama ?? '';
+          nis.value = fetchedData.nis.toString() ?? '';
           email.value = fetchedData.user.email ?? '';
           phoneNumber.value = fetchedData.user.nomor.toString() ?? '';
           address.value = fetchedData.alamat ?? '';
-          nis.value = fetchedData.nis.toString() ?? '';
 
-          print('Successfully loaded biografi data: ${biografiList.length}');
+          if (fetchedData.image != null && fetchedData.image.isNotEmpty) {
+            profileImageUrl.value = '$baseUrl$storage${fetchedData.image}';
+          }
+
+          print('Successfully loaded biografi data');
         } else {
           print('Failed to load biografi, status code: ${response.statusCode}');
           throw Exception('Failed to load biografi');

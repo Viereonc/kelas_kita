@@ -80,9 +80,9 @@ class DetailProfileScreen extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Obx(() {
-                                return editProfileController.selectedImagePath.value != null
-                                    ? Image.file(
-                                  editProfileController.selectedImagePath.value!,
+                                return detailProfileController.profileImageUrl.value.isNotEmpty
+                                    ? Image.network(
+                                  detailProfileController.profileImageUrl.value,
                                   width: screenWidth * 0.28,
                                   height: screenWidth * 0.25,
                                   fit: BoxFit.cover,

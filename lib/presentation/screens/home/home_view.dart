@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:kelas_kita/data/models/biografi_model.dart';
 import 'package:kelas_kita/presentation/screens/home/home_controller.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
@@ -65,89 +66,99 @@ class HomeScreen extends StatelessWidget {
               width: double.infinity,
               height: screenHeight * 0.386,
               decoration: BoxDecoration(
-                  color: Color(0xFFF8F4F3),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      topRight: Radius.circular(50))),
+                color: Color(0xFFF8F4F3),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+                ),
+              ),
               child: Padding(
                 padding: EdgeInsets.all(screenWidth * 0.05),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Tagihan Kas Kelas",
-                        style: tsSubHeader3(screenSize: screenWidth)),
+                    Text(
+                      "Tagihan Kas Kelas",
+                      style: tsSubHeader3(screenSize: screenWidth),
+                    ),
                     Expanded(
-                      child: Obx(() => homeController.isLoading.value
-                          ? ShimmerLoadingListView(
-                        screenWidth: screenWidth,
-                        screenHeight: screenHeight,
-                      )
-                          : ListView.builder(
-                        itemCount: 9,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: screenHeight * 0.01),
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  left: screenWidth * 0.05),
-                              height: screenHeight * 0.11,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: screenWidth * 0.12,
-                                    width: screenWidth * 0.12,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFEB4335),
-                                      borderRadius:
-                                      BorderRadius.circular(15),
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.list_outlined,
-                                        color: Colors.white,
-                                        size: screenWidth * 0.08,
-                                      ),
-                                    ),
+                      child: Obx(() {
+                        if (homeController.isLoading.value) {
+                          return ShimmerLoadingListView(
+                            screenWidth: screenWidth,
+                            screenHeight: screenHeight,
+                          );
+                        } else if (homeController.tagihanKasList.isEmpty) {
+                          return Center(
+                            child: Text(
+                              'Tidak ada tagihan kas',
+                              style: tsParagraft3(screenSize: screenWidth),
+                            ),
+                          );
+                        } else {
+                          return ListView.builder(
+                            itemCount: homeController.tagihanKasList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final tagihanKas = homeController.tagihanKasList[index];
+                              final formattedDate = DateFormat('dd MMMM yyyy').format(tagihanKas.createdAt);
+
+                              return Padding(
+                                padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                                child: Container(
+                                  padding: EdgeInsets.only(left: screenWidth * 0.05),
+                                  height: screenHeight * 0.11,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
                                   ),
-                                  SizedBox(width: 20),
-                                  Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                  child: Row(
                                     children: [
-                                      Text(
-                                        'Kas Pada Tanggal 3 Maret 2024',
-                                        style: tsSubHeader4(
-                                          fontWeight: FontWeight.bold,
-                                          screenSize: screenWidth * 1,
+                                      Container(
+                                        height: screenWidth * 0.12,
+                                        width: screenWidth * 0.12,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFFEB4335),
+                                          borderRadius: BorderRadius.circular(15),
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.list_outlined,
+                                            color: Colors.white,
+                                            size: screenWidth * 0.08,
+                                          ),
                                         ),
                                       ),
-                                      Text(
-                                        'Belum Dibayar',
-                                        style: tsParagraft4(
-                                            screenSize: screenWidth),
-                                      ),
-                                      Text(
-                                        'Rp.5.000',
-                                        style: tsParagraft4(
-                                            screenSize: screenWidth)
-                                            .copyWith(
-                                            color: Color(0xFFBE1833)),
+                                      SizedBox(width: 20),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Kas Pada Tanggal $formattedDate',
+                                            style: tsSubHeader4(
+                                              fontWeight: FontWeight.bold,
+                                              screenSize: screenWidth * 1,
+                                            ),
+                                          ),
+                                          Text(
+                                            tagihanKas.status == 'B' ? 'Belum Lunas' : 'Lunas',
+                                            style: tsParagraft4(screenSize: screenWidth),
+                                          ),
+                                          Text(
+                                            tagihanKas.jumlah.toString(),
+                                            style: tsParagraft4(screenSize: screenWidth)
+                                                .copyWith(color: Color(0xFFBE1833)),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
-                            ),
+                                ),
+                              );
+                            },
                           );
-                        },
-                      )),
+                        }
+                      }),
                     ),
                   ],
                 ),

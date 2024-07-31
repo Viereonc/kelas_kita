@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/notification/notif_controller.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 
+import '../../widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
+
 class NotificationPage extends StatelessWidget {
-  const NotificationPage({super.key});
+  NotificationPage({super.key});
+
+  final NotifController notifController = Get.put(NotifController());
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +138,13 @@ class NotificationPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavbar(),
+      bottomNavigationBar: Obx(() {
+        if (notifController.userStatus.value == 'Wali Kelas') {
+          return BottomNavbarGuru();
+        } else {
+          return BottomNavbar();
+        }
+      }),
     );
   }
 }

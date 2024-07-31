@@ -18,6 +18,8 @@ const absensiEndPoint = 'api/absensi/store';
 const programKasKelasEndPoint = 'api/program_kas/kelas/';
 const programKasEndPoint = 'api/program_kas/store';
 const noteUserEndPoint = 'api/note';
+const tagihanKasEndPoint = 'api/tagihan_kas/';
+const tagihanKasUserEndPoint = 'api/tagihan_kas/biodata/';
 
 const pending = 'P';
 const accept = 'A';

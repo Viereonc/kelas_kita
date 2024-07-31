@@ -16,6 +16,7 @@ class InfoBiografiModel {
   String nama;
   int nis;
   String alamat;
+  String image;
   dynamic bio;
   String status;
   DateTime createdAt;
@@ -32,6 +33,7 @@ class InfoBiografiModel {
     required this.nama,
     required this.nis,
     required this.alamat,
+    required this.image,
     required this.bio,
     required this.status,
     required this.createdAt,
@@ -49,6 +51,7 @@ class InfoBiografiModel {
     nama: json["nama"],
     nis: json["nis"],
     alamat: json["alamat"],
+    image: json["image"],
     bio: json["bio"],
     status: json["status"],
     createdAt: DateTime.parse(json["created_at"]),
@@ -66,6 +69,7 @@ class InfoBiografiModel {
     "nama": nama,
     "nis": nis,
     "alamat": alamat,
+    "image": image,
     "bio": bio,
     "status": status,
     "created_at": createdAt.toIso8601String(),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/home/global_controller.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
+import 'package:kelas_kita/presentation/widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
 import '../../../themes/FontsStyle.dart';
 import '../../guru/home_guru/shimmer_home.dart';
@@ -230,7 +231,7 @@ class HomeScreenGuru extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavbar(),
+      bottomNavigationBar: BottomNavbarGuru(),
     );
   }
 }

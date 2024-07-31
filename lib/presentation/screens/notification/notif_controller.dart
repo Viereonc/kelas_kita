@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -6,40 +7,15 @@ import 'package:http/http.dart' as http;
 import '../../../constants.dart';
 import '../../../data/models/biografi_model.dart';
 
-class ProfileController extends GetxController {
+class NotifController extends GetxController {
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   var userStatus = ''.obs;
-  var isLoading = true.obs;
-  var userName = 'User'.obs;
-  var profileImageUrl = ''.obs;
 
   @override
   void onInit() {
+    // TODO: implement onInit
     super.onInit();
-    loadLoading();
-    loadUserName();
     fetchBiografi();
-  }
-
-  void loadLoading() async {
-    await Future.delayed(Duration(seconds: 3));
-    isLoading.value = false;
-  }
-
-  Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-  }
-
-  Future<void> loadUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName.value = prefs.getString('nama') ?? 'User';
-  }
-
-  Future<void> saveUserName(String name) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('nama', name);
-    userName.value = name;
   }
 
   Future<void> fetchBiografi() async {
@@ -64,10 +40,6 @@ class ProfileController extends GetxController {
           biografiList.value = [fetchedData];
 
           userStatus.value = fetchedData.roleName;
-          userName.value = fetchedData.nama ?? '';
-          if (fetchedData.image != null && fetchedData.image.isNotEmpty) {
-            profileImageUrl.value = '$baseUrl$storage${fetchedData.image}';
-          }
 
           print('Successfully loaded biografi data: ${biografiList.length}');
         } else {
