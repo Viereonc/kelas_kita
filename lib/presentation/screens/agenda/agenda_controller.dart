@@ -131,8 +131,15 @@ class AgendaController extends GetxController {
     String? token = prefs.getString('token');
     int? userId = prefs.getInt('id_user');
 
+    // Retrieve agenda ID from the list instead of shared preferences
     final agenda = agendaList[index];
-    final agendaId = agenda.idNote; // Assuming `InfoAgendaModel` has an `id` field
+    final agendaId = agenda.idNote;
+
+    // If the agenda ID is null, return early
+    if (agendaId == null) {
+      print('Agenda ID is null. Cannot edit agenda.');
+      return;
+    }
 
     var updatedAgenda = {
       "judul": title,
@@ -141,7 +148,7 @@ class AgendaController extends GetxController {
 
     final url = Uri.parse('$baseUrl$noteUserEndPoint/$agendaId');
     try {
-      var response = await http.put(
+      var response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
@@ -160,5 +167,6 @@ class AgendaController extends GetxController {
       print('Error occurred while updating agenda: $e');
     }
   }
+
 }
 

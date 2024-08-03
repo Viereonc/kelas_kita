@@ -23,8 +23,11 @@ import 'profile_controller.dart';
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({Key? key}) : super(key: key);
 
-  final EditProfileController editProfileController = Get.put(EditProfileController());
   final ProfileController profileController = Get.put(ProfileController());
+
+  Future<void> _refreshData() async {
+    await profileController.fetchBiografi();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,376 +36,379 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: screenHeight * 0.1),
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      color: primeryColorMedium,
-                      width: double.infinity,
-                      height: screenHeight * 0.2,
-                    ),
-                    Positioned(
-                      top: screenHeight * 0.1,
-                      child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: screenWidth * 0.35,
-                              height: screenWidth * 0.35,
-                              decoration: BoxDecoration(
-                                  color: Colors.white, borderRadius: BorderRadius.circular(80),
-                                  boxShadow: [primaryBackDrop(opacity: 0.3)]
-                              ),
-                            ),
-                        Obx(() => profileController.isLoading.value
-                            ? Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Container(
-                            width: screenWidth * 0.33,
-                            height: screenWidth * 0.33,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80),
-                              color: Colors.grey[300],
-                            ),
-                          ),
-                        )
-                            : ClipOval(
-                          child: Container(
-                            width: screenWidth * 0.33,
-                            height: screenWidth * 0.33,
-                            child: profileController.profileImageUrl.value.isNotEmpty
-                                ? Image.network(
-                              profileController.profileImageUrl.value,
-                              fit: BoxFit.cover,
-                            )
-                                : SvgPicture.asset(
-                              "libassets/images/example.svg",
-                              fit: BoxFit.cover,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ))
-                        ]),
-                    ),
-                  ],
-                ),
-              ),
-              Center(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                  child: Column(
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: screenHeight * 0.1),
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    clipBehavior: Clip.none,
                     children: [
-                      Obx(() {
-                        return Text('${profileController.userName}',
-                            style: tsHeader3(screenSize: screenWidth)
-                        );
-                      }),
-                      SizedBox(height: 5,),
-                      Obx(() {
-                        return Text('${profileController.userStatus}',
-                            style: tsSubHeader4(screenSize: screenWidth)
-                        );
-                      }),
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
+                        color: primeryColorMedium,
                         width: double.infinity,
-                        height: screenHeight * 0.13,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              primaryBackDrop(opacity: 0.085)
-                            ]
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: screenHeight  * 0.025, horizontal: screenWidth  * 0.05),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  SvgPicture.asset("lib/assets/icons/pe_fire.svg", color: Colors.red,),
-                                  Text("80%", style: tsSubHeader4(
-                                    screenSize: screenWidth,
-                                  ),),
-                                  Text("Pembayaran Kas", style: tsSubHeader6(
-                                    screenSize: screenWidth,
-                                  ),),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: screenHeight  * 0.025, horizontal: screenWidth  * 0.05),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
-                                  Text("100%", style: tsSubHeader4(
-                                    screenSize: screenWidth,
-                                  ),),
-                                  Text("Absensi", style: tsSubHeader6(
-                                    screenSize: screenWidth,
-                                  ),),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: screenHeight  * 0.025, horizontal: screenWidth  * 0.05),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
-                                  Text("80%", style: tsSubHeader4(
-                                    screenSize: screenWidth,
-                                  ),),
-                                  Text("Pembayaran Kas", style: tsSubHeader6(
-                                    screenSize: screenWidth,
-                                  ),),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                        height: screenHeight * 0.2,
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: screenHeight * 0.35,
-                        margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => DetailProfileScreen()),
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(right: screenWidth * 0.04),
-                                        child: SvgPicture.asset(
-                                          "lib/assets/icons/pe_detail.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Detail Profile",
-                                        style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios_sharp,
-                                        size: screenWidth * 0.05,
-                                      )
-                                  )
-                                ],
-                              ),
-                            ),
-                            Divider(
-                              color: Colors.grey,
-                              thickness: 0.5,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => EditProfileScreen()),
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(right: screenWidth * 0.04),
-                                        child: SvgPicture.asset(
-                                          "lib/assets/icons/pe_edit.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Edit Profile",
-                                        style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios_sharp,
-                                        size: screenWidth * 0.05,
-                                      )
-                                  )
-                                ],
-                              ),
-                            ),
-                            Divider(
-                              color: Colors.grey,
-                              thickness: 0.5,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(right: screenWidth * 0.04),
-                                        child: SvgPicture.asset(
-                                          "lib/assets/icons/pe_privacy.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Privacy Policy",
-                                        style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios_sharp,
-                                        size: screenWidth * 0.05,
-                                      )
-                                  )
-                                ],
-                              ),
-                            ),
-                            Divider(
-                              color: Colors.grey,
-                              thickness: 0.5,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => AboutUsScreen()),
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(right: screenWidth * 0.04),
-                                        child: SvgPicture.asset(
-                                          "lib/assets/icons/pe_about.svg",
-                                          width: screenWidth * 0.04,
-                                          height: screenHeight * 0.04,
-                                        ),
-                                      ),
-                                      Text(
-                                        "About Us",
-                                        style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                      margin: EdgeInsets.only(top: screenHeight * 0.01),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios_sharp,
-                                        size: screenWidth * 0.05,
-                                      )
-                                  )
-                                ],
-                              ),
-                            ),
-                            Divider(
-                              color: Colors.grey,
-                              thickness: 0.5,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: screenHeight * 0.04, top: screenHeight * 0.02),
-                        child: Button(
-                            label: "Log Out",
-                            textStyle: tsSubHeader4(
-                              screenSize: screenWidth,
-                            ),
-                            textColor: Colors.white,
-                            backgroundColor: Color(0xFFFF2D2D),
-                            side: BorderSide.none,
-                            onPressed: () {
-                              showCupertinoDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) => Theme(
-                                  data: ThemeData(
-                                    cupertinoOverrideTheme: CupertinoThemeData(
-                                      brightness: Brightness.light, // Use light brightness to get a white background
-                                      barBackgroundColor: Colors.white, // Customize the background color
-                                    ),
-                                  ),
-                                  child: CupertinoAlertDialog(
-                                    title: Text(
-                                      'Peringatan',
-                                      style: tsParagraft2(screenSize: screenWidth),
-                                    ),
-                                    content: Text(
-                                      'Apakah anda ingin Log Out?',
-                                      style: tsParagraft5(screenSize: screenWidth),
-                                    ),
-                                    actions: <Widget>[
-                                      CupertinoDialogAction(
-                                        child: Text(
-                                          'Tidak',
-                                          style: tsSubHeader4(screenSize: screenWidth),
-                                        ),
-                                        isDestructiveAction: true,
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                      CupertinoDialogAction(
-                                        child: Text(
-                                          'Ya',
-                                          style: tsSubHeader4(screenSize: screenWidth).copyWith(color: Colors.red),
-                                        ),
-                                        onPressed: () async {
-                                          profileController.logout();
-                                          Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => LoginView()),
-                                                (Route<dynamic> route) => false,
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                      Positioned(
+                        top: screenHeight * 0.1,
+                        child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: screenWidth * 0.35,
+                                height: screenWidth * 0.35,
+                                decoration: BoxDecoration(
+                                    color: Colors.white, borderRadius: BorderRadius.circular(80),
+                                    boxShadow: [primaryBackDrop(opacity: 0.3)]
                                 ),
-                              );
-                            }
-                        ),
-                      )
+                              ),
+                          Obx(() => profileController.isLoading.value
+                              ? Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: screenWidth * 0.33,
+                              height: screenWidth * 0.33,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(80),
+                                color: Colors.grey[300],
+                              ),
+                            ),
+                          )
+                              : ClipOval(
+                            child: Container(
+                              width: screenWidth * 0.33,
+                              height: screenWidth * 0.33,
+                              child: profileController.profileImageUrl.value.isNotEmpty
+                                  ? Image.network(
+                                profileController.profileImageUrl.value,
+                                fit: BoxFit.cover,
+                              )
+                                  : SvgPicture.asset(
+                                "libassets/images/example.svg",
+                                fit: BoxFit.cover,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ))
+                          ]),
+                      ),
                     ],
                   ),
                 ),
-              )
-            ],
+                Center(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                    child: Column(
+                      children: [
+                        Obx(() {
+                          return Text('${profileController.userName}',
+                              style: tsHeader3(screenSize: screenWidth)
+                          );
+                        }),
+                        SizedBox(height: 5,),
+                        Obx(() {
+                          return Text('${profileController.userStatus}',
+                              style: tsSubHeader4(screenSize: screenWidth)
+                          );
+                        }),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
+                          width: double.infinity,
+                          height: screenHeight * 0.13,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                primaryBackDrop(opacity: 0.085)
+                              ]
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: screenHeight  * 0.025, horizontal: screenWidth  * 0.05),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset("lib/assets/icons/pe_fire.svg", color: Colors.red,),
+                                    Text("80%", style: tsSubHeader4(
+                                      screenSize: screenWidth,
+                                    ),),
+                                    Text("Pembayaran Kas", style: tsSubHeader6(
+                                      screenSize: screenWidth,
+                                    ),),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: screenHeight  * 0.025, horizontal: screenWidth  * 0.05),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
+                                    Text("100%", style: tsSubHeader4(
+                                      screenSize: screenWidth,
+                                    ),),
+                                    Text("Absensi", style: tsSubHeader6(
+                                      screenSize: screenWidth,
+                                    ),),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: screenHeight  * 0.025, horizontal: screenWidth  * 0.05),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
+                                    Text("80%", style: tsSubHeader4(
+                                      screenSize: screenWidth,
+                                    ),),
+                                    Text("Pembayaran Kas", style: tsSubHeader6(
+                                      screenSize: screenWidth,
+                                    ),),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: screenHeight * 0.35,
+                          margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => DetailProfileScreen()),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: screenWidth * 0.04),
+                                          child: SvgPicture.asset(
+                                            "lib/assets/icons/pe_detail.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Detail Profile",
+                                          style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                        margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_sharp,
+                                          size: screenWidth * 0.05,
+                                        )
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                thickness: 0.5,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: screenWidth * 0.04),
+                                          child: SvgPicture.asset(
+                                            "lib/assets/icons/pe_edit.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Edit Profile",
+                                          style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                        margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_sharp,
+                                          size: screenWidth * 0.05,
+                                        )
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                thickness: 0.5,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: screenWidth * 0.04),
+                                          child: SvgPicture.asset(
+                                            "lib/assets/icons/pe_privacy.svg", width: screenWidth * 0.04, height: screenHeight * 0.04,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Privacy Policy",
+                                          style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                        margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_sharp,
+                                          size: screenWidth * 0.05,
+                                        )
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                thickness: 0.5,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => AboutUsScreen()),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: screenWidth * 0.04),
+                                          child: SvgPicture.asset(
+                                            "lib/assets/icons/pe_about.svg",
+                                            width: screenWidth * 0.04,
+                                            height: screenHeight * 0.04,
+                                          ),
+                                        ),
+                                        Text(
+                                          "About Us",
+                                          style: tsSubHeader4(fontWeight: FontWeight.bold, screenSize: screenWidth,),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                        margin: EdgeInsets.only(top: screenHeight * 0.01),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_sharp,
+                                          size: screenWidth * 0.05,
+                                        )
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                thickness: 0.5,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: screenHeight * 0.04, top: screenHeight * 0.02),
+                          child: Button(
+                              label: "Log Out",
+                              textStyle: tsSubHeader4(
+                                screenSize: screenWidth,
+                              ),
+                              textColor: Colors.white,
+                              backgroundColor: Color(0xFFFF2D2D),
+                              side: BorderSide.none,
+                              onPressed: () {
+                                showCupertinoDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) => Theme(
+                                    data: ThemeData(
+                                      cupertinoOverrideTheme: CupertinoThemeData(
+                                        brightness: Brightness.light, // Use light brightness to get a white background
+                                        barBackgroundColor: Colors.white, // Customize the background color
+                                      ),
+                                    ),
+                                    child: CupertinoAlertDialog(
+                                      title: Text(
+                                        'Peringatan',
+                                        style: tsParagraft2(screenSize: screenWidth),
+                                      ),
+                                      content: Text(
+                                        'Apakah anda ingin Log Out?',
+                                        style: tsParagraft5(screenSize: screenWidth),
+                                      ),
+                                      actions: <Widget>[
+                                        CupertinoDialogAction(
+                                          child: Text(
+                                            'Tidak',
+                                            style: tsSubHeader4(screenSize: screenWidth),
+                                          ),
+                                          isDestructiveAction: true,
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        CupertinoDialogAction(
+                                          child: Text(
+                                            'Ya',
+                                            style: tsSubHeader4(screenSize: screenWidth).copyWith(color: Colors.red),
+                                          ),
+                                          onPressed: () async {
+                                            profileController.logout();
+                                            Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => LoginView()),
+                                                  (Route<dynamic> route) => false,
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

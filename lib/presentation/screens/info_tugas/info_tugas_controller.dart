@@ -47,7 +47,7 @@ class InfoTugasController extends GetxController {
           var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
           biografiList.value = [fetchedData];
 
-          userStatus.value = fetchedData.roleName;
+          userStatus.value = fetchedData.role.nama.toString();
 
           print('Successfully loaded biografi data: ${biografiList.length}');
         } else {

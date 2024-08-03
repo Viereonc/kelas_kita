@@ -54,7 +54,7 @@ class EditAgendaScreen extends StatelessWidget {
                   centerTitle: true,
                   leading: Container(
                     child: IconButton(
-                      onPressed: () {
+                      onPressed: () async {
                         agendaController.editAgenda(index, agendaController.titleController.text, agendaController.contentController.text);
                         Navigator.pop(context);
                       },

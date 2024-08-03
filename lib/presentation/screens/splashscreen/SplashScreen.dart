@@ -14,6 +14,7 @@ class SplashScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: TweenAnimationBuilder(
           duration: Duration(milliseconds: 1000),

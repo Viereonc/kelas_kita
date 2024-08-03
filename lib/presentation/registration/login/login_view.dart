@@ -8,6 +8,8 @@ import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/widgets/Button.dart';
 import 'package:kelas_kita/presentation/widgets/TextFormField.dart';
 
+import '../../screens/fcm_token/fcm_token.dart';
+
 class LoginView extends StatelessWidget {
   final LoginController loginController = Get.put(LoginController());
 

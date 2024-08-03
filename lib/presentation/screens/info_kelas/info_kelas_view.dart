@@ -107,16 +107,15 @@ class InfoKelasScreen extends StatelessWidget {
                             final imagePath = infoKelas.image;
                             final idInfomasiKelas = infoKelas.idInformasiKelas;
                             infoKelasController.openIconButtonpressed(context, index, description, imagePath, idInfomasiKelas);
-                          }
-                              : null,
+                          } : null,
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01, vertical: screenHeight * 0.015),
                             child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding: EdgeInsets.symmetric(vertical: 1),
                               decoration: BoxDecoration(
                                 color: Colors.transparent,
                               ),
-                              height: screenHeight * 0.25,
+                              height: screenHeight * 0.2,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,

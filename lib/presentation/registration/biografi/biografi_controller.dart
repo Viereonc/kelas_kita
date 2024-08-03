@@ -78,7 +78,7 @@ class BiografiController extends GetxController {
         'nama': nama,
         'id_kelas': idKelas.value,
         'nis': nis,
-        'status': accept,
+        'status': pending,
       });
 
       if (imagePath.isNotEmpty) {
