@@ -63,7 +63,7 @@ class ProfileController extends GetxController {
           var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
           biografiList.value = [fetchedData];
 
-          userStatus.value = fetchedData.roleName;
+          userStatus.value = fetchedData.role.nama;
           userName.value = fetchedData.nama ?? '';
           if (fetchedData.image != null && fetchedData.image.isNotEmpty) {
             profileImageUrl.value = '$baseUrl$storage${fetchedData.image}';

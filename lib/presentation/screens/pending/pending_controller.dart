@@ -38,7 +38,7 @@ class PendingController extends GetxController {
           prefs.setInt('nis', biografiModel.nis);
           prefs.setString('alamat', biografiModel.alamat);
           prefs.setInt('id_kelas', biografiModel.idKelas);
-          prefs.setString('status', biografiModel.status);
+          prefs.setString('status', biografiModel.status.toString());
           print('Successfully loaded biografi data');
           if (biografiModel.status == 'A') {
             Get.offNamed(Path.HOME_PAGE);

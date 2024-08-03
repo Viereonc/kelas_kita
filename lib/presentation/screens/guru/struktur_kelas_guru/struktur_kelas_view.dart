@@ -72,6 +72,9 @@ class StrukturKelasGuruScreen extends StatelessWidget {
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: SizedBox(height: screenHeight * 0.04),
+          ),
           Obx(() {
             if (strukturKelasGuruController.isLoading.value) {
               return SliverToBoxAdapter(
@@ -80,9 +83,9 @@ class StrukturKelasGuruScreen extends StatelessWidget {
             } else {
               var sortedList = strukturKelasGuruController.infoStrukturKelasList
                 ..sort((a, b) {
-                  if (a.role.nama == RoleName.WALI_KELAS && b.role.nama != RoleName.WALI_KELAS) {
+                  if (a.role?.nama == 'Wali Kelas' && b.role?.nama != 'Wali Kelas') {
                     return -1;
-                  } else if (a.role.nama != RoleName.WALI_KELAS && b.role.nama == RoleName.WALI_KELAS) {
+                  } else if (a.role?.nama != 'Wali Kelas' && b.role?.nama == 'Wali Kelas') {
                     return 1;
                   } else {
                     return a.nama.compareTo(b.nama);
@@ -127,7 +130,7 @@ class StrukturKelasGuruScreen extends StatelessWidget {
                           ),
                         ),
                         ...students.map((strukturKelas) {
-                          bool isWaliKelas = strukturKelas.role.nama == RoleName.WALI_KELAS;
+                          bool isWaliKelas = strukturKelas.role.nama == 'Wali Kelas';
 
                           return Padding(
                             padding: EdgeInsets.symmetric(
@@ -160,7 +163,7 @@ class StrukturKelasGuruScreen extends StatelessWidget {
                                         ),
                                         SizedBox(height: screenHeight * 0.008),
                                         Text(
-                                          roleNameValues.reverse[strukturKelas.role.nama]!,
+                                          strukturKelas.role.nama,
                                           style: tsParagraft5(
                                             fontWeight: FontWeight.w500,
                                             screenSize: screenWidth * 1.3,

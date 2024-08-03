@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/data/models/biografi_model.dart';
 import 'package:kelas_kita/presentation/screens/struktur_kelas/struktur_kelas_controller.dart';
 import 'package:kelas_kita/presentation/themes/Backdrop.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
@@ -86,14 +87,21 @@ class StrukturKelasScreen extends StatelessWidget {
                 if (strukturKelasController.isLoading.value) {
                   return Center(child: CircularProgressIndicator());
                 } else {
-                  var sortedList = strukturKelasController.infoStrukturKelasList..sort((a, b) => a.nama.compareTo(b.nama));
+                  var sortedList = strukturKelasController.infoStrukturKelasList;
+
+                  // Separate "Wali Kelas" items and others
+                  var waliKelasItems = sortedList.where((item) => item.roleName == 'Wali Kelas').toList();
+                  var otherItems = sortedList.where((item) => item.roleName != 'Wali Kelas').toList();
+
+                  // Combine lists with "Wali Kelas" items on top
+                  var combinedList = waliKelasItems + otherItems;
 
                   return RefreshIndicator(
                     onRefresh: () => _refreshData(context),
                     child: ListView.builder(
-                      itemCount: sortedList.length,
+                      itemCount: combinedList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final strukturKelas = sortedList[index];
+                        final strukturKelas = combinedList[index];
                         return Padding(
                           padding: EdgeInsets.symmetric(
                             vertical: screenHeight * 0.02,
@@ -159,7 +167,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                 Container(
                                   margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                                   child: Row(
-                                    mainAxisAlignment: strukturKelas.nama == 'Wali Kelas'
+                                    mainAxisAlignment: strukturKelas.roleName == ''
                                         ? MainAxisAlignment.start
                                         : MainAxisAlignment.spaceBetween,
                                     children: [
@@ -177,7 +185,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                           Container(
                                             margin: EdgeInsets.only(top: screenHeight * 0.01),
                                             child: Text(
-                                              strukturKelas.absen.toString(),
+                                              strukturKelas.roleName == 'Wali Kelas' ? '-' : strukturKelas.absen.toString(),
                                               style: tsParagraft5(
                                                 screenSize: screenWidth * 1.3,
                                               ).copyWith(color: primeryColorMedium),
@@ -206,7 +214,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      if (strukturKelas.nama != 'Wali Kelas')
+                                      if (strukturKelas.roleName != 'Wali Kelas')
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [

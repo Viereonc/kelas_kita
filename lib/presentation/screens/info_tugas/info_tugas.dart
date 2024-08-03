@@ -72,6 +72,8 @@ class InfoTugasScreen extends StatelessWidget {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () => _refreshData(context), // Trigger refresh action
+                color: primeryColorMedium,
+                backgroundColor: Colors.white,
                 child: Obx(() {
                   if (infoTugasController.isLoading.value) {
                     return Center(

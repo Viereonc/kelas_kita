@@ -130,7 +130,7 @@ class QrCodeSiswaScreen extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                               subtitle: Text(
-                                biografi.kelas.nama,
+                                biografi.kelas.nama.toString(),
                                 style: tsSubHeader3(
                                   screenSize: screenWidth * 0.8,
                                   fontWeight: FontWeight.w900,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 import 'package:kelas_kita/constants.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,7 @@ class SplashController extends GetxController {
   void onInit() {
     super.onInit();
     checkLoginStatus();
+    getToken();
   }
 
   void checkLoginStatus() async {
@@ -22,6 +24,16 @@ class SplashController extends GetxController {
       await fetchBiografi();
     } else {
       Get.offNamed(Path.ONBOARDING_PAGE);
+    }
+  }
+
+  void getToken() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken();
+    if (token != null) {
+      print('FCM Token: $token');
+    } else {
+      print('Failed to get FCM token');
     }
   }
 
@@ -48,28 +60,21 @@ class SplashController extends GetxController {
             prefs.setInt('nis', biografiModel.nis ?? 0);
             prefs.setString('alamat', biografiModel.alamat ?? '');
             prefs.setInt('id_kelas', biografiModel.idKelas ?? 0);
-            prefs.setString('status', biografiModel.status ?? '');
+            prefs.setString('status', biografiModel.status.toString() ?? '');
             print('Successfully loaded biografi data');
-
-            String? lastPage = prefs.getString('last_page');
-
+            final name = biografiModel.nama;
             final role = jsonResponse['role_name'];
 
-            if (lastPage != null) {
-              Get.offNamed(lastPage);
-            } else {
-              if (biografiModel.status == 'A') {
-                if (role == 'Wali Kelas') {
-                  Get.offNamed(Path.HOMEGURU_PAGE);
-                } else {
-                  Get.offNamed(Path.HOME_PAGE);
-                }
-              } else if (biografiModel.status == 'P') {
-                Get.offNamed(Path.PENDING_PAGE);
+            if (name != null && name.isNotEmpty) {
+              if (role == 'Wali Kelas') {
+                Get.offNamed(Path.HOMEGURU_PAGE);
               } else {
-                Get.offNamed(Path.BIOGRAFI_PAGE);
+                Get.offNamed(Path.HOME_PAGE);
               }
+            } else {
+              Get.offNamed(Path.BIOGRAFI_PAGE);
             }
+
           } else {
             print('Biografi data is null');
             Get.offNamed(Path.BIOGRAFI_PAGE);

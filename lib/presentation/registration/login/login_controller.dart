@@ -18,6 +18,7 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
 
   Future<void> signInWithGoogle() async {
+
     try {
       print('Attempting Google Sign-In...');
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();

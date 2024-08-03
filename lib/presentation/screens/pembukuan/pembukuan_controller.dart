@@ -1,23 +1,35 @@
   import 'dart:convert';
+  import 'package:flutter/animation.dart';
   import 'package:get/get.dart';
   import 'package:shared_preferences/shared_preferences.dart';
   import 'package:http/http.dart' as http;
   import '../../../constants.dart';
   import 'package:kelas_kita/data/models/program_kas_model.dart';
 
-  class PembukuanKasController extends GetxController {
+  class PembukuanKasController extends GetxController with SingleGetTickerProviderMixin{
   RxList<ProgramKelasModel> programKelasList = <ProgramKelasModel>[].obs;
   var isLoading = true.obs;
+  // late AnimationController animationController;
 
   @override
   void onInit() {
     super.onInit();
-    loadLoading();
+    isLoading();
+    // animationController = AnimationController(
+    //   duration: const Duration(seconds: 1),
+    //   vsync: this,
+    // )..repeat();
     fetchProgramKasKelas();
   }
 
+  // @override
+  // void onClose() {
+  //   animationController.dispose();
+  //   super.onClose();
+  // }
+
   void loadLoading() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     isLoading.value = false;
   }
 

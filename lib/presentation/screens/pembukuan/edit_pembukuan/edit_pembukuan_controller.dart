@@ -71,11 +71,11 @@ class EditProgramKelasController extends GetxController {
       'Authorization': 'Bearer $token',
     };
 
-    var request = http.MultipartRequest('PUT', url)
+    var request = http.MultipartRequest('POST', url)
       ..headers.addAll(headers)
       ..fields['id_program'] = idProgram.toString()
       ..fields['nama'] = nama
-      ..fields['target_pengeluaran'] = targetPengeluaran
+      ..fields['jumlah'] = targetPengeluaran
       ..fields['jadwal'] = jadwal
       ..fields['ketentuan'] = ketentuan
       ..fields['updated_at'] = currentTime.toIso8601String();
@@ -84,7 +84,6 @@ class EditProgramKelasController extends GetxController {
       var response = await request.send();
       if (response.statusCode == 200) {
         print('Program kelas berhasil diedit: ${response.statusCode}');
-        // You can fetch the updated data here if needed
       } else {
         print('Gagal mengedit program kelas: ${response.statusCode}');
       }

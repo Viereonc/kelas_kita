@@ -5,9 +5,9 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-InfoBiografiModel infoBiografiModelFromJson(String str) => InfoBiografiModel.fromJson(json.decode(str));
+List<InfoBiografiModel> infoBiografiModelFromJson(String str) => List<InfoBiografiModel>.from(json.decode(str).map((x) => InfoBiografiModel.fromJson(x)));
 
-String infoBiografiModelToJson(InfoBiografiModel data) => json.encode(data.toJson());
+String infoBiografiModelToJson(List<InfoBiografiModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class InfoBiografiModel {
   int idBiodata;
@@ -17,11 +17,11 @@ class InfoBiografiModel {
   int nis;
   String alamat;
   String image;
-  dynamic bio;
-  String status;
+  String bio;
+  Status status;
   DateTime createdAt;
   DateTime updatedAt;
-  String roleName;
+  RoleName roleName;
   User user;
   Kelas kelas;
   Role role;
@@ -53,10 +53,10 @@ class InfoBiografiModel {
     alamat: json["alamat"],
     image: json["image"],
     bio: json["bio"],
-    status: json["status"],
+    status: statusValues.map[json["status"]]!,
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    roleName: json["role_name"],
+    roleName: roleNameValues.map[json["role_name"]]!,
     user: User.fromJson(json["user"]),
     kelas: Kelas.fromJson(json["kelas"]),
     role: Role.fromJson(json["role"]),
@@ -71,10 +71,10 @@ class InfoBiografiModel {
     "alamat": alamat,
     "image": image,
     "bio": bio,
-    "status": status,
+    "status": statusValues.reverse[status],
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
-    "role_name": roleName,
+    "role_name": roleNameValues.reverse[roleName],
     "user": user.toJson(),
     "kelas": kelas.toJson(),
     "role": role.toJson(),
@@ -112,7 +112,7 @@ class Kelas {
 class Role {
   int idRole;
   String nama;
-  String code;
+  Code code;
   dynamic createdAt;
   dynamic updatedAt;
 
@@ -127,25 +127,58 @@ class Role {
   factory Role.fromJson(Map<String, dynamic> json) => Role(
     idRole: json["id_role"],
     nama: json["nama"],
-    code: json["code"],
+    code: codeValues.map[json["code"]]!,
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
   );
 
   Map<String, dynamic> toJson() => {
     "id_role": idRole,
-    "nama": nama,
-    "code": code,
+    "nama": roleNameValues.reverse[nama],
+    "code": codeValues.reverse[code],
     "created_at": createdAt,
     "updated_at": updatedAt,
   };
 }
+
+enum Code {
+  ANG,
+  BEN,
+  WAL
+}
+
+final codeValues = EnumValues({
+  "ANG": Code.ANG,
+  "BEN": Code.BEN,
+  "WAL": Code.WAL
+});
+
+enum RoleName {
+  ANGGOTA,
+  BENDAHARA,
+  WALI_KELAS
+}
+
+final roleNameValues = EnumValues({
+  "Anggota": RoleName.ANGGOTA,
+  "Bendahara": RoleName.BENDAHARA,
+  "Wali Kelas": RoleName.WALI_KELAS
+});
+
+enum Status {
+  A
+}
+
+final statusValues = EnumValues({
+  "A": Status.A
+});
 
 class User {
   int idUser;
   String username;
   String email;
   int nomor;
+  dynamic fcmToken;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -154,6 +187,7 @@ class User {
     required this.username,
     required this.email,
     required this.nomor,
+    required this.fcmToken,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -163,6 +197,7 @@ class User {
     username: json["username"],
     email: json["email"],
     nomor: json["nomor"],
+    fcmToken: json["fcm_token"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
   );
@@ -172,7 +207,20 @@ class User {
     "username": username,
     "email": email,
     "nomor": nomor,
+    "fcm_token": fcmToken,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };
+}
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

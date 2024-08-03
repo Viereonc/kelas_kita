@@ -89,13 +89,27 @@ class StrukturKelasGuruController extends GetxController {
 
         List<StrukturKelasAllModel> parsedDataList = allDataList.map((item) => StrukturKelasAllModel.fromJson(item)).toList();
 
-        parsedDataList.sort((a, b) => a.nama.compareTo(b.nama));
-
-        for (int i = 0; i < parsedDataList.length; i++) {
-          parsedDataList[i].absen = i + 1;
+        // Group by idKelas
+        var groupedByKelas = <int, List<StrukturKelasAllModel>>{};
+        for (var item in parsedDataList) {
+          if (item.idKelas != null) {
+            groupedByKelas.putIfAbsent(item.idKelas!, () => []);
+            groupedByKelas[item.idKelas!]!.add(item);
+          }
         }
 
-        infoStrukturKelasList.value = parsedDataList;
+        // Sort and assign absensi number within each group
+        List<StrukturKelasAllModel> sortedList = [];
+        for (var entry in groupedByKelas.entries) {
+          var sortedGroup = entry.value
+            ..sort((a, b) => a.nama.compareTo(b.nama));
+          for (int i = 0; i < sortedGroup.length; i++) {
+            sortedGroup[i].absen = i + 1; // Assign absensi number starting from 1
+          }
+          sortedList.addAll(sortedGroup);
+        }
+
+        infoStrukturKelasList.value = sortedList;
         print('Data fetched successfully: ${infoStrukturKelasList.length} items');
       } else {
         print('Failed to fetch data: ${response.statusCode}');
@@ -106,4 +120,5 @@ class StrukturKelasGuruController extends GetxController {
       isLoading.value = false;
     }
   }
+
 }

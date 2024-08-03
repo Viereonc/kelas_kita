@@ -84,7 +84,7 @@ class DetailProfileScreen extends StatelessWidget {
                                     ? Image.network(
                                   detailProfileController.profileImageUrl.value,
                                   width: screenWidth * 0.28,
-                                  height: screenWidth * 0.25,
+                                  height: screenWidth * 0.27,
                                   fit: BoxFit.cover,
                                 )
                                     : Center(
@@ -107,6 +107,7 @@ class DetailProfileScreen extends StatelessWidget {
                                 detailProfileController.bio.value,
                                 style: tsParagraft4(screenSize: screenWidth),
                                 maxLines: 3,
+                                textAlign: TextAlign.center,
                               );
                             }),
                           ),

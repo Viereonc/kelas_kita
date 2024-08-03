@@ -52,7 +52,7 @@ class DetailProfileController extends GetxController {
 
           userName.value = fetchedData.nama ?? '';
           bio.value = fetchedData.bio ?? '';
-          className.value = fetchedData.kelas.nama ?? '';
+          className.value = fetchedData.kelas.nama.toString() ?? '';
           nis.value = fetchedData.nis.toString() ?? '';
           email.value = fetchedData.user.email ?? '';
           phoneNumber.value = fetchedData.user.nomor.toString() ?? '';

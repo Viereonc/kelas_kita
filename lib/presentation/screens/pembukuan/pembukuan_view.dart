@@ -5,9 +5,14 @@ import 'package:kelas_kita/presentation/screens/pembukuan/pembukuan_controller.d
 import 'package:kelas_kita/presentation/screens/pembukuan/program_kelas_view.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/edit_pembukuan/edit_delete_option.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/themes/Colors.dart';
 
 class PembukuanView extends StatelessWidget {
   final PembukuanKasController pembukuanKasController = Get.put(PembukuanKasController());
+
+  Future<void> _refreshData(BuildContext context) async {
+    return pembukuanKasController.fetchProgramKasKelas();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +37,7 @@ class PembukuanView extends StatelessWidget {
             child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Get.toNamed('/homescreen');
           },
         ),
         title: Text(
@@ -86,111 +91,116 @@ class PembukuanView extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: screenHeight * 0.04),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: screenWidth * 0.35,
-                        height: screenHeight * 0.05,
-                        margin: EdgeInsets.only(left: screenWidth * 0.05),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFE8E8E8),
-                          borderRadius: BorderRadius.circular(45.0),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Program Kelas',
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
+            child: RefreshIndicator(
+              onRefresh: () => _refreshData(context),
+              color: primeryColorMedium,
+              backgroundColor: Colors.white,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: screenHeight * 0.04),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: screenWidth * 0.35,
+                          height: screenHeight * 0.05,
+                          margin: EdgeInsets.only(left: screenWidth * 0.05),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFE8E8E8),
+                            borderRadius: BorderRadius.circular(45.0),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Program Kelas',
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProgramKelasView()),
-                          );
-                        },
-                        child: Container(
-                          width: 39,
-                          height: 39,
-                          margin: EdgeInsets.only(right: screenWidth * 0.05),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 56, 122, 223),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ProgramKelasView()),
+                            );
+                          },
+                          child: Container(
+                            width: 39,
+                            height: 39,
+                            margin: EdgeInsets.only(right: screenWidth * 0.05),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 56, 122, 223),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.013),
-                  Container(
-                    height: 1.0,
-                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                    color: Color(0xFFF2F2F2),
-                  ),
-                  SizedBox(height: screenHeight * 0.015),
-                  Obx(() {
-                    if (pembukuanKasController.isLoading.value) {
-                      return Center(child: CircularProgressIndicator());
-                    } else {
-                      return Column(
-                        children: pembukuanKasController.programKelasList.map((program) {
-                          return _buildListItem(
-                            program.idProgram,
-                            program.nama,
-                            _formatDate(program.jadwal),
-                            'Rp${program.jumlah}',
-                            'Mempunyai 80% Kedisiplinan Kas',
-                            Colors.blue,
-                            hasDietPlanIcon: true,
-                          );
-                        }).toList(),
-                      );
-                    }
-                  }),
-                  SizedBox(height: screenHeight * 0.03),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildDateContainer('Maret 14, 2024'),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildDivider(),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildListItem(1, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
-                  _buildListItem(2, 'Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
-                  _buildListItem(3, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
-                  SizedBox(height: screenHeight * 0.03),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildDateContainer('Maret 16, 2024'),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildDivider(),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildListItem(4, 'Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
-                  _buildListItem(5, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
-                  SizedBox(height: screenHeight * 0.03),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildDateContainer('Maret 17, 2024'),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildDivider(),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildListItem(6, 'Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
-                  _buildListItem(7, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
-                  SizedBox(height: screenHeight * 0.01),
-                  _buildDivider(),
-                ],
+                      ],
+                    ),
+                    SizedBox(height: screenHeight * 0.013),
+                    Container(
+                      height: 1.0,
+                      margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                      color: Color(0xFFF2F2F2),
+                    ),
+                    SizedBox(height: screenHeight * 0.015),
+                    Obx(() {
+                      if (pembukuanKasController.isLoading.value) {
+                        return CircularProgressIndicator();
+                      } else {
+                        return Column(
+                          children: pembukuanKasController.programKelasList.map((program) {
+                            return _buildListItem(
+                              program.idProgram,
+                              program.nama,
+                              _formatDate(program.jadwal),
+                              'Rp ${program.jumlah}',
+                              'Mempunyai 80% Kedisiplinan Kas',
+                              Colors.blue,
+                              hasDietPlanIcon: true,
+                            );
+                          }).toList(),
+                        );
+                      }
+                    }),
+                    SizedBox(height: screenHeight * 0.03),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildDateContainer('Maret 14, 2024'),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildDivider(),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildListItem(1, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                    _buildListItem(2, 'Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                    _buildListItem(3, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                    SizedBox(height: screenHeight * 0.03),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildDateContainer('Maret 16, 2024'),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildDivider(),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildListItem(4, 'Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                    _buildListItem(5, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                    SizedBox(height: screenHeight * 0.03),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildDateContainer('Maret 17, 2024'),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildDivider(),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildListItem(6, 'Bazare Makanan', 'Maret 21 2024', 'Rp100.000', '', Colors.green, hasIcon: true),
+                    _buildListItem(7, 'Bazare Makanan', 'Maret 21 2024', 'Rp10.000', '', Colors.red, hasMinusIcon: true),
+                    SizedBox(height: screenHeight * 0.01),
+                    _buildDivider(),
+                  ],
+                ),
               ),
             ),
           ),
