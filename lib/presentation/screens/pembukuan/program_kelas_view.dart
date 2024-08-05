@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'pembukuan_controller.dart';
 import 'pembukuan_view.dart';
 
@@ -74,11 +75,11 @@ class ProgramKelasView extends StatelessWidget {
               hint: 'Pilih Jadwal Program',
             ),
             SizedBox(height: 25),
-            _buildTextField(
-              controller: ketentuanController,
-              label: 'Ketentuan Program',
-              hint: 'Ketentuan Program',
-            ),
+            // _buildTextField(
+            //   controller: ketentuanController,
+            //   label: 'Ketentuan Program',
+            //   hint: 'Ketentuan Program',
+            // ),
             SizedBox(height: 30),
             Container(
               width: 350,
@@ -105,17 +106,23 @@ class ProgramKelasView extends StatelessWidget {
 
                     final status = 'A';
 
-                    await controller.postProgramKelas(
-                      '4',
-                      nama,
-                      status,
-                      targetPengeluaran,
-                      jadwal,
-                      DateTime.now(),
-                      DateTime.now(),
-                    );
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    int? idKelas = prefs.getInt('id_kelas');
 
-                    Get.off(() => PembukuanView());
+                    if (idKelas != null) {
+                      await controller.postProgramKelas(
+                        nama,
+                        status,
+                        targetPengeluaran,
+                        jadwal,
+                        DateTime.now(),
+                        DateTime.now(),
+                      );
+
+                      Get.off(() => PembukuanView());
+                    } else {
+                      print('id_kelas not found');
+                    }
                   } catch (e) {
                     print('Error parsing date or posting data: $e');
                   }
@@ -128,7 +135,7 @@ class ProgramKelasView extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

@@ -17,7 +17,7 @@ class InfoBiografiModel {
   int nis;
   String alamat;
   String image;
-  String bio;
+  String? bio;
   Status status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -34,7 +34,7 @@ class InfoBiografiModel {
     required this.nis,
     required this.alamat,
     required this.image,
-    required this.bio,
+    this.bio,
     required this.status,
     required this.createdAt,
     required this.updatedAt,
@@ -178,7 +178,7 @@ class User {
   String username;
   String email;
   int nomor;
-  dynamic fcmToken;
+  dynamic? fcmToken;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -187,7 +187,7 @@ class User {
     required this.username,
     required this.email,
     required this.nomor,
-    required this.fcmToken,
+    this.fcmToken,
     required this.createdAt,
     required this.updatedAt,
   });

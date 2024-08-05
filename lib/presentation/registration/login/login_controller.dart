@@ -161,8 +161,10 @@ class LoginController extends GetxController {
           }
 
           int idKelas = jsonResponse['id_kelas'];
+          int idBiodata = jsonResponse['id_biodata'];
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setInt('id_kelas', idKelas);
+          await prefs.setInt('id_biodata', idBiodata);
 
           print('Successfully loaded biografi data');
         } else {

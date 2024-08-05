@@ -101,11 +101,11 @@ class EditProgramKelasView extends StatelessWidget {
               hint: 'Pilih Jadwal Program',
             ),
             SizedBox(height: 25),
-            _buildTextField(
-              controller: ketentuanController,
-              label: 'Ketentuan Program',
-              hint: 'Ketentuan Program',
-            ),
+            // _buildTextField(
+            //   controller: ketentuanController,
+            //   label: 'Ketentuan Program',
+            //   hint: 'Ketentuan Program',
+            // ),
             SizedBox(height: 30),
             Container(
               width: 350,
