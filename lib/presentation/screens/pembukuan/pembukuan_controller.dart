@@ -65,7 +65,6 @@
   }
 
   Future<void> postProgramKelas(
-    String idKelas,
     String nama,
     String status,
     String jumlah,
@@ -76,6 +75,7 @@
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
+      int? idKelas = prefs.getInt('id_kelas');
 
       if (token != null) {
         final url = Uri.parse(baseUrl + programKasEndPoint);
@@ -85,7 +85,7 @@
 
         final request = http.MultipartRequest('POST', url)
           ..headers.addAll(headers)
-          ..fields['id_kelas'] = idKelas
+          ..fields['id_kelas'] = idKelas.toString()
           ..fields['nama'] = nama
           ..fields['status'] = status
           ..fields['jumlah'] = jumlah

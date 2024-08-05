@@ -96,22 +96,38 @@ class HomeScreen extends StatelessWidget {
                             ),
                           );
                         } else {
+                          // Flatten the list with tanggal as string
+                          final List<Map<String, String?>> flattenedList = [];
+                          homeController.tagihanKasList.forEach((tagihanKas) {
+                            tagihanKas.jumlah.forEach((jumlah) {
+                              flattenedList.add({
+                                'tanggal': jumlah.tanggal.toString(),  // Ensure that tanggal is stored as a string
+                                'nominal': jumlah.nominal,
+                                'status': tagihanKas.biodata?.status,
+                              });
+                            });
+                          });
+
                           return ListView.builder(
-                            itemCount: homeController.tagihanKasList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final tagihanKas = homeController.tagihanKasList[index];
-                              final formattedDate = DateFormat('dd MMMM yyyy').format(tagihanKas.createdAt);
+                            shrinkWrap: true,
+                            itemCount: flattenedList.length,
+                            itemBuilder: (context, index) {
+                              final item = flattenedList[index];
+                              final formattedDate = item['tanggal'] != null
+                                  ? DateFormat('dd MMMM yyyy', 'id_ID').format(DateTime.parse(item['tanggal'] ?? ''))
+                                  : 'Unknown Date';
 
                               return Padding(
                                 padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
                                 child: Container(
-                                  padding: EdgeInsets.only(left: screenWidth * 0.05),
-                                  height: screenHeight * 0.11,
+                                  padding: EdgeInsets.only(left: screenWidth * 0.05, top: screenHeight * 0.015, bottom: screenHeight * 0.015),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.white,
                                   ),
                                   child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
                                         height: screenWidth * 0.12,
@@ -129,27 +145,30 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                       ),
                                       SizedBox(width: 20),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Kas Pada Tanggal $formattedDate',
-                                            style: tsSubHeader4(
-                                              fontWeight: FontWeight.bold,
-                                              screenSize: screenWidth * 1,
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Kas Pada Tanggal $formattedDate',
+                                              style: tsSubHeader4(
+                                                fontWeight: FontWeight.bold,
+                                                screenSize: screenWidth * 1,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            tagihanKas.status == 'B' ? 'Belum Lunas' : 'Lunas',
-                                            style: tsParagraft4(screenSize: screenWidth),
-                                          ),
-                                          Text(
-                                            tagihanKas.jumlah.toString(),
-                                            style: tsParagraft4(screenSize: screenWidth)
-                                                .copyWith(color: Color(0xFFBE1833)),
-                                          ),
-                                        ],
+                                            SizedBox(height: 5,),
+                                            Text(
+                                              'Nominal: ${item['nominal'] ?? 'Unknown Nominal'}',
+                                              style: tsParagraft4(screenSize: screenWidth).copyWith(color: Color(0xFFBE1833)),
+                                            ),
+                                            SizedBox(height: 5,),
+                                            Text(
+                                              item['status'] == 'B' ? 'Belum Lunas' : 'Lunas',
+                                              style: tsParagraft4(screenSize: screenWidth),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -158,7 +177,7 @@ class HomeScreen extends StatelessWidget {
                             },
                           );
                         }
-                      }),
+                      })
                     ),
                   ],
                 ),

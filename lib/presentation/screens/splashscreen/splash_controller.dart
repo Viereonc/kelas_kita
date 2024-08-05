@@ -60,9 +60,11 @@ class SplashController extends GetxController {
             prefs.setInt('nis', biografiModel.nis ?? 0);
             prefs.setString('alamat', biografiModel.alamat ?? '');
             prefs.setInt('id_kelas', biografiModel.idKelas ?? 0);
+            prefs.setInt('id_biodata', biografiModel.idBiodata ?? 0);
             prefs.setString('status', biografiModel.status.toString() ?? '');
             print('Successfully loaded biografi data');
             final name = biografiModel.nama;
+            // final idBiodata = biografiModel.idBiodata;
             final role = jsonResponse['role_name'];
 
             if (name != null && name.isNotEmpty) {

@@ -1,15 +1,21 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
+import '../../../constants.dart';
+import '../../../data/models/biografi_model.dart';
 import '../../registration/biografi/kelas_model.dart';
 
 class GlobalController extends GetxController {
   var isLoading = true.obs;
   RxString userName = ''.obs;
   var selectedKelas = KelasModel(idKelas: 0, nama: '').obs;
-  RxString advancedClassSchedule = '11 PPLG 2'.obs; 
+  RxString advancedClassSchedule = '11 PPLG 2'.obs;
+  RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
 
   @override
   void onInit() {
@@ -18,6 +24,7 @@ class GlobalController extends GetxController {
       isLoading.value = false;
     });
     loadUserName();
+    fetchBiografi();
   }
 
   Future<void> loadUserName() async {
@@ -40,5 +47,43 @@ class GlobalController extends GetxController {
 
   void advanceSchedule(String newSchedule) {
     advancedClassSchedule.value = newSchedule;
+  }
+
+  Future<void> fetchBiografi() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? userId = prefs.getInt('id_user');
+
+      if (userId != null) {
+        final response = await http.get(
+          Uri.parse('$baseUrl$biodataEndpointGet$userId'),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          print('JSON Response: $jsonResponse');
+
+          var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
+          biografiList.value = [fetchedData];
+
+          // Save the user's name in shared preferences
+          await saveUserName(fetchedData.nama ?? '');
+
+          print('Successfully loaded biografi data: ${biografiList.length}');
+        } else {
+          print('Failed to load biografi, status code: ${response.statusCode}');
+          throw Exception('Failed to load biografi');
+        }
+      } else {
+        print('User ID is null. Unable to fetch biografi.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
   }
 }

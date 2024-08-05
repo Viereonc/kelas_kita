@@ -86,10 +86,13 @@ class HomeController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
       int? userId = prefs.getInt('id_user');
+      int? biodataId = prefs.getInt('id_biodata');
 
-      if (userId != null) {
+      print('User ID: $userId, Biodata ID: $biodataId'); // Debug print
+
+      if (userId != null && biodataId != null) {
         final response = await http.get(
-          Uri.parse('$baseUrl$tagihanKasUserEndPoint$userId'),
+          Uri.parse('$baseUrl$tagihanKasUserEndPoint$biodataId'),
           headers: <String, String>{
             'Authorization': 'Bearer $token',
           },
@@ -108,7 +111,7 @@ class HomeController extends GetxController {
           throw Exception('Failed to load tagihan kas');
         }
       } else {
-        print('User ID is null. Unable to fetch tagihan kas.');
+        print('User ID or biodata ID is null. Unable to fetch tagihan kas.');
       }
     } catch (e) {
       print('Error: $e');

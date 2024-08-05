@@ -10,42 +10,26 @@ List<InfoTagihanKasModel> infoTagihanKasModelFromJson(String str) => List<InfoTa
 String infoTagihanKasModelToJson(List<InfoTagihanKasModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class InfoTagihanKasModel {
-  int id;
-  int idBiodata;
-  int jumlah;
-  String status;
-  DateTime createdAt;
-  DateTime updatedAt;
   Biodata biodata;
+  int totalKas;
+  List<Jumlah> jumlah;
 
   InfoTagihanKasModel({
-    required this.id,
-    required this.idBiodata,
-    required this.jumlah,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
     required this.biodata,
+    required this.totalKas,
+    required this.jumlah,
   });
 
   factory InfoTagihanKasModel.fromJson(Map<String, dynamic> json) => InfoTagihanKasModel(
-    id: json["id"],
-    idBiodata: json["id_biodata"],
-    jumlah: json["jumlah"],
-    status: json["status"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
     biodata: Biodata.fromJson(json["biodata"]),
+    totalKas: json["totalKas"],
+    jumlah: List<Jumlah>.from(json["jumlah"].map((x) => Jumlah.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "id_biodata": idBiodata,
-    "jumlah": jumlah,
-    "status": status,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
     "biodata": biodata.toJson(),
+    "totalKas": totalKas,
+    "jumlah": List<dynamic>.from(jumlah.map((x) => x.toJson())),
   };
 }
 
@@ -58,7 +42,7 @@ class Biodata {
   int nis;
   String alamat;
   String image;
-  dynamic bio;
+  String bio;
   String status;
   DateTime createdAt;
   DateTime updatedAt;
@@ -106,5 +90,25 @@ class Biodata {
     "status": status,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
+  };
+}
+
+class Jumlah {
+  String nominal;
+  DateTime tanggal;
+
+  Jumlah({
+    required this.nominal,
+    required this.tanggal,
+  });
+
+  factory Jumlah.fromJson(Map<String, dynamic> json) => Jumlah(
+    nominal: json["nominal"],
+    tanggal: DateTime.parse(json["tanggal"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "nominal": nominal,
+    "tanggal": "${tanggal.year.toString().padLeft(4, '0')}-${tanggal.month.toString().padLeft(2, '0')}-${tanggal.day.toString().padLeft(2, '0')}",
   };
 }
