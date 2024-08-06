@@ -16,7 +16,7 @@ class InfoTugasScreen extends StatelessWidget {
   final InfoTugasController infoTugasController = Get.put(InfoTugasController());
 
   String formatDate(DateTime date) {
-    final DateFormat formatter = DateFormat('yyyy-MM-dd'); // Specify your desired format
+    final DateFormat formatter = DateFormat('d MMMM yyyy', 'id_ID'); // Specify your desired format
     return formatter.format(date);
   }
 

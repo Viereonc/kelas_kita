@@ -10,15 +10,17 @@ List<JadwalKelasModel> jadwalKelasModelFromJson(String str) => List<JadwalKelasM
 String jadwalKelasModelToJson(List<JadwalKelasModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class JadwalKelasModel {
+  int idPelajaran;
   String namaPelajaran;
   String hari;
   String jamMulai;
   String jamSelesai;
-  dynamic kelas;
+  String kelas;
   String guru;
   List<Absensi> absensi;
 
   JadwalKelasModel({
+    required this.idPelajaran,
     required this.namaPelajaran,
     required this.hari,
     required this.jamMulai,
@@ -29,6 +31,7 @@ class JadwalKelasModel {
   });
 
   factory JadwalKelasModel.fromJson(Map<String, dynamic> json) => JadwalKelasModel(
+    idPelajaran: json["id_pelajaran"],
     namaPelajaran: json["nama_pelajaran"],
     hari: json["hari"],
     jamMulai: json["jam_mulai"],
@@ -39,6 +42,7 @@ class JadwalKelasModel {
   );
 
   Map<String, dynamic> toJson() => {
+    "id_pelajaran": idPelajaran,
     "nama_pelajaran": namaPelajaran,
     "hari": hari,
     "jam_mulai": jamMulai,

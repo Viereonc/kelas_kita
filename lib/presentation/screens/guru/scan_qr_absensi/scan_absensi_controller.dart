@@ -1,17 +1,23 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:kelas_kita/presentation/screens/guru/scan_qr_absensi/qr_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../constants.dart';
 
 class ScanAbsensiController extends GetxController {
   var isLoading = false.obs;
   var scannedData = {}.obs;
+  var dialogShown = false.obs; // Flag to track if the dialog is shown
 
   void setScannedData(String code) {
-    final data = _parseScannedData(code);
+    final data = parseScannedData(code);
     if (data != null) {
       scannedData.value = data;
+      if (!dialogShown.value) {
+        dialogShown.value = true; // Set the flag to true when dialog is shown
+        Get.dialog(ScannedDataDialog());
+      }
     }
   }
 
@@ -46,9 +52,16 @@ class ScanAbsensiController extends GetxController {
         body: jsonEncode(scannedData),
       );
 
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         print("Data posted successfully!");
-        Get.back(); // Navigate back after successful post
+        Get.back(); // Close dialog
+      } else if (response.statusCode == 422) {
+        print('Response body: ${response.body}');
+      } else if (response.statusCode == 500) {
+        print('Response body: ${response.body}');
       } else {
         print("Failed to post data. Status code: ${response.statusCode}");
       }
@@ -59,43 +72,47 @@ class ScanAbsensiController extends GetxController {
     }
   }
 
-  Map<String, dynamic>? _parseScannedData(String code) {
+  Map<String, dynamic>? parseScannedData(String code) {
     try {
-      final parts = code.split(', ');
+      // Use regular expressions to find the parts
+      final regexPelajaran = RegExp(r'ID Pelajaran: (\d+)');
+      final regexWaktuAbsen = RegExp(r'Waktu Absen: ([^\s,]+)');
+      final regexBiodata = RegExp(r'ID Biodata: (\d+)');
 
-      // Tambahkan log untuk melihat bagian yang dipecah
-      print('Parts: $parts');
+      final idPelajaranPart = regexPelajaran.firstMatch(code)?.group(0) ?? '';
+      final waktuAbsenPart = regexWaktuAbsen.firstMatch(code)?.group(0) ?? '';
+      final idBiodataPart = regexBiodata.firstMatch(code)?.group(0) ?? '';
 
-      if (parts.isEmpty || parts.length < 4) {
-        print('Parts length is not sufficient');
+      // Log each part for debugging
+      print('ID Pelajaran Part: $idPelajaranPart');
+      print('Waktu Absen Part: $waktuAbsenPart');
+      print('ID Biodata Part: $idBiodataPart');
+
+      // Validate each part
+      if (idPelajaranPart.isEmpty) print('ID Pelajaran part is missing');
+      if (waktuAbsenPart.isEmpty) print('Waktu Absen part is missing');
+      if (idBiodataPart.isEmpty) print('ID Biodata part is missing');
+
+      // If all parts are present, parse the data
+      if (idPelajaranPart.isNotEmpty && waktuAbsenPart.isNotEmpty && idBiodataPart.isNotEmpty) {
+        final idPelajaran = regexPelajaran.firstMatch(code)?.group(1) ?? '';
+        final waktuAbsenRaw = regexWaktuAbsen.firstMatch(code)?.group(1) ?? '';
+        final idBiodata = regexBiodata.firstMatch(code)?.group(1) ?? '';
+
+        final cleanedWaktuAbsen = waktuAbsenRaw.split('ID').first;
+
+        // Adjust waktu_absen to correct format if needed
+        final waktuAbsenTime = DateTime.parse(cleanedWaktuAbsen).toLocal().toIso8601String().substring(11, 16);
+
+        return {
+          "id_biodata": idBiodata,
+          "id_pelajaran": idPelajaran,
+          "waktu_absen": waktuAbsenTime,
+        };
+      } else {
+        print('Failed to parse data due to missing parts');
         return null;
       }
-
-      final idBiodataPart = parts.firstWhere((part) => part.startsWith('ID Biodata:'), orElse: () => '');
-      final idKelasPart = parts.firstWhere((part) => part.startsWith('ID Kelas:'), orElse: () => '');
-      final namaPart = parts.firstWhere((part) => part.startsWith('Nama:'), orElse: () => '');
-      final kelasPart = parts.firstWhere((part) => part.startsWith('Kelas:'), orElse: () => '');
-
-      if (idBiodataPart.isEmpty || idKelasPart.isEmpty || namaPart.isEmpty || kelasPart.isEmpty) {
-        print('One of the required parts is missing');
-        return null;
-      }
-
-      final idBiodata = idBiodataPart.split(': ')[1];
-      final idKelas = idKelasPart.split(': ')[1];
-      final nama = namaPart.split(': ')[1];
-      final kelas = kelasPart.split(': ')[1];
-      final waktuAbsen = DateTime.now().toIso8601String();
-
-      return {
-        "id_biodata": idBiodata,
-        "id_pelajaran": idKelas,
-        "nama": nama,
-        "kelas": kelas,
-        "waktu_absen": waktuAbsen,
-        "updated_at": DateTime.now().toIso8601String(),
-        "created_at": DateTime.now().toIso8601String(),
-      };
     } catch (e) {
       print("Error parsing scanned data: $e");
       return null;
