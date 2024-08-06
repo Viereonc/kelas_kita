@@ -14,9 +14,24 @@ class ScanQrAbsensi extends StatelessWidget {
   ScanQrAbsensi({super.key});
 
   void handleQRCode(String code) {
-    scanAbsensiController.setScannedData(code);
+    // Log QR code data
+    print('QR Code Data: $code');
+
+    // Add a guard clause to avoid processing the same code multiple times
+    if (scanAbsensiController.isLoading.value) return;
+
     if (scanAbsensiController.scannedData.isNotEmpty) {
-      Get.dialog(ScannedDataDialog());
+      if (!scanAbsensiController.dialogShown.value) {
+        scanAbsensiController.dialogShown.value = true;
+        Get.dialog(ScannedDataDialog());
+      }
+    }
+
+    final data = scanAbsensiController.parseScannedData(code);
+    if (data != null) {
+      scanAbsensiController.setScannedData(code);
+    } else {
+      print("Failed to parse scanned data");
     }
   }
 
@@ -140,9 +155,9 @@ class ScannedDataDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Nama: ${data["nama"]}'),
-              Text('Kelas: ${data["kelas"]}'),
-              Text('Waktu Absen: ${data["waktu_absen"]}'),
+              // Text('Nama: ${data["nama"] ?? 'Tidak tersedia'}'),
+              // Text('Kelas: ${data["kelas"] ?? 'Tidak tersedia'}'),
+              Text('Waktu Absen: ${data["waktu_absen"] ?? 'Tidak tersedia'}'),
             ],
           );
         }
@@ -150,6 +165,7 @@ class ScannedDataDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
+            scanAbsensiController.dialogShown.value = false; // Reset the flag
             Get.back(); // Close dialog
           },
           child: Text('Batal'),
@@ -157,6 +173,7 @@ class ScannedDataDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             scanAbsensiController.postAbsensi();
+            scanAbsensiController.dialogShown.value = false; // Reset the flag
             Get.back(); // Close dialog
           },
           child: Text('Post'),

@@ -11,6 +11,7 @@ import '../../registration/biografi/kelas_model.dart';
 class HomeController extends GetxController {
   var isLoading = true.obs;
   RxString userName = ''.obs;
+  RxString idBiodata = ''.obs;
   var selectedKelas = KelasModel(idKelas: 0, nama: '').obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   RxList<InfoTagihanKasModel> tagihanKasList = <InfoTagihanKasModel>[].obs;
@@ -34,6 +35,12 @@ class HomeController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('nama', nama);
     userName.value = nama;
+  }
+
+  Future<void> saveIdBiodata(int id_biodata) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('id_biodata', idBiodata.toString());
+    idBiodata.value = id_biodata.toString();
   }
 
   Future<void> refreshHome() async {
@@ -66,6 +73,7 @@ class HomeController extends GetxController {
 
           // Save the user's name in shared preferences
           await saveUserName(fetchedData.nama ?? '');
+          await saveIdBiodata((fetchedData.idBiodata ?? '') as int);
 
           print('Successfully loaded biografi data: ${biografiList.length}');
         } else {

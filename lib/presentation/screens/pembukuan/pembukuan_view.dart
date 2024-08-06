@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/pembukuan_controller.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/program_kelas_view.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/edit_pembukuan/edit_delete_option.dart';
@@ -388,6 +389,6 @@ Widget _buildListItem(
   }
 
   String _formatDate(DateTime date) {
-    return '${date.month}/${date.day}/${date.year}';
+    return DateFormat('d MMMM yyyy', 'id_ID').format(date);
   }
 }

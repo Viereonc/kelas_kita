@@ -418,7 +418,9 @@ class ProfileScreen extends StatelessWidget {
         height: 64,
         width: 64,
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed('/qrcodesiswascreen');
+          },
           backgroundColor: primeryColorMedium,
           elevation: 0,
           shape: RoundedRectangleBorder(

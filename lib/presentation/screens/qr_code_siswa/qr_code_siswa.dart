@@ -10,7 +10,8 @@ class QrCodeSiswaScreen extends StatelessWidget {
   QrCodeSiswaScreen({Key? key}) : super(key: key);
 
   final MobileScannerController cameraController = MobileScannerController();
-  final QrCodeSiswaController qrCodeSiswaController = Get.put(QrCodeSiswaController());
+  final QrCodeSiswaController qrCodeSiswaController =
+      Get.put(QrCodeSiswaController());
 
   @override
   Widget build(BuildContext context) {
@@ -100,47 +101,93 @@ class QrCodeSiswaScreen extends StatelessWidget {
                           ),
                         ),
                         child: Center(
-                          child:  Obx(() {
-                            if (qrCodeSiswaController.biografiList.isNotEmpty) {
-                              final biografi = qrCodeSiswaController.biografiList.first;
-                              final qrData = 'ID Biodata: ${biografi.idBiodata}, Nama: ${biografi.nama}, ID Kelas: ${biografi.kelas.idKelas}, Kelas: ${biografi.kelas.nama}';
-                              return QrImageView(
-                                data: qrData,
-                                version: QrVersions.auto,
-                                size: screenHeight * 0.3,
-                              );
-                            } else {
-                              return Center(
-                                child: Text('Loading QR Code...'),
-                              );
-                            }
+                          child: Obx(() {
+                            final pelajaran =
+                                qrCodeSiswaController.selectedPelajaran.value;
+                            final mataPelajaran = qrCodeSiswaController.jadwalKelasList.isNotEmpty ? qrCodeSiswaController.jadwalKelasList.first : null;
+                            final biografi = qrCodeSiswaController.biografiList.isNotEmpty ? qrCodeSiswaController.biografiList.first : null;
+                            final qrData = pelajaran.isNotEmpty
+                                ? 'Pelajaran: $pelajaran, '
+                                'Nama: ${biografi?.nama ?? 'N/A'}, '
+                                'ID Kelas: ${biografi?.kelas.idKelas ?? 'N/A'}, '
+                                'Waktu Absen: ${DateTime.now().toIso8601String()}'
+                                'ID Biodata: ${biografi?.idBiodata}, '
+                                'Nama: ${biografi?.nama}, ID Kelas: ${biografi?.kelas.idKelas}, Kelas: ${biografi?.kelas.nama}, ID Pelajaran: ${qrCodeSiswaController.selectedIdPelajaran.value}'
+                                : 'Loading QR Code...';
+                            return QrImageView(
+                              data: qrData,
+                              version: QrVersions.auto,
+                              size: screenHeight * 0.3,
+                            );
                           }),
                         ),
                       ),
+                      SizedBox(height: 10),
                       Obx(() {
-                        return Column(
-                          children: qrCodeSiswaController.biografiList.map((biografi) {
-                            return ListTile(
-                              title: Text(
-                                biografi.nama,
-                                style: tsSubHeader3(
-                                  screenSize: screenWidth * 0.8,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              subtitle: Text(
-                                biografi.kelas.nama.toString(),
-                                style: tsSubHeader3(
-                                  screenSize: screenWidth * 0.8,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            );
-                          }).toList(),
+                        final pelajaran = qrCodeSiswaController.selectedPelajaran.value;
+                        final idPelajaran = qrCodeSiswaController.selectedIdPelajaran.value;
+                        return Text(
+                          'Pelajaran : $pelajaran',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,
                         );
                       }),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 3,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Pilih Pelajaran'),
+                                backgroundColor: Colors.white,
+                                surfaceTintColor: Colors.white,
+                                content: Obx(() {
+                                  return SizedBox(
+                                    width: double.maxFinite,
+                                    height: 100,
+                                    child: ListView.builder(
+                                      itemCount: qrCodeSiswaController.jadwalKelasList.length,
+                                      itemBuilder: (context, index) {
+                                        final pelajaran = qrCodeSiswaController.jadwalKelasList[index];
+                                        return ListTile(
+                                          title: Text(pelajaran.namaPelajaran),
+                                          // subtitle: Text(
+                                          //   pelajaran.idPelajaran.toString(),
+                                          //   style: TextStyle(color: Colors.white),
+                                          // ),
+                                          onTap: () {
+                                            qrCodeSiswaController.setSelectedPelajaran(
+                                                    pelajaran.namaPelajaran,
+                                                    pelajaran.idPelajaran);
+                                            print('Selected ID Pelajaran: ${pelajaran.idPelajaran}');
+                                            Navigator.pop(context);
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Tutup'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Text(
+                          'Pilih Pelajaran',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
                     ],
                   ),
                 ),
