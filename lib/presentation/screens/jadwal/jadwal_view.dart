@@ -14,6 +14,10 @@ import '../../widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
 class JadwalScreen extends StatelessWidget {
   final JadwalController jadwalController = Get.put(JadwalController());
 
+  Future<void> _refreshData(BuildContext context) async {
+    return jadwalController.fetchJadwalPelajaran();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -21,154 +25,158 @@ class JadwalScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: screenHeight * 0.06),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
-                  onPressed: () {
-                    // Handle back arrow press
-                  },
-                ),
-                Text(
-                  'Maret',
-                  style: TextStyle(
-                    fontFamily: 'tsHeader1',
-                    fontWeight: FontWeight.bold,
-                    fontSize: screenHeight * 0.03,
+      body: RefreshIndicator(
+        onRefresh: () => _refreshData(context),
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              SizedBox(height: screenHeight * 0.06),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () {
+                      // Handle back arrow press
+                    },
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.arrow_forward_ios),
-                  onPressed: () {
-                    // Handle forward arrow press
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildDayContainer(
-                  screenWidth,
-                  screenHeight,
-                  'Sen',
-                  jadwalController,
-                ),
-                _buildDayContainer(
-                  screenWidth,
-                  screenHeight,
-                  'Sel',
-                  jadwalController,
-                ),
-                _buildDayContainer(
-                  screenWidth,
-                  screenHeight,
-                  'Rab',
-                  jadwalController,
-                ),
-                _buildDayContainer(
-                  screenWidth,
-                  screenHeight,
-                  'Kam',
-                  jadwalController,
-                ),
-                _buildDayContainer(
-                  screenWidth,
-                  screenHeight,
-                  'Jum',
-                  jadwalController,
-                ),
-                _buildDayContainer(
-                  screenWidth,
-                  screenHeight,
-                  'Sab',
-                  jadwalController,
-                ),
-              ],
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => JadwalPiket()),
-                );
-              },
-              child: Container(
-                width: screenWidth * 0.91,
-                height: screenHeight * 0.037,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(screenHeight * 0.010),
-                  color: Color.fromARGB(255, 56, 122, 223),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: screenWidth * 0.04),
-                      child: Text(
-                        'Ganti Jadwal',
-                        style: TextStyle(
-                          fontFamily: 'tsParagraft1',
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                          fontSize: screenHeight * 0.018,
+                  Text(
+                    'Maret',
+                    style: TextStyle(
+                      fontFamily: 'tsHeader1',
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenHeight * 0.03,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.arrow_forward_ios),
+                    onPressed: () {
+                      // Handle forward arrow press
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: screenHeight * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Sen',
+                    jadwalController,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Sel',
+                    jadwalController,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Rab',
+                    jadwalController,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Kam',
+                    jadwalController,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Jum',
+                    jadwalController,
+                  ),
+                  _buildDayContainer(
+                    screenWidth,
+                    screenHeight,
+                    'Sab',
+                    jadwalController,
+                  ),
+                ],
+              ),
+              SizedBox(height: screenHeight * 0.02),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => JadwalPiket()),
+                  );
+                },
+                child: Container(
+                  width: screenWidth * 0.91,
+                  height: screenHeight * 0.037,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(screenHeight * 0.010),
+                    color: Color.fromARGB(255, 56, 122, 223),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: screenWidth * 0.04),
+                        child: Text(
+                          'Ganti Jadwal',
+                          style: TextStyle(
+                            fontFamily: 'tsParagraft1',
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            fontSize: screenHeight * 0.018,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(screenWidth * 0.02),
-                      child: SvgPicture.asset(
-                        'lib/assets/icons/ep_switch (1).svg',
-                        width: screenWidth * 0.03,
-                        height: screenHeight * 0.03,
+                      Padding(
+                        padding: EdgeInsets.all(screenWidth * 0.02),
+                        child: SvgPicture.asset(
+                          'lib/assets/icons/ep_switch (1).svg',
+                          width: screenWidth * 0.03,
+                          height: screenHeight * 0.03,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: screenHeight * 0.03),
-            Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.05,
-                vertical: screenHeight * 0.005,
+              SizedBox(height: screenHeight * 0.03),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.05,
+                  vertical: screenHeight * 0.005,
+                ),
+                child: Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                ),
               ),
-              child: Divider(
-                color: Colors.grey,
-                thickness: 0.5,
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Obx(() {
-              if (jadwalController.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
-              }
+              SizedBox(height: screenHeight * 0.02),
+              Obx(() {
+                if (jadwalController.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-              String selectedDay = jadwalController.selectedDay.value;
-              List<JadwalKelasModel> scheduleItems =
-              jadwalController.getScheduleForDay(selectedDay);
+                String selectedDay = jadwalController.selectedDay.value;
+                List<JadwalKelasModel> scheduleItems =
+                jadwalController.getScheduleForDay(selectedDay);
 
-              if (scheduleItems.isEmpty) {
-                return Center(
-                  child: Text('No schedule available for $selectedDay'),
+                if (scheduleItems.isEmpty) {
+                  return Center(
+                    child: Text('No schedule available for $selectedDay'),
+                  );
+                }
+
+                return _buildScheduleContainer(
+                  screenHeight,
+                  screenWidth,
+                  scheduleItems,
+                  context
                 );
-              }
-
-              return _buildScheduleContainer(
-                screenHeight,
-                screenWidth,
-                scheduleItems,
-                context
-              );
-            }),
-          ],
+              }),
+            ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
