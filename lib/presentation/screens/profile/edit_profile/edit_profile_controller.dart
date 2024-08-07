@@ -52,7 +52,7 @@ class EditProfileController extends GetxController {
             prefs.setInt('id_biodata', idBiodata);
           }
 
-          print('Successfully loaded biografi data');
+          print('Successfully loaded biografi data: ${response.statusCode}');
         } else {
           print('Failed to load biografi, status code: ${response.statusCode}');
           throw Exception('Failed to load biografi');

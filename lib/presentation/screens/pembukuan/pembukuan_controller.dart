@@ -6,9 +6,13 @@
   import '../../../constants.dart';
   import 'package:kelas_kita/data/models/program_kas_model.dart';
 
+import '../../../data/models/biografi_model.dart';
+
   class PembukuanKasController extends GetxController with SingleGetTickerProviderMixin{
   RxList<ProgramKelasModel> programKelasList = <ProgramKelasModel>[].obs;
+  RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   var isLoading = true.obs;
+  var userStatus = ''.obs;
   // late AnimationController animationController;
 
   @override
@@ -20,6 +24,7 @@
     //   vsync: this,
     // )..repeat();
     fetchProgramKasKelas();
+    fetchBiografi();
   }
 
   // @override
@@ -31,6 +36,43 @@
   void loadLoading() async {
     await Future.delayed(Duration(seconds: 1));
     isLoading.value = false;
+  }
+
+  Future<void> fetchBiografi() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? userId = prefs.getInt('id_user');
+
+      if (userId != null) {
+        final response = await http.get(
+          Uri.parse('$baseUrl$biodataEndpointGet$userId'),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          print('JSON Response: $jsonResponse');
+
+          var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
+          biografiList.value = [fetchedData];
+
+          userStatus.value = fetchedData.role.nama;
+
+          print('Successfully loaded biografi data: ${biografiList.length}');
+        } else {
+          print('Failed to load biografi, status code: ${response.statusCode}');
+          throw Exception('Failed to load biografi');
+        }
+      } else {
+        print('User ID is null. Unable to fetch biografi.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
   }
 
   void fetchProgramKasKelas() async {
