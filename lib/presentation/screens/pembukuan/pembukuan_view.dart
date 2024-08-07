@@ -58,7 +58,7 @@ class PembukuanView extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 15),
             width: screenWidth * 0.9,
-            height: screenHeight * 0.12,
+            height: screenHeight * 0.15,
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.02),
             decoration: BoxDecoration(
               color: Color(0xFF142847),
@@ -79,7 +79,7 @@ class PembukuanView extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Text(
-                  'Rp 50.000',
+                  'Rp 100.000',
                   style: GoogleFonts.manrope(
                     textStyle: TextStyle(
                       fontSize: 24,
@@ -124,27 +124,33 @@ class PembukuanView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ProgramKelasView()),
+                        Obx(() {
+                          if (pembukuanKasController.userStatus.value == 'Bendahara' || pembukuanKasController.userStatus.value == 'Wali Kelas') {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ProgramKelasView()),
+                                );
+                              },
+                              child: Container(
+                                width: 39,
+                                height: 39,
+                                margin: EdgeInsets.only(right: screenWidth * 0.05),
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 56, 122, 223),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                              ),
                             );
-                          },
-                          child: Container(
-                            width: 39,
-                            height: 39,
-                            margin: EdgeInsets.only(right: screenWidth * 0.05),
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 56, 122, 223),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                          } else {
+                            return SizedBox();
+                          }
+                        }),
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.013),
@@ -262,23 +268,26 @@ Widget _buildListItem(
     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
     child: GestureDetector(
       onLongPress: () {
-        final program = pembukuanKasController.programKelasList.firstWhere((p) => p.idProgram == index);
-        showModalBottomSheet(
-          context: Get.context!, // Use Get.context to access context
-          builder: (context) {
-            return OptionEditDeletePembukuanKas(
-              index: index,  
-              idProgram: program.idProgram,
-              nama: title,
-              status: '', 
-              jumlah: program.jumlah.toString(),
-              jadwal: program.jadwal,
-              createdAt: program.createdAt,
-              updatedAt: program.updatedAt,
-            );
-          },
-        );
-        print('Index: $index');
+        if (pembukuanKasController.userStatus.value == 'Bendahara' ||
+            pembukuanKasController.userStatus.value == 'Wali Kelas') {
+          final program = pembukuanKasController.programKelasList.firstWhere((p) => p.idProgram == index);
+          showModalBottomSheet(
+            context: Get.context!,
+            builder: (context) {
+              return OptionEditDeletePembukuanKas(
+                index: index,
+                idProgram: program.idProgram,
+                nama: title,
+                status: '',
+                jumlah: program.jumlah.toString(),
+                jadwal: program.jadwal,
+                createdAt: program.createdAt,
+                updatedAt: program.updatedAt,
+              );
+            },
+          );
+          print('Index: $index');
+        }
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -101,7 +101,7 @@ class InfoKelasScreen extends StatelessWidget {
                               ),
                             );
                           },
-                          onLongPress: infoKelasController.userStatus.value == 'Bendahara'
+                          onLongPress: infoKelasController.userStatus.value == 'Sekretaris' || infoKelasController.userStatus.value == 'Wali Kelas'
                               ? () {
                             final description = infoKelas.pengumuman;
                             final imagePath = infoKelas.image;
@@ -189,7 +189,7 @@ class InfoKelasScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() {
-        if (infoKelasController.userStatus.value == 'Bendahara') {
+        if (infoKelasController.userStatus.value == 'Sekretaris' || infoKelasController.userStatus.value == 'Wali Kelas') {
           return FloatingActionButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();

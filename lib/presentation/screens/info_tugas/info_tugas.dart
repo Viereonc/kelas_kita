@@ -88,7 +88,7 @@ class InfoTugasScreen extends StatelessWidget {
                         final infoTugas = reversedList[index];
 
                         return GestureDetector(
-                          onLongPress: infoTugasController.userStatus.value == 'Bendahara' ? () {
+                          onLongPress: infoTugasController.userStatus.value == 'Sekretaris' || infoTugasController.userStatus.value == 'Wali Kelas' ? () {
                             final namaTugas = infoTugas.nama;
                             final guruPemberiTugas = infoTugas.guru;
                             final deadlineTugas = infoTugas.deadline;
@@ -165,7 +165,7 @@ class InfoTugasScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() {
-        if (infoTugasController.userStatus.value == 'Bendahara') {
+        if (infoTugasController.userStatus.value == 'Sekretaris'|| infoTugasController.userStatus.value == 'Wali Kelas') {
           return FloatingActionButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -193,7 +193,6 @@ class InfoTugasScreen extends StatelessWidget {
             backgroundColor: primeryColorMedium,
             child: Icon(Icons.add, color: Colors.white, size: 34),
           );
-
         } else {
           return SizedBox.shrink(); // Return an empty widget if the user is not a secretary
         }
