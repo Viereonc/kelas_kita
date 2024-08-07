@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'dart:async';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
-import 'package:kelas_kita/presentation/screens/qr_code_siswa/qr_code_siswa_controller.dart';
+import 'qr_code_siswa_controller.dart';
 
 class QrCodeSiswaScreen extends StatelessWidget {
   QrCodeSiswaScreen({Key? key}) : super(key: key);
 
-  final MobileScannerController cameraController = MobileScannerController();
-  final QrCodeSiswaController qrCodeSiswaController =
-      Get.put(QrCodeSiswaController());
+  final QrCodeSiswaController qrCodeSiswaController = Get.put(QrCodeSiswaController());
 
   @override
   Widget build(BuildContext context) {
@@ -102,20 +100,18 @@ class QrCodeSiswaScreen extends StatelessWidget {
                         ),
                         child: Center(
                           child: Obx(() {
-                            final pelajaran =
-                                qrCodeSiswaController.selectedPelajaran.value;
-                            final mataPelajaran = qrCodeSiswaController.jadwalKelasList.isNotEmpty ? qrCodeSiswaController.jadwalKelasList.first : null;
-                            final biografi = qrCodeSiswaController.biografiList.isNotEmpty ? qrCodeSiswaController.biografiList.first : null;
-                            final qrData = pelajaran.isNotEmpty
-                                ? 'Pelajaran: $pelajaran, '
-                                'Nama: ${biografi?.nama ?? 'N/A'}, '
-                                'ID Kelas: ${biografi?.kelas.idKelas ?? 'N/A'}, '
-                                'Waktu Absen: ${DateTime.now().toIso8601String()}'
-                                'ID Biodata: ${biografi?.idBiodata}, '
-                                'Nama: ${biografi?.nama}, ID Kelas: ${biografi?.kelas.idKelas}, Kelas: ${biografi?.kelas.nama}, ID Pelajaran: ${qrCodeSiswaController.selectedIdPelajaran.value}'
-                                : 'Loading QR Code...';
+                            final pelajaran = qrCodeSiswaController.selectedPelajaran.value;
+                            if (pelajaran.isEmpty) {
+                              return Text(
+                                'Pilih Pelajaran',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              );
+                            }
                             return QrImageView(
-                              data: qrData,
+                              data: qrCodeSiswaController.qrData.value,
                               version: QrVersions.auto,
                               size: screenHeight * 0.3,
                             );
@@ -125,7 +121,6 @@ class QrCodeSiswaScreen extends StatelessWidget {
                       SizedBox(height: 10),
                       Obx(() {
                         final pelajaran = qrCodeSiswaController.selectedPelajaran.value;
-                        final idPelajaran = qrCodeSiswaController.selectedIdPelajaran.value;
                         return Text(
                           'Pelajaran : $pelajaran',
                           style: TextStyle(fontSize: 16),
@@ -155,15 +150,11 @@ class QrCodeSiswaScreen extends StatelessWidget {
                                         final pelajaran = qrCodeSiswaController.jadwalKelasList[index];
                                         return ListTile(
                                           title: Text(pelajaran.namaPelajaran),
-                                          // subtitle: Text(
-                                          //   pelajaran.idPelajaran.toString(),
-                                          //   style: TextStyle(color: Colors.white),
-                                          // ),
                                           onTap: () {
                                             qrCodeSiswaController.setSelectedPelajaran(
-                                                    pelajaran.namaPelajaran,
-                                                    pelajaran.idPelajaran);
-                                            print('Selected ID Pelajaran: ${pelajaran.idPelajaran}');
+                                              pelajaran.namaPelajaran,
+                                              pelajaran.idPelajaran,
+                                            );
                                             Navigator.pop(context);
                                           },
                                         );

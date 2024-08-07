@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -14,12 +15,21 @@ class QrCodeSiswaController extends GetxController {
   RxList<JadwalKelasModel> jadwalKelasList = <JadwalKelasModel>[].obs;
   RxString selectedPelajaran = ''.obs;
   RxString selectedIdPelajaran = ''.obs;
+  RxString qrData = ''.obs;
+  Timer? _timer;
 
   @override
   void onInit() {
     super.onInit();
     fetchBiografi();
     fetchJadwalPelajaran();
+    _startQrCodeTimer();
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 
   Future<void> fetchJadwalPelajaran() async {
@@ -88,5 +98,25 @@ class QrCodeSiswaController extends GetxController {
   void setSelectedPelajaran(String pelajaran, int idPelajaran) {
     selectedPelajaran.value = pelajaran;
     selectedIdPelajaran.value = idPelajaran.toString();
+    _generateQrCode();
+  }
+
+  void _generateQrCode() {
+    final biografi = biografiList.isNotEmpty ? biografiList.first : null;
+    final data = 'Pelajaran: ${selectedPelajaran.value}, '
+        'Nama: ${biografi?.nama ?? 'N/A'}, '
+        'ID Kelas: ${biografi?.kelas.idKelas ?? 'N/A'}, '
+        'Waktu Absen: ${DateTime.now().toIso8601String()}, '
+        'ID Biodata: ${biografi?.idBiodata ?? 'N/A'}, '
+        'ID Pelajaran: ${selectedIdPelajaran.value}';
+    qrData.value = data;
+  }
+
+  void _startQrCodeTimer() {
+    _timer = Timer.periodic(Duration(seconds: 7), (timer) {
+      if (selectedPelajaran.value.isNotEmpty) {
+        _generateQrCode();
+      }
+    });
   }
 }

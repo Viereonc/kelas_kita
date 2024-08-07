@@ -3,34 +3,26 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 
 import '../../../../constants.dart';
 import '../../../../data/models/biografi_model.dart';
 
 class EditProfileController extends GetxController {
-  var isLoading = true.obs;
+  var isLoading = false.obs;
 
   var ctrUsername = TextEditingController();
-  var ctrPhone = TextEditingController();
   var ctrAddress = TextEditingController();
   var ctrBio = TextEditingController();
   var selectedImagePath = Rx<File?>(null);
   final RxString imageUrl = ''.obs;
 
-
   @override
   void onInit() {
     super.onInit();
-    loadLoading();
     fetchBiografi();
-  }
-
-  void loadLoading() async {
-    await Future.delayed(Duration(seconds: 3));
-    isLoading.value = false;
   }
 
   Future<void> fetchBiografi() async {
@@ -38,7 +30,6 @@ class EditProfileController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
       int? userId = prefs.getInt('id_user');
-      int? idBiodata = prefs.getInt('id_biodata');
 
       if (userId != null) {
         final response = await http.get(
@@ -51,13 +42,14 @@ class EditProfileController extends GetxController {
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           ctrUsername.text = data['nama'] ?? '';
-          ctrPhone.text = data['nomor'] ?? '';
           ctrAddress.text = data['alamat'] ?? '';
           ctrBio.text = data['bio'] ?? '';
           imageUrl.value = data['image'];
 
+          // Check if 'id_biodata' is present and convert to int
           if (data['id_biodata'] != null) {
-            prefs.setInt('id_biodata', data['id_biodata']);
+            int idBiodata = int.tryParse(data['id_biodata'].toString()) ?? 0;
+            prefs.setInt('id_biodata', idBiodata);
           }
 
           print('Successfully loaded biografi data');

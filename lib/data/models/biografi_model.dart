@@ -144,25 +144,41 @@ class Role {
 enum Code {
   ANG,
   BEN,
-  WAL
+  WAL,
+  SEK,
+  KET,
+  WAK,
+  GUR
 }
 
 final codeValues = EnumValues({
   "ANG": Code.ANG,
   "BEN": Code.BEN,
-  "WAL": Code.WAL
+  "WAL": Code.WAL,
+  "SEK": Code.SEK,
+  "KET": Code.KET,
+  "WAK": Code.WAK,
+  "GUR": Code.GUR,
 });
 
 enum RoleName {
   ANGGOTA,
   BENDAHARA,
-  WALI_KELAS
+  WALI_KELAS,
+  SEKRETARIS,
+  KETUA_KELAS,
+  WAKIL_KETUA_KELAS,
+  GURU,
 }
 
 final roleNameValues = EnumValues({
   "Anggota": RoleName.ANGGOTA,
   "Bendahara": RoleName.BENDAHARA,
-  "Wali Kelas": RoleName.WALI_KELAS
+  "Wali Kelas": RoleName.WALI_KELAS,
+  "Sekretaris": RoleName.SEKRETARIS,
+  "Ketua Kelas": RoleName.KETUA_KELAS,
+  "Wakil Ketua Kelas": RoleName.WAKIL_KETUA_KELAS,
+  "Guru": RoleName.GURU
 });
 
 enum Status {
