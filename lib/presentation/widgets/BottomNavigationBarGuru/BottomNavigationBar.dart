@@ -106,7 +106,7 @@ class BottomNavbarGuru extends StatelessWidget {
         }
       },
       child: Container(
-        height: screenHeight * 0.075,
+        height: screenHeight * 0.077,
         width: screenWidth * 0.2,
         child: Column(
           children: [

@@ -25,6 +25,7 @@ class InfoBiografiModel {
   User user;
   Kelas kelas;
   Role role;
+  List<dynamic> performaSiswas;
 
   InfoBiografiModel({
     required this.idBiodata,
@@ -42,6 +43,7 @@ class InfoBiografiModel {
     required this.user,
     required this.kelas,
     required this.role,
+    required this.performaSiswas,
   });
 
   factory InfoBiografiModel.fromJson(Map<String, dynamic> json) => InfoBiografiModel(
@@ -60,6 +62,7 @@ class InfoBiografiModel {
     user: User.fromJson(json["user"]),
     kelas: Kelas.fromJson(json["kelas"]),
     role: Role.fromJson(json["role"]),
+    performaSiswas: List<dynamic>.from(json["performa_siswas"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -78,6 +81,7 @@ class InfoBiografiModel {
     "user": user.toJson(),
     "kelas": kelas.toJson(),
     "role": role.toJson(),
+    "performa_siswas": List<dynamic>.from(performaSiswas.map((x) => x)),
   };
 }
 
@@ -224,6 +228,46 @@ class User {
     "email": email,
     "nomor": nomor,
     "fcm_token": fcmToken,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+  };
+}
+
+class PerformaSiswa {
+  int id;
+  int idBiodata;
+  int absensi;
+  int pembayaranKas;
+  int jumlahIzin;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  PerformaSiswa({
+    required this.id,
+    required this.idBiodata,
+    required this.absensi,
+    required this.pembayaranKas,
+    required this.jumlahIzin,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory PerformaSiswa.fromJson(Map<String, dynamic> json) => PerformaSiswa(
+    id: json["id"],
+    idBiodata: json["id_biodata"],
+    absensi: json["absensi"],
+    pembayaranKas: json["pembayaran_kas"],
+    jumlahIzin: json["jumlah_izin"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "id_biodata": idBiodata,
+    "absensi": absensi,
+    "pembayaran_kas": pembayaranKas,
+    "jumlah_izin": jumlahIzin,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };

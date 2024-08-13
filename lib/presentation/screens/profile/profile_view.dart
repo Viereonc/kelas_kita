@@ -116,68 +116,99 @@ class ProfileScreen extends StatelessWidget {
                               style: tsSubHeader4(screenSize: screenWidth)
                           );
                         }),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
-                          width: double.infinity,
-                          height: screenHeight * 0.13,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                primaryBackDrop(opacity: 0.085)
-                              ]
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: screenHeight  * 0.025, horizontal: screenWidth  * 0.05),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SvgPicture.asset("lib/assets/icons/pe_fire.svg", color: Colors.red,),
-                                    Text("80%", style: tsSubHeader4(
-                                      screenSize: screenWidth,
-                                    ),),
-                                    Text("Pembayaran Kas", style: tsSubHeader6(
-                                      screenSize: screenWidth,
-                                    ),),
-                                  ],
-                                ),
+                        Obx(() {
+                          double height = profileController.userStatus.value == 'Wali Kelas' ? screenHeight * 0.05 : 0;
+                          return SizedBox(height: height);
+                        }),
+                        Obx(() {
+                          if (profileController.userStatus.value == 'Wali Kelas') {
+                            // Return an empty container or SizedBox if the role is Wali Kelas
+                            return SizedBox.shrink();
+                          } else {
+                            // Return the actual container content for other roles
+                            return Container(
+                              margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
+                              padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                              width: double.infinity,
+                              height: screenHeight * 0.13,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  primaryBackDrop(opacity: 0.085),
+                                ],
                               ),
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: screenHeight  * 0.025, horizontal: screenWidth  * 0.05),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
-                                    Text("100%", style: tsSubHeader4(
-                                      screenSize: screenWidth,
-                                    ),),
-                                    Text("Absensi", style: tsSubHeader6(
-                                      screenSize: screenWidth,
-                                    ),),
-                                  ],
-                                ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset("lib/assets/icons/pe_fire.svg", color: Colors.red,),
+                                        Obx(() {
+                                          if (profileController.biografiList.isNotEmpty &&
+                                              profileController.biografiList[0].performaSiswas.isNotEmpty) {
+                                            return Text(
+                                              "${profileController.biografiList[0].performaSiswas[0].pembayaranKas}%",
+                                              style: tsSubHeader4(screenSize: screenWidth),
+                                            );
+                                          } else {
+                                            return Text("N/A", style: tsSubHeader4(screenSize: screenWidth));
+                                          }
+                                        }),
+                                        Text(
+                                          "Pembayaran Kas",
+                                          style: tsSubHeader6(screenSize: screenWidth),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
+                                        Obx(() {
+                                          if (profileController.biografiList.isNotEmpty &&
+                                              profileController.biografiList[0].performaSiswas.isNotEmpty) {
+                                            return Text(
+                                              "${profileController.biografiList[0].performaSiswas[0].absensi}%",
+                                              style: tsSubHeader4(screenSize: screenWidth),
+                                            );
+                                          } else {
+                                            return Text("N/A", style: tsSubHeader4(screenSize: screenWidth));
+                                          }
+                                        }),
+                                        Text(
+                                          "Absensi",
+                                          style: tsSubHeader6(screenSize: screenWidth),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
+                                        Text("80%", style: tsSubHeader4(screenSize: screenWidth)),
+                                        Text(
+                                          "Pembayaran Kas",
+                                          style: tsSubHeader6(screenSize: screenWidth),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: screenHeight  * 0.025, horizontal: screenWidth  * 0.05),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
-                                    Text("80%", style: tsSubHeader4(
-                                      screenSize: screenWidth,
-                                    ),),
-                                    Text("Pembayaran Kas", style: tsSubHeader6(
-                                      screenSize: screenWidth,
-                                    ),),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                            );
+                          }
+                        }),
                         Container(
                           width: double.infinity,
                           height: screenHeight * 0.35,

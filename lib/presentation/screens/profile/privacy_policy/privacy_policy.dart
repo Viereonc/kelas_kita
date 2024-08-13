@@ -17,11 +17,13 @@ class PrivacyPolicyScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(66),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: AppBar(
+            backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
             title: Text(
               "Privacy Policy",

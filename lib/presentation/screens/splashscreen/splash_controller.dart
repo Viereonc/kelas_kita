@@ -28,12 +28,16 @@ class SplashController extends GetxController {
   }
 
   void getToken() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    String? token = await messaging.getToken();
-    if (token != null) {
-      print('FCM Token: $token');
-    } else {
-      print('Failed to get FCM token');
+    try {
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      String? token = await messaging.getToken();
+      if (token != null) {
+        print('FCM Token: $token');
+      } else {
+        print('Failed to get FCM token');
+      }
+    } catch (e) {
+      print('Error fetching FCM token: $e');
     }
   }
 

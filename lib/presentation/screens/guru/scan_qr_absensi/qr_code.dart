@@ -140,11 +140,16 @@ class ScanQrAbsensi extends StatelessWidget {
 }
 
 class ScannedDataDialog extends StatelessWidget {
-  final ScanAbsensiController scanAbsensiController = Get.find();
+  final ScanAbsensiController scanAbsensiController = Get.put(ScanAbsensiController());
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return AlertDialog(
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
       title: Text('Data yang Dipindai'),
       content: Obx(() {
         if (scanAbsensiController.scannedData.isEmpty) {
@@ -155,28 +160,44 @@ class ScannedDataDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text('Nama: ${data["nama"] ?? 'Tidak tersedia'}'),
-              // Text('Kelas: ${data["kelas"] ?? 'Tidak tersedia'}'),
+              Text('Nama: ${data["nama"] ?? 'Tidak tersedia'}'),
+              SizedBox(height: 5,),
+              Text('Kelas: ${data["kelas"] ?? 'Tidak tersedia'}'),
+              SizedBox(height: 5,),
               Text('Waktu Absen: ${data["waktu_absen"] ?? 'Tidak tersedia'}'),
             ],
           );
         }
       }),
       actions: [
-        TextButton(
-          onPressed: () {
-            scanAbsensiController.dialogShown.value = false; // Reset the flag
-            Get.back(); // Close dialog
-          },
-          child: Text('Batal'),
-        ),
-        TextButton(
-          onPressed: () {
-            scanAbsensiController.postAbsensi();
-            scanAbsensiController.dialogShown.value = false; // Reset the flag
-            Get.back(); // Close dialog
-          },
-          child: Text('Post'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              onPressed: () {
+                scanAbsensiController.dialogShown.value = false; // Reset the flag
+                Get.back(); // Close dialog
+              },
+              child: Text('Batal', style: tsParagraft4(screenSize: screenWidth, color: primeryColorMedium),),
+            ),
+            TextButton(
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                backgroundColor: primeryColorMedium,
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: BorderSide.none,
+                ),
+              ),
+              onPressed: () {
+                scanAbsensiController.postAbsensi();
+                scanAbsensiController.dialogShown.value = false; // Reset the flag
+                Get.back(); // Close dialog
+              },
+              child: Text('Post', style: tsParagraft4(screenSize: screenWidth, color: Colors.white),),
+            ),
+          ],
         ),
       ],
     );

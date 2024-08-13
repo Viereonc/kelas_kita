@@ -105,7 +105,7 @@ class QrCodeSiswaController extends GetxController {
     final biografi = biografiList.isNotEmpty ? biografiList.first : null;
     final data = 'Pelajaran: ${selectedPelajaran.value}, '
         'Nama: ${biografi?.nama ?? 'N/A'}, '
-        'ID Kelas: ${biografi?.kelas.idKelas ?? 'N/A'}, '
+        'Nama Kelas: ${biografi?.kelas.nama ?? 'N/A'}, '
         'Waktu Absen: ${DateTime.now().toIso8601String()}, '
         'ID Biodata: ${biografi?.idBiodata ?? 'N/A'}, '
         'ID Pelajaran: ${selectedIdPelajaran.value}';

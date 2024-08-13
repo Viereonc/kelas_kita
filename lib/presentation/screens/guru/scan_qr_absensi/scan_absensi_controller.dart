@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:kelas_kita/presentation/screens/guru/scan_qr_absensi/qr_code.dart';
@@ -8,14 +9,14 @@ import '../../../../constants.dart';
 class ScanAbsensiController extends GetxController {
   var isLoading = false.obs;
   var scannedData = {}.obs;
-  var dialogShown = false.obs; // Flag to track if the dialog is shown
+  var dialogShown = false.obs;
 
   void setScannedData(String code) {
     final data = parseScannedData(code);
     if (data != null) {
       scannedData.value = data;
       if (!dialogShown.value) {
-        dialogShown.value = true; // Set the flag to true when dialog is shown
+        dialogShown.value = true;
         Get.dialog(ScannedDataDialog());
       }
     }
@@ -57,7 +58,14 @@ class ScanAbsensiController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         print("Data posted successfully!");
-        Get.back(); // Close dialog
+        Get.back();
+        Get.snackbar(
+          "Success",
+          "Data posted successfully",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
       } else if (response.statusCode == 422) {
         print('Response body: ${response.body}');
       } else if (response.statusCode == 500) {
@@ -74,40 +82,40 @@ class ScanAbsensiController extends GetxController {
 
   Map<String, dynamic>? parseScannedData(String code) {
     try {
-      // Use regular expressions to find the parts
       final regexPelajaran = RegExp(r'ID Pelajaran: (\d+)');
       final regexWaktuAbsen = RegExp(r'Waktu Absen: ([^\s,]+)');
       final regexBiodata = RegExp(r'ID Biodata: (\d+)');
+      final regexNama = RegExp(r'Nama: ([\w\s]+)');
+      final regexKelas = RegExp(r'Kelas: ([\w\s\d]+)');
 
       final idPelajaranPart = regexPelajaran.firstMatch(code)?.group(0) ?? '';
       final waktuAbsenPart = regexWaktuAbsen.firstMatch(code)?.group(0) ?? '';
       final idBiodataPart = regexBiodata.firstMatch(code)?.group(0) ?? '';
+      final namaPart = regexNama.firstMatch(code)?.group(0) ?? '';
+      final kelasPart = regexKelas.firstMatch(code)?.group(0) ?? '';
 
-      // Log each part for debugging
       print('ID Pelajaran Part: $idPelajaranPart');
       print('Waktu Absen Part: $waktuAbsenPart');
       print('ID Biodata Part: $idBiodataPart');
+      print('Nama Part: $namaPart');
+      print('Kelas Part: $kelasPart');
 
-      // Validate each part
-      if (idPelajaranPart.isEmpty) print('ID Pelajaran part is missing');
-      if (waktuAbsenPart.isEmpty) print('Waktu Absen part is missing');
-      if (idBiodataPart.isEmpty) print('ID Biodata part is missing');
-
-      // If all parts are present, parse the data
-      if (idPelajaranPart.isNotEmpty && waktuAbsenPart.isNotEmpty && idBiodataPart.isNotEmpty) {
+      if (idPelajaranPart.isNotEmpty && waktuAbsenPart.isNotEmpty && idBiodataPart.isNotEmpty && namaPart.isNotEmpty && kelasPart.isNotEmpty) {
         final idPelajaran = regexPelajaran.firstMatch(code)?.group(1) ?? '';
         final waktuAbsenRaw = regexWaktuAbsen.firstMatch(code)?.group(1) ?? '';
         final idBiodata = regexBiodata.firstMatch(code)?.group(1) ?? '';
+        final nama = regexNama.firstMatch(code)?.group(1) ?? '';
+        final kelas = regexKelas.firstMatch(code)?.group(1) ?? '';
 
         final cleanedWaktuAbsen = waktuAbsenRaw.split('ID').first;
-
-        // Adjust waktu_absen to correct format if needed
         final waktuAbsenTime = DateTime.parse(cleanedWaktuAbsen).toLocal().toIso8601String().substring(11, 16);
 
         return {
           "id_biodata": idBiodata,
           "id_pelajaran": idPelajaran,
           "waktu_absen": waktuAbsenTime,
+          "nama": nama,
+          "kelas": kelas,
         };
       } else {
         print('Failed to parse data due to missing parts');
@@ -118,4 +126,5 @@ class ScanAbsensiController extends GetxController {
       return null;
     }
   }
+
 }

@@ -107,22 +107,19 @@ class HomeScreenGuru extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          width: screenWidth * 0.38,
+                                          width: screenWidth * 0.45,
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               Container(
                                                 height: screenWidth * 0.12,
                                                 width: screenWidth * 0.12,
                                                 decoration: BoxDecoration(
                                                   color: Color(0xFFEB4335),
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
+                                                  borderRadius: BorderRadius.circular(10),
                                                 ),
                                                 child: Center(
                                                   child: Icon(
@@ -132,6 +129,7 @@ class HomeScreenGuru extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(width: screenWidth * 0.04,),
                                               Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,

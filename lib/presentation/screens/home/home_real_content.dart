@@ -5,12 +5,16 @@ import 'package:kelas_kita/routes/app_routes.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
+import 'home_controller.dart';
+
 class RealContent extends StatelessWidget {
+  final HomeController homeController = Get.put(HomeController());
+
   final double screenWidth;
   final double screenHeight;
   final Color primeryColorDark;
 
-  const RealContent({
+  RealContent({
     Key? key,
     required this.screenWidth,
     required this.screenHeight,
@@ -53,7 +57,7 @@ class RealContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Total Kas Kelas 11 PPLG 2', style: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.white)),
+                    Text('Total Kas Kelas ${homeController.biografiList[0].kelas.nama}', style: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.white)),
                     Padding(padding: EdgeInsets.only(top: screenHeight * 0.01)),
                     Text('Rp 100.000', style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white)),
                   ],
