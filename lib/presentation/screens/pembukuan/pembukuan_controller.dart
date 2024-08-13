@@ -6,6 +6,7 @@
   import 'package:http/http.dart' as http;
   import '../../../constants.dart';
   import 'package:kelas_kita/data/models/program_kas_model.dart';
+  import 'package:kelas_kita/data/models/tagihan_kas.dart';
 
 import '../../../data/models/biografi_model.dart';
 
@@ -13,6 +14,7 @@ class PembukuanKasController extends GetxController with SingleGetTickerProvider
   RxList<ProgramKelasModel> programKelasList = <ProgramKelasModel>[].obs;
   RxList<PembukuanKasModel> pembukuanKasList = <PembukuanKasModel>[].obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
+  RxList<InfoTagihanKasModel> tagihanKasList = <InfoTagihanKasModel>[].obs;
   var isLoading = true.obs;
   var userStatus = ''.obs;
   var selectedType = 'Pengeluaran'.obs;
@@ -29,6 +31,7 @@ class PembukuanKasController extends GetxController with SingleGetTickerProvider
     fetchProgramKasKelas();
     fetchPembukuanKasKelas();
     fetchBiografi();
+    fetchTagihanKas();
   }
 
   // @override
@@ -249,6 +252,43 @@ class PembukuanKasController extends GetxController with SingleGetTickerProvider
       }
     } catch (e) {
       print('Error posting data: $e');
+    }
+  }
+  Future<void> fetchTagihanKas() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? userId = prefs.getInt('id_user');
+      int? biodataId = prefs.getInt('id_biodata');
+
+      print('User ID: $userId, Biodata ID: $biodataId'); // Debug print
+
+      if (userId != null && biodataId != null) {
+        final response = await http.get(
+          Uri.parse('$baseUrl$tagihanKasUserEndPoint$biodataId'),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body) as List<dynamic>;
+          print('JSON Response: $jsonResponse');
+
+          var fetchedData = jsonResponse.map((data) => InfoTagihanKasModel.fromJson(data)).toList();
+          tagihanKasList.value = fetchedData;
+
+          print('Successfully loaded tagihan kas data: ${tagihanKasList.length}');
+        } else {
+          print('Failed to load tagihan kas, status code: ${response.statusCode}');
+          throw Exception('Failed to load tagihan kas');
+        }
+      } else {
+        print('User ID or biodata ID is null. Unable to fetch tagihan kas.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
     }
   }
 }

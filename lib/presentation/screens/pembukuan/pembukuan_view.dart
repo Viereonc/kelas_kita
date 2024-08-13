@@ -8,6 +8,7 @@ import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/pembukuan_controller.dart';
 import 'package:kelas_kita/presentation/screens/pembukuan/program_kelas_view.dart';
 
+import '../../themes/FontsStyle.dart';
 import 'edit_program_kas/edit_delete_option.dart';
 
 class PembukuanView extends StatelessWidget {
@@ -87,14 +88,10 @@ class PembukuanView extends StatelessWidget {
                   ),
                   SizedBox(height: screenHeight * 0.01),
                   Text(
-                    'Rp 100.000',
-                    style: GoogleFonts.manrope(
-                      textStyle: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                    pembukuanKasController.tagihanKasList.isNotEmpty
+                        ? 'Rp ${pembukuanKasController.tagihanKasList[0].jumlah}'  // Access the first element only if the list is not empty
+                        : 'Rp 0',  // Default value if the list is empty
+                    style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white),
                   ),
                 ],
               ),
