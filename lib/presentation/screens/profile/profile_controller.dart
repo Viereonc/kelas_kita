@@ -69,6 +69,16 @@ class ProfileController extends GetxController {
             profileImageUrl.value = '$baseUrl$storage${fetchedData.image}';
           }
 
+          if (fetchedData.performaSiswas.isNotEmpty) {
+            var pembayaranKas = fetchedData.performaSiswas[0].pembayaranKas;
+            var absensi = fetchedData.performaSiswas[0].absensi;
+
+            print('Pembayaran Kas: $pembayaranKas');
+            print('Absensi: $absensi');
+          } else {
+            print('No performa data available');
+          }
+
           print('Successfully loaded biografi data: ${biografiList.length}');
         } else {
           print('Failed to load biografi, status code: ${response.statusCode}');

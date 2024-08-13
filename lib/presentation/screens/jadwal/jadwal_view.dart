@@ -274,7 +274,7 @@ class JadwalScreen extends StatelessWidget {
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 10),
-                  width: screenWidth * 0.73,
+                  width: screenWidth * 0.7,
                   height: 124,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),

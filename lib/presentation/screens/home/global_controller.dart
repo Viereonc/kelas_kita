@@ -14,7 +14,14 @@ class GlobalController extends GetxController {
   var isLoading = true.obs;
   RxString userName = ''.obs;
   RxString idBiodata = ''.obs;
-  var selectedKelas = KelasModel(idKelas: 0, nama: '').obs;
+  var selectedKelas = KelasModel(
+      idKelas: 0,
+      nama: '',
+      idBiodata: 0,
+      jumlahKas: 0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now()
+  ).obs;
   RxString advancedClassSchedule = '11 PPLG 2'.obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
 

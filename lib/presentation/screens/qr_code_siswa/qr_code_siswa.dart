@@ -4,6 +4,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:async';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
+import '../guru/scan_qr_absensi/qr_code.dart';
 import 'qr_code_siswa_controller.dart';
 
 class QrCodeSiswaScreen extends StatelessWidget {

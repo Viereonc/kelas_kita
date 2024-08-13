@@ -12,7 +12,15 @@ class HomeController extends GetxController {
   var isLoading = true.obs;
   RxString userName = ''.obs;
   RxString idBiodata = ''.obs;
-  var selectedKelas = KelasModel(idKelas: 0, nama: '').obs;
+  var userStatus = ''.obs;
+  var selectedKelas = KelasModel(
+      idKelas: 0,
+      nama: '',
+      idBiodata: 0,
+      jumlahKas: 0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now()
+  ).obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   RxList<InfoTagihanKasModel> tagihanKasList = <InfoTagihanKasModel>[].obs;
 
@@ -74,6 +82,7 @@ class HomeController extends GetxController {
           // Save the user's name in shared preferences
           await saveUserName(fetchedData.nama ?? '');
           await saveIdBiodata((fetchedData.idBiodata ?? '') as int);
+          userStatus.value = fetchedData.role.nama.toString();
 
           print('Successfully loaded biografi data: ${biografiList.length}');
         } else {

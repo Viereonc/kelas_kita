@@ -13,8 +13,15 @@ import 'kelas_model.dart';
 
 class BiografiController extends GetxController {
   var selectedImagePath = Rx<File?>(null);
-  List<KelasModel> kelasList = <KelasModel>[];
-  var selectedKelas = KelasModel(idKelas: 0, nama: '').obs;
+  RxList<KelasModel> kelasList = <KelasModel>[].obs;
+  var selectedKelas = KelasModel(
+      idKelas: 0,
+      nama: '',
+      idBiodata: 0,
+      jumlahKas: 0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now()
+  ).obs;
   var idKelas = ''.obs;
   TextEditingController namaController = TextEditingController();
   TextEditingController kelasController = TextEditingController();
@@ -41,7 +48,11 @@ class BiografiController extends GetxController {
 
       if (response.statusCode == 200) {
         List<dynamic> jsonResponse = json.decode(response.body);
-        kelasList = jsonResponse.map((data) => KelasModel.fromJson(data)).toList();
+        List<KelasModel> fetchedKelas = jsonResponse.map((data) => KelasModel.fromJson(data)).toList();
+
+        // Update the RxList using the `.value` property
+        kelasList.value = fetchedKelas;
+
         print('Successfully loaded kelas');
 
         for (var kelas in kelasList) {

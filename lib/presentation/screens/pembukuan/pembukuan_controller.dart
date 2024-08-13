@@ -1,6 +1,7 @@
   import 'dart:convert';
   import 'package:flutter/animation.dart';
   import 'package:get/get.dart';
+  import 'package:kelas_kita/data/models/pembukuan_kas_model.dart';
   import 'package:shared_preferences/shared_preferences.dart';
   import 'package:http/http.dart' as http;
   import '../../../constants.dart';
@@ -8,11 +9,13 @@
 
 import '../../../data/models/biografi_model.dart';
 
-  class PembukuanKasController extends GetxController with SingleGetTickerProviderMixin{
+class PembukuanKasController extends GetxController with SingleGetTickerProviderMixin{
   RxList<ProgramKelasModel> programKelasList = <ProgramKelasModel>[].obs;
+  RxList<PembukuanKasModel> pembukuanKasList = <PembukuanKasModel>[].obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   var isLoading = true.obs;
   var userStatus = ''.obs;
+  var selectedType = 'Pengeluaran'.obs;
   // late AnimationController animationController;
 
   @override
@@ -24,6 +27,7 @@ import '../../../data/models/biografi_model.dart';
     //   vsync: this,
     // )..repeat();
     fetchProgramKasKelas();
+    fetchPembukuanKasKelas();
     fetchBiografi();
   }
 
@@ -106,14 +110,38 @@ import '../../../data/models/biografi_model.dart';
     }
   }
 
-  Future<void> postProgramKelas(
-    String nama,
-    String status,
-    String jumlah,
-    DateTime jadwal,
-    DateTime createdAt,
-    DateTime updatedAt,
-  ) async {
+  void fetchPembukuanKasKelas() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? idKelas = prefs.getInt('id_kelas');
+
+      if (idKelas != null) {
+        final response = await http.get(
+          Uri.parse(baseUrl + getPembukuanKasEndPoint + '$idKelas'),
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var fetchedData = pembukuanKasModelFromJson(response.body);
+          pembukuanKasList.value = fetchedData;
+          print('Data pembukuan kas fetched successfully: ${pembukuanKasList.length} items');
+        } else {
+          print('Failed to fetch data: ${response.statusCode}');
+        }
+      } else {
+        print('id_kelas is null');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> postProgramKelas(String nama, String status, String jumlah, DateTime jadwal, DateTime createdAt, DateTime updatedAt,) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
@@ -184,4 +212,43 @@ import '../../../data/models/biografi_model.dart';
   }
 }
 
+  Future<void> postPembukuanKasKelas(String nama, String jenis, String jumlah, DateTime jadwal, DateTime createdAt, DateTime updatedAt,) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? idKelas = prefs.getInt('id_kelas');
+
+      if (token != null) {
+        final url = Uri.parse(baseUrl + pembukuanKasEndPoint);
+        final headers = {
+          'Authorization': 'Bearer $token',
+        };
+
+        final request = http.MultipartRequest('POST', url)
+          ..headers.addAll(headers)
+          ..fields['id_kelas'] = idKelas.toString()
+          ..fields['nama'] = nama
+          ..fields['jenis'] = jenis
+          ..fields['jumlah_pengeluaran'] = jumlah
+          ..fields['tanggal'] = jadwal.toIso8601String()
+          ..fields['created_at'] = createdAt.toIso8601String()
+          ..fields['updated_at'] = updatedAt.toIso8601String();
+
+        final response = await request.send();
+
+        final responseString = await response.stream.bytesToString();
+        if (response.statusCode == 201) {
+          print('Program Kelas Berhasil Diunggah');
+          fetchProgramKasKelas();
+        } else {
+          print('Failed to post data: ${response.statusCode}');
+          print('Response body: $responseString');
+        }
+      } else {
+        print('Token not found');
+      }
+    } catch (e) {
+      print('Error posting data: $e');
+    }
+  }
 }
