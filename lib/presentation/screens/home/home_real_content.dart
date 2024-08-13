@@ -59,7 +59,13 @@ class RealContent extends StatelessWidget {
                   children: [
                     Text('Total Kas Kelas ${homeController.biografiList[0].kelas.nama}', style: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.white)),
                     Padding(padding: EdgeInsets.only(top: screenHeight * 0.01)),
-                    Text('Rp 100.000', style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white)),
+                    Text(
+                      homeController.tagihanKasList.isNotEmpty
+                          ? 'Rp ${homeController.tagihanKasList[0].jumlah}'  // Access the first element only if the list is not empty
+                          : 'Rp 0',  // Default value if the list is empty
+                      style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white),
+                    ),
+
                   ],
                 ),
               ],
