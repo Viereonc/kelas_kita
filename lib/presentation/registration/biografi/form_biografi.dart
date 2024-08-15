@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kelas_kita/presentation/registration/biografi/biografi_controller.dart';
 import 'package:kelas_kita/presentation/screens/pending/pending_view.dart';
@@ -13,7 +14,11 @@ import 'kelas_model.dart';
 
 
 class BiografiView extends StatelessWidget {
+  BiografiView({Key? key}) : super(key: key);
+
   final BiografiController biografiController = Get.put(BiografiController());
+
+  // final GoogleSignInAccount user;
 
   Future<void> _getImageFromGallery() async {
     final imagePicker = ImagePicker();

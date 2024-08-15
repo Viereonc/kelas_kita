@@ -22,6 +22,7 @@ const tagihanKasEndPoint = 'api/tagihan_kas/';
 const tagihanKasUserEndPoint = 'api/tagihan_kas/biodata/';
 const getPembukuanKasEndPoint = 'api/pembukuan_kas/kelas/';
 const pembukuanKasEndPoint = 'api/pembukuan_kas/store';
+const fcmTokenPost = 'api/register_fcm';
 
 const pending = 'P';
 const accept = 'A';

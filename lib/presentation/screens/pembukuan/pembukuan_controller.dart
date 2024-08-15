@@ -254,12 +254,18 @@ class PembukuanKasController extends GetxController with SingleGetTickerProvider
       print('Error posting data: $e');
     }
   }
+
   Future<void> fetchTagihanKas() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
-      int? userId = prefs.getInt('id_user');
-      int? biodataId = prefs.getInt('id_biodata');
+
+      // Retrieve userId and biodataId as strings, then convert them to int if possible
+      String? userIdStr = prefs.getString('id_user');
+      int? userId = userIdStr != null ? int.tryParse(userIdStr) : null;
+
+      String? biodataIdStr = prefs.getString('id_biodata');
+      int? biodataId = biodataIdStr != null ? int.tryParse(biodataIdStr) : null;
 
       print('User ID: $userId, Biodata ID: $biodataId'); // Debug print
 
@@ -291,4 +297,5 @@ class PembukuanKasController extends GetxController with SingleGetTickerProvider
       throw Exception('Error: $e');
     }
   }
+
 }

@@ -133,7 +133,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                       ),
                                       SizedBox(height: screenHeight * 0.008),
                                       Text(
-                                        strukturKelas.roleName,
+                                        strukturKelas.roleName ?? '',
                                         style: tsParagraft5(
                                           fontWeight: FontWeight.w500,
                                           screenSize: screenWidth * 1.3,
@@ -206,7 +206,7 @@ class StrukturKelasScreen extends StatelessWidget {
                                           Container(
                                             margin: EdgeInsets.only(top: screenHeight * 0.01),
                                             child: Text(
-                                              strukturKelas.alamat,
+                                              strukturKelas.alamat ?? '',
                                               style: tsParagraft5(
                                                 screenSize: screenWidth * 1.3,
                                               ).copyWith(color: Color(0xFFFFA800)),
