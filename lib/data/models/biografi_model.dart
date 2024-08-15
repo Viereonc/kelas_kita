@@ -25,7 +25,7 @@ class InfoBiografiModel {
   User user;
   Kelas kelas;
   Role role;
-  List<dynamic> performaSiswas;
+  List<PerformaSiswa> performaSiswas;
 
   InfoBiografiModel({
     required this.idBiodata,
@@ -62,7 +62,7 @@ class InfoBiografiModel {
     user: User.fromJson(json["user"]),
     kelas: Kelas.fromJson(json["kelas"]),
     role: Role.fromJson(json["role"]),
-    performaSiswas: List<dynamic>.from(json["performa_siswas"].map((x) => x)),
+    performaSiswas: List<PerformaSiswa>.from(json["performa_siswas"].map((x) => PerformaSiswa.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -81,7 +81,7 @@ class InfoBiografiModel {
     "user": user.toJson(),
     "kelas": kelas.toJson(),
     "role": role.toJson(),
-    "performa_siswas": List<dynamic>.from(performaSiswas.map((x) => x)),
+    "performa_siswas": List<dynamic>.from(performaSiswas.map((x) => x.toJson())),
   };
 }
 
@@ -197,8 +197,9 @@ class User {
   int idUser;
   String username;
   String email;
-  int nomor;
-  dynamic? fcmToken;
+  int? nomor;
+  String? idGoogle;
+  String? fcmToken;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -206,7 +207,8 @@ class User {
     required this.idUser,
     required this.username,
     required this.email,
-    required this.nomor,
+    this.nomor,
+    this.idGoogle,
     this.fcmToken,
     required this.createdAt,
     required this.updatedAt,
@@ -217,6 +219,7 @@ class User {
     username: json["username"],
     email: json["email"],
     nomor: json["nomor"],
+    idGoogle: json["id_google"],
     fcmToken: json["fcm_token"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
@@ -227,6 +230,7 @@ class User {
     "username": username,
     "email": email,
     "nomor": nomor,
+    "id_google": idGoogle,
     "fcm_token": fcmToken,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),

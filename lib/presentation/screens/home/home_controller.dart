@@ -29,6 +29,7 @@ class HomeController extends GetxController {
     super.onInit();
     fetchBiografi();
     fetchTagihanKas();
+    postFcmToken();
     Future.delayed(Duration(seconds: 4), () {
       isLoading.value = false;
     });
@@ -58,6 +59,45 @@ class HomeController extends GetxController {
     isLoading.value = false;
   }
 
+  Future<void> postFcmToken() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? fcmToken = prefs.getString('fcm_token');
+      String? email = prefs.getString('email');
+      String? token = prefs.getString('token'); // Bearer token
+
+      // Debug prints
+      print('Email: $email');
+      print('FCM Token: $fcmToken');
+      print('Bearer Token: $token');
+
+      if (fcmToken != null && email != null && token != null) {
+        final response = await http.post(
+          Uri.parse('https://kelaskita.site/api/register_fcm'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token', // Add the Bearer token here
+          },
+          body: jsonEncode({
+            'email': email,
+            'fcm_token': fcmToken,
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          print('FCM Token posted successfully');
+        } else {
+          print('Failed to post FCM Token, status code: ${response.statusCode}');
+          print('Response body: ${response.body}');
+        }
+      } else {
+        print('FCM Token, email, or Bearer token is null. Unable to post FCM token.');
+      }
+    } catch (e) {
+      print('Error posting FCM token: $e');
+    }
+  }
+
   Future<void> fetchBiografi() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -81,7 +121,10 @@ class HomeController extends GetxController {
 
           // Save the user's name in shared preferences
           await saveUserName(fetchedData.nama ?? '');
-          await saveIdBiodata((fetchedData.idBiodata ?? '') as int);
+          prefs.setInt('id_user', userId);
+          prefs.setString('isLoginGoogle', 'true');
+          prefs.setString('userName', fetchedData.nama ?? '');
+          await saveIdBiodata(fetchedData.idBiodata ?? 0);
           userStatus.value = fetchedData.role.nama.toString();
 
           print('Successfully loaded biografi data: ${biografiList.length}');

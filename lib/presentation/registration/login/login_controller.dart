@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +9,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../constants.dart';
 import '../../../data/models/biografi_model.dart';
 import '../../../routes/app_routes.dart';
+import '../../screens/home/home_view.dart';
+import 'google_sign_in.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
@@ -17,6 +18,16 @@ class LoginController extends GetxController {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   var isLoading = false.obs;
+
+  // Future signIn() async {
+  //   final user = await GoogleSignInApi.login();
+  //
+  //   if (user == null) {
+  //     ScaffoldMessenger(child: SnackBar(content: Text('Sign in Failed')));
+  //   } else {
+  //     Get.offNamed(Path.BIOGRAFI_PAGE, arguments: user);
+  //   }
+  // }
 
   Future<void> signInWithGoogle() async {
 

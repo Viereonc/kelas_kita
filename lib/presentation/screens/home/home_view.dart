@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:kelas_kita/data/models/biografi_model.dart';
 import 'package:kelas_kita/presentation/screens/home/home_controller.dart';

@@ -18,9 +18,11 @@ class SplashController extends GetxController {
   void checkLoginStatus() async {
     await Future.delayed(Duration(seconds: 2));
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    print('isLoggedIn: $isLoggedIn');
-    if (isLoggedIn == true) {
+
+    bool isLoginGoogle = prefs.getBool('isLoggedIn') ?? false;
+    print('isLoggedIn: $isLoginGoogle');
+
+    if (isLoginGoogle) {
       await fetchBiografi();
     } else {
       Get.offNamed(Path.ONBOARDING_PAGE);
@@ -33,6 +35,8 @@ class SplashController extends GetxController {
       String? token = await messaging.getToken();
       if (token != null) {
         print('FCM Token: $token');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('fcm_token', token);
       } else {
         print('Failed to get FCM token');
       }
@@ -46,7 +50,21 @@ class SplashController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
       int? userId = prefs.getInt('id_user');
+      int? nis = prefs.getInt('nis');  // Retrieve nis from SharedPreferences
 
+      // Check if nis is already present
+      if (nis != null && nis > 0) {
+        // NIS exists, navigate based on role
+        final role = prefs.getString('role_name');
+        if (role == 'Wali Kelas') {
+          Get.offNamed(Path.HOMEGURU_PAGE);
+        } else {
+          Get.offNamed(Path.HOME_PAGE);
+        }
+        return;
+      }
+
+      // If nis is not present, fetch biografi data
       if (userId != null) {
         final response = await http.get(
           Uri.parse('$baseUrl$biodataEndpointGet$userId'),
@@ -60,34 +78,31 @@ class SplashController extends GetxController {
           InfoBiografiModel biografiModel = InfoBiografiModel.fromJson(jsonResponse);
 
           if (biografiModel != null) {
+            // Save necessary data to SharedPreferences
             prefs.setString('nama', biografiModel.nama ?? '');
-            prefs.setInt('nis', biografiModel.nis ?? 0);
+            prefs.setInt('nis', biografiModel.nis);  // Save nis to SharedPreferences
             prefs.setString('alamat', biografiModel.alamat ?? '');
-            prefs.setInt('id_kelas', biografiModel.idKelas ?? 0);
-            prefs.setInt('id_biodata', biografiModel.idBiodata ?? 0);
-            prefs.setString('status', biografiModel.status.toString() ?? '');
-            print('Successfully loaded biografi data');
-            final name = biografiModel.nama;
-            // final idBiodata = biografiModel.idBiodata;
-            final role = jsonResponse['role_name'];
+            prefs.setInt('id_kelas', biografiModel.idKelas);
+            prefs.setInt('id_biodata', biografiModel.idBiodata);
+            prefs.setString('email', biografiModel.user.email ?? '');
+            prefs.setInt('id_user', biografiModel.idUser);
+            prefs.setString('id_google', biografiModel.user.idGoogle ?? '');
+            prefs.setString('status', biografiModel.status.toString());
+            prefs.setString('role_name', biografiModel.roleName.toString());  // Save role to SharedPreferences
 
-            if (name != null && name.isNotEmpty) {
-              if (role == 'Wali Kelas') {
-                Get.offNamed(Path.HOMEGURU_PAGE);
-              } else {
-                Get.offNamed(Path.HOME_PAGE);
-              }
+            final role = biografiModel.roleName.toString();
+            if (role == 'RoleName.WALI_KELAS') {
+              Get.offNamed(Path.HOMEGURU_PAGE);
             } else {
-              Get.offNamed(Path.BIOGRAFI_PAGE);
+              Get.offNamed(Path.HOME_PAGE);
             }
-
           } else {
             print('Biografi data is null');
             Get.offNamed(Path.BIOGRAFI_PAGE);
           }
         } else {
           print('Failed to load biografi, status code: ${response.statusCode}');
-          throw Exception('Failed to load biografi');
+          Get.offNamed(Path.BIOGRAFI_PAGE);
         }
       } else {
         print('User ID is null. Unable to fetch biografi.');
@@ -98,4 +113,5 @@ class SplashController extends GetxController {
       Get.offNamed(Path.BIOGRAFI_PAGE);
     }
   }
+
 }

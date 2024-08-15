@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final infoStrukturKelasModel = infoStrukturKelasModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<InfoStrukturKelasModel> infoStrukturKelasModelFromJson(String str) => List<InfoStrukturKelasModel>.from(json.decode(str).map((x) => InfoStrukturKelasModel.fromJson(x)));
@@ -10,16 +15,18 @@ class InfoStrukturKelasModel {
   int idKelas;
   String nama;
   int nis;
-  String alamat;
-  dynamic bio;
-  String status;
+  String? alamat;
+  String? image;
+  String? bio;
+  String? status;
   DateTime createdAt;
   DateTime updatedAt;
-  String roleName;
+  String? roleName;
   User user;
   Kelas kelas;
   Role role;
-  int? absen; // New property
+  List<PerformaSiswa> performaSiswas;
+  int? absen;
 
   InfoStrukturKelasModel({
     required this.idBiodata,
@@ -27,16 +34,18 @@ class InfoStrukturKelasModel {
     required this.idKelas,
     required this.nama,
     required this.nis,
-    required this.alamat,
-    required this.bio,
-    required this.status,
+    this.alamat,
+    this.image,
+    this.bio,
+    this.status,
     required this.createdAt,
     required this.updatedAt,
-    required this.roleName,
+    this.roleName,
     required this.user,
     required this.kelas,
     required this.role,
-    this.absen, 
+    required this.performaSiswas,
+    this.absen
   });
 
   factory InfoStrukturKelasModel.fromJson(Map<String, dynamic> json) => InfoStrukturKelasModel(
@@ -45,15 +54,17 @@ class InfoStrukturKelasModel {
     idKelas: json["id_kelas"],
     nama: json["nama"],
     nis: json["nis"],
-    alamat: json["alamat"],
-    bio: json["bio"],
-    status: json["status"],
+    alamat: json["alamat"] ?? '',
+    image: json["image"] ?? '',
+    bio: json["bio"] ?? '',
+    status: json["status"] ?? '',
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    roleName: json["role_name"],
+    roleName: json["role_name"] ?? '',
     user: User.fromJson(json["user"]),
     kelas: Kelas.fromJson(json["kelas"]),
     role: Role.fromJson(json["role"]),
+    performaSiswas: List<PerformaSiswa>.from(json["performa_siswas"].map((x) => PerformaSiswa.fromJson(x))),
     absen: json["absen"],
   );
 
@@ -63,45 +74,94 @@ class InfoStrukturKelasModel {
     "id_kelas": idKelas,
     "nama": nama,
     "nis": nis,
-    "alamat": alamat,
-    "bio": bio,
-    "status": status,
+    "alamat": alamat ?? '',
+    "image": image ?? '',
+    "bio": bio ?? '',
+    "status": status ?? '',
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
-    "role_name": roleName,
+    "role_name": roleName ?? '',
     "user": user.toJson(),
     "kelas": kelas.toJson(),
     "role": role.toJson(),
-    "absen": absen, 
+    "performa_siswas": List<dynamic>.from(performaSiswas.map((x) => x.toJson())),
+    "absen": absen,
   };
 }
 
-
 class Kelas {
   int idKelas;
+  dynamic idBiodata;
   String nama;
+  dynamic jumlahKas;
   dynamic createdAt;
   dynamic updatedAt;
 
   Kelas({
     required this.idKelas,
+    required this.idBiodata,
     required this.nama,
+    required this.jumlahKas,
     required this.createdAt,
     required this.updatedAt,
   });
 
   factory Kelas.fromJson(Map<String, dynamic> json) => Kelas(
     idKelas: json["id_kelas"],
+    idBiodata: json["id_biodata"],
     nama: json["nama"],
+    jumlahKas: json["jumlah_kas"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
   );
 
   Map<String, dynamic> toJson() => {
     "id_kelas": idKelas,
+    "id_biodata": idBiodata,
     "nama": nama,
+    "jumlah_kas": jumlahKas,
     "created_at": createdAt,
     "updated_at": updatedAt,
+  };
+}
+
+class PerformaSiswa {
+  int id;
+  int idBiodata;
+  int absensi;
+  int pembayaranKas;
+  int jumlahIzin;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  PerformaSiswa({
+    required this.id,
+    required this.idBiodata,
+    required this.absensi,
+    required this.pembayaranKas,
+    required this.jumlahIzin,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory PerformaSiswa.fromJson(Map<String, dynamic> json) => PerformaSiswa(
+    id: json["id"],
+    idBiodata: json["id_biodata"],
+    absensi: json["absensi"],
+    pembayaranKas: json["pembayaran_kas"],
+    jumlahIzin: json["jumlah_izin"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "id_biodata": idBiodata,
+    "absensi": absensi,
+    "pembayaran_kas": pembayaranKas,
+    "jumlah_izin": jumlahIzin,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
   };
 }
 
@@ -141,7 +201,9 @@ class User {
   int idUser;
   String username;
   String email;
-  int nomor;
+  int? nomor;
+  String? idGoogle;
+  String? fcmToken;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -149,7 +211,9 @@ class User {
     required this.idUser,
     required this.username,
     required this.email,
-    required this.nomor,
+    this.nomor,
+    this.idGoogle,
+    this.fcmToken,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -158,7 +222,9 @@ class User {
     idUser: json["id_user"],
     username: json["username"],
     email: json["email"],
-    nomor: json["nomor"],
+    nomor: json["nomor"] ?? 0,
+    idGoogle: json["id_google"] ?? '',
+    fcmToken: json["fcm_token"] ?? '',
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
   );
@@ -168,6 +234,8 @@ class User {
     "username": username,
     "email": email,
     "nomor": nomor,
+    "id_google": idGoogle,
+    "fcm_token": fcmToken,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };

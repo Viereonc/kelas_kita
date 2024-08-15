@@ -20,7 +20,7 @@ class PendingController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
-      int? userId = prefs.getInt('user_id');
+      int? userId = prefs.getInt('id_user');
 
       if (userId != null) {
         final response = await http.get(
