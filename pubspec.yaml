@@ -55,6 +55,11 @@ dependencies:
   firebase_core:
   firebase_auth:
   firebase_messaging:
+  midtrans_sdk:
+  equatable:
+  flutter_dotenv:
+  dartz:
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +92,7 @@ flutter:
   assets:
       - lib/assets/images/
       - lib/assets/icons/
+      - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

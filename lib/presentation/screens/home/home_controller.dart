@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../constants.dart';
+import '../../../data/api/firebase_api.dart';
 import '../../../data/models/biografi_model.dart';
 import '../../registration/biografi/kelas_model.dart';
 
@@ -30,6 +31,7 @@ class HomeController extends GetxController {
     fetchBiografi();
     fetchTagihanKas();
     postFcmToken();
+    FirebaseApi().initNotifications();
     Future.delayed(Duration(seconds: 4), () {
       isLoading.value = false;
     });
@@ -48,7 +50,7 @@ class HomeController extends GetxController {
 
   Future<void> saveIdBiodata(int id_biodata) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('id_biodata', idBiodata.toString());
+    await prefs.setString('id_biodata', id_biodata.toString());
     idBiodata.value = id_biodata.toString();
   }
 
@@ -64,11 +66,11 @@ class HomeController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? fcmToken = prefs.getString('fcm_token');
       String? email = prefs.getString('email');
-      String? token = prefs.getString('token'); // Bearer token
+      String? token = prefs.getString('token');
 
       // Debug prints
       print('Email: $email');
-      print('FCM Token: $fcmToken');
+      print('FCM Token Home: $fcmToken');
       print('Bearer Token: $token');
 
       if (fcmToken != null && email != null && token != null) {
@@ -76,7 +78,7 @@ class HomeController extends GetxController {
           Uri.parse('https://kelaskita.site/api/register_fcm'),
           headers: <String, String>{
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token', // Add the Bearer token here
+            'Authorization': 'Bearer $token',
           },
           body: jsonEncode({
             'email': email,
@@ -119,11 +121,11 @@ class HomeController extends GetxController {
           var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
           biografiList.value = [fetchedData];
 
-          // Save the user's name in shared preferences
           await saveUserName(fetchedData.nama ?? '');
           prefs.setInt('id_user', userId);
           prefs.setString('isLoginGoogle', 'true');
           prefs.setString('userName', fetchedData.nama ?? '');
+
           await saveIdBiodata(fetchedData.idBiodata ?? 0);
           userStatus.value = fetchedData.role.nama.toString();
 
@@ -146,13 +148,17 @@ class HomeController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
       int? userId = prefs.getInt('id_user');
-      int? biodataId = prefs.getInt('id_biodata');
 
-      print('User ID: $userId, Biodata ID: $biodataId'); // Debug print
+      String? biodataIdString = prefs.getString('id_biodata');
+      int? biodataId = biodataIdString != null ? int.tryParse(biodataIdString) : null;
 
-      if (userId != null && biodataId != null) {
+      print('biodataId: $biodataId');  // Log the biodataId to check its value
+      if (userId != null) {
+        final url = Uri.parse('$baseUrl$tagihanKasUserEndPoint$biodataId');
+        print('Requesting URL: $url');
+
         final response = await http.get(
-          Uri.parse('$baseUrl$tagihanKasUserEndPoint$biodataId'),
+          url,
           headers: <String, String>{
             'Authorization': 'Bearer $token',
           },
@@ -161,6 +167,11 @@ class HomeController extends GetxController {
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(response.body) as List<dynamic>;
           print('JSON Response: $jsonResponse');
+
+          jsonResponse.forEach((data) {
+            print('Item from response: $data');
+            print('Nominal type: ${data['nominal'].runtimeType}');
+          });
 
           var fetchedData = jsonResponse.map((data) => InfoTagihanKasModel.fromJson(data)).toList();
           tagihanKasList.value = fetchedData;
@@ -171,11 +182,11 @@ class HomeController extends GetxController {
           throw Exception('Failed to load tagihan kas');
         }
       } else {
-        print('User ID or biodata ID is null. Unable to fetch tagihan kas.');
+        print('biodataId is null or User ID is null. Unable to fetch tagihan kas.');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Error: $e');
+      throw Exception('Error E: $e');
     }
   }
 
