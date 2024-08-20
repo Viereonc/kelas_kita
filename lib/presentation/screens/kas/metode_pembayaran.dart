@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/kas/kas_controller.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/screens/qr_code_tunai/qr_code_tunai.dart';
 import '../qr/qr_code.dart';
+import 'package:kelas_kita/data/services/token_services.dart';
 
 class MetodePembayaran extends StatelessWidget {
-  const MetodePembayaran({Key? key}) : super(key: key);
+  MetodePembayaran({Key? key}) : super(key: key);
+
+  final KasController kasController = Get.put(KasController());
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +67,26 @@ class MetodePembayaran extends StatelessWidget {
                   final item = items[index];
 
                   return InkWell(
-                    onTap: () {
-                      if (item['title'] == 'QRIS') {
+                    onTap: () async {
+                      if (item['title'] == 'Dana') {
+                        final result = await TokenService().getToken();
+                        print('Hasil: $result');
+
+                        if (result.isRight()) {
+                          String? token = result.fold((l) => null, (r) => r.token);
+
+                          if (token == null) {
+                            kasController.showToast('Token cannot be null', true);
+                            return;
+                          }
+
+                          kasController.midtrans?.startPaymentUiFlow(
+                            token: token,
+                          );
+                        } else {
+                          kasController.showToast('Transaction Failed', true);
+                        }
+                      } else if (item['title'] == 'QRIS') {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => QrCodeScreen()),

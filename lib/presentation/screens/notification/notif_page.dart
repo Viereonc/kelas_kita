@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,11 +13,14 @@ import '../../widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
 
 class NotificationPage extends StatelessWidget {
   NotificationPage({super.key});
+  static const route = '/notification';
 
   final NotifController notifController = Get.put(NotifController());
 
   @override
   Widget build(BuildContext context) {
+    final message = ModalRoute.of(context)?.settings.arguments as RemoteMessage?;
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -51,6 +55,12 @@ class NotificationPage extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
             ),
+            if (message?.notification?.title != null)
+              Text(message!.notification!.title.toString()),
+            if (message?.notification?.body != null)
+              Text(message!.notification!.body.toString()),
+            if (message?.data != null)
+              Text(message!.data.toString()),
             Expanded(
               child: ListView.builder(
                 itemCount: 10,

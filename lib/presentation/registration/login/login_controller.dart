@@ -19,80 +19,6 @@ class LoginController extends GetxController {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   var isLoading = false.obs;
 
-  // Future signIn() async {
-  //   final user = await GoogleSignInApi.login();
-  //
-  //   if (user == null) {
-  //     ScaffoldMessenger(child: SnackBar(content: Text('Sign in Failed')));
-  //   } else {
-  //     Get.offNamed(Path.BIOGRAFI_PAGE, arguments: user);
-  //   }
-  // }
-
-  Future<void> signInWithGoogle() async {
-
-    try {
-      print('Attempting Google Sign-In...');
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-        final String idToken = googleAuth.idToken!;
-        final String accessToken = googleAuth.accessToken!;
-
-        print('ID Token: $idToken');
-        print('Access Token: $accessToken');
-
-        await loginWithGoogle(idToken);
-      }
-    } catch (error) {
-      print('Sign in with Google failed: $error');
-    }
-  }
-
-  Future<void> loginWithGoogle(String idToken) async {
-    isLoading.value = true;
-    var url = Uri.parse(baseUrl + loginGoogleEndpoint);
-    var headers = {
-      'Content-Type': 'application/json',
-    };
-    var body = jsonEncode({
-      'id_token': idToken,
-    });
-
-    try {
-      var response = await http.post(
-        url,
-        headers: headers,
-        body: body,
-      );
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        print('Response JSON: $jsonResponse');
-
-        final token = jsonResponse['token'];
-        final userData = jsonResponse['user'];
-        print('User Data: $userData');
-        print('ID Token: $idToken');
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-        prefs.setString('token', token);
-        prefs.setInt('id_user', userData['id_user']);
-        prefs.setString('email', userData['email']);
-
-        await fetchBiografi();
-      } else {
-        print('Login dengan Google gagal: ${response.body}');
-      }
-    } catch (e) {
-      print('Error: $e');
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
   Future<void> loginUser(String email, String password) async {
     isLoading.value = true;
     var url = Uri.parse(baseUrl + loginEndpoint);
@@ -120,6 +46,7 @@ class LoginController extends GetxController {
         await prefs.setBool('isLoggedIn', true);
         prefs.setString('token', token);
         prefs.setInt('id_user', userData['id_user']);
+        // prefs.setInt('id_biodata', userData['id_biodata']);
         prefs.setString('email', userData['email']);
 
         emailController.clear();

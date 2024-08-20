@@ -18,7 +18,14 @@ class HomeScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
 
   Future<void> _refreshData(BuildContext context) async {
-    return homeController.fetchBiografi();
+    try {
+      await Future.wait([
+        homeController.fetchBiografi(),
+        homeController.fetchTagihanKas(),
+      ]);
+    } catch (e) {
+      print('Error occurred while refreshing data: $e');
+    }
   }
 
   @override
@@ -110,8 +117,8 @@ class HomeScreen extends StatelessWidget {
                               homeController.tagihanKasList.forEach((tagihanKas) {
                                 tagihanKas.jumlah.forEach((jumlah) {
                                   flattenedList.add({
-                                    'tanggal': jumlah.tanggal.toString(),  // Ensure that tanggal is stored as a string
-                                    'nominal': jumlah.nominal,
+                                    'tanggal': jumlah.tanggal.toString(),
+                                    'nominal': jumlah.nominal.toString(),
                                     'status': tagihanKas.biodata?.status,
                                   });
                                 });
