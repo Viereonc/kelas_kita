@@ -201,7 +201,7 @@ class LoginView extends StatelessWidget {
 
   void signIn(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    try {
+    try { 
       // Sign out any existing Google sessions
       await GoogleSignIn().signOut();
 

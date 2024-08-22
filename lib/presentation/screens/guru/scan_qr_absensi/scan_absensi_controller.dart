@@ -2,19 +2,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:kelas_kita/presentation/screens/guru/scan_qr_absensi/qr_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:kelas_kita/presentation/screens/guru/scan_qr_absensi/qr_code.dart';
 import '../../../../constants.dart';
 
 class ScanAbsensiController extends GetxController {
   var isLoading = false.obs;
   var scannedData = {}.obs;
   var dialogShown = false.obs;
+  var isLate = false.obs; // Tambahan untuk menandai siswa yang telat
 
+  // Method untuk menetapkan data yang telah discan
   void setScannedData(String code) {
     final data = parseScannedData(code);
     if (data != null) {
       scannedData.value = data;
+      isLate.value = false; // Reset status telat saat data baru dimasukkan
       if (!dialogShown.value) {
         dialogShown.value = true;
         Get.dialog(ScannedDataDialog());
@@ -22,6 +25,7 @@ class ScanAbsensiController extends GetxController {
     }
   }
 
+  // Method untuk mengirim data absensi
   Future<void> postAbsensi() async {
     if (scannedData.isEmpty) {
       print("No data to post");
@@ -47,6 +51,8 @@ class ScanAbsensiController extends GetxController {
         'Authorization': 'Bearer $token',
       };
 
+      scannedData.value['telat'] = isLate.value ? '1' : '0';
+
       var response = await http.post(
         url,
         headers: headers,
@@ -66,10 +72,6 @@ class ScanAbsensiController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-      } else if (response.statusCode == 422) {
-        print('Response body: ${response.body}');
-      } else if (response.statusCode == 500) {
-        print('Response body: ${response.body}');
       } else {
         print("Failed to post data. Status code: ${response.statusCode}");
       }
@@ -80,6 +82,7 @@ class ScanAbsensiController extends GetxController {
     }
   }
 
+  // Method untuk parsing data QR Code
   Map<String, dynamic>? parseScannedData(String code) {
     try {
       final regexPelajaran = RegExp(r'ID Pelajaran: (\d+)');
@@ -100,7 +103,11 @@ class ScanAbsensiController extends GetxController {
       print('Nama Part: $namaPart');
       print('Kelas Part: $kelasPart');
 
-      if (idPelajaranPart.isNotEmpty && waktuAbsenPart.isNotEmpty && idBiodataPart.isNotEmpty && namaPart.isNotEmpty && kelasPart.isNotEmpty) {
+      if (idPelajaranPart.isNotEmpty &&
+          waktuAbsenPart.isNotEmpty &&
+          idBiodataPart.isNotEmpty &&
+          namaPart.isNotEmpty &&
+          kelasPart.isNotEmpty) {
         final idPelajaran = regexPelajaran.firstMatch(code)?.group(1) ?? '';
         final waktuAbsenRaw = regexWaktuAbsen.firstMatch(code)?.group(1) ?? '';
         final idBiodata = regexBiodata.firstMatch(code)?.group(1) ?? '';
@@ -108,7 +115,10 @@ class ScanAbsensiController extends GetxController {
         final kelas = regexKelas.firstMatch(code)?.group(1) ?? '';
 
         final cleanedWaktuAbsen = waktuAbsenRaw.split('ID').first;
-        final waktuAbsenTime = DateTime.parse(cleanedWaktuAbsen).toLocal().toIso8601String().substring(11, 16);
+        final waktuAbsenTime = DateTime.parse(cleanedWaktuAbsen)
+            .toLocal()
+            .toIso8601String()
+            .substring(11, 16);
 
         return {
           "id_biodata": idBiodata,
@@ -126,5 +136,4 @@ class ScanAbsensiController extends GetxController {
       return null;
     }
   }
-
 }

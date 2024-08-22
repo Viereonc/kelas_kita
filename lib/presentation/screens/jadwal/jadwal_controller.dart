@@ -1,19 +1,22 @@
 import 'dart:convert';
-
-import 'package:intl/intl.dart';
 import 'package:get/get.dart';
-import 'package:kelas_kita/data/models/jadwal_kelas_model.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../constants.dart';
+import '../../../data/models/jadwal_kelas_model.dart';
 import '../../../data/models/biografi_model.dart';
 
 class JadwalController extends GetxController {
+  // Observables for storing data
   RxList<JadwalKelasModel> jadwalKelasList = <JadwalKelasModel>[].obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   var userStatus = ''.obs;
   var isLoading = true.obs;
   var selectedDay = ''.obs;
+  var absensiList = <Absensi>[].obs;
+
+  // Schedules for different days
   List<JadwalKelasModel> senin = [];
   List<JadwalKelasModel> selasa = [];
   List<JadwalKelasModel> rabu = [];
@@ -29,6 +32,7 @@ class JadwalController extends GetxController {
     fetchBiografi();
   }
 
+  // Fetching the schedule data
   void fetchJadwalPelajaran() async {
     isLoading.value = true;
     try {
@@ -38,7 +42,7 @@ class JadwalController extends GetxController {
 
       if (idKelas != null) {
         final response = await http.get(
-          Uri.parse(baseUrl + getJadwalKelasEndPoint + '$idKelas'),
+          Uri.parse('$baseUrl$getJadwalKelasEndPoint$idKelas'),
           headers: {
             'Authorization': 'Bearer $token',
           },
@@ -47,8 +51,11 @@ class JadwalController extends GetxController {
         if (response.statusCode == 200) {
           var fetchedData = jadwalKelasModelFromJson(response.body);
           jadwalKelasList.value = fetchedData;
+
+          // Update schedules based on the fetched data
+          _updateSchedules();
+
           print('Data fetched successfully: ${jadwalKelasList.length} items');
-          print('First item: ${fetchedData.isNotEmpty ? fetchedData[0].toJson() : 'No data'}');
         } else {
           print('Failed to fetch data: ${response.statusCode}');
         }
@@ -62,19 +69,33 @@ class JadwalController extends GetxController {
     }
   }
 
+  // Update the schedules based on the selected day
+  void _updateSchedules() {
+    senin = getScheduleForDay('Sen');
+    selasa = getScheduleForDay('Sel');
+    rabu = getScheduleForDay('Rab');
+    kamis = getScheduleForDay('Kam');
+    jumat = getScheduleForDay('Jum');
+    sabtu = getScheduleForDay('Sab');
+  }
+
+  // Get the schedule for a specific day
   List<JadwalKelasModel> getScheduleForDay(String day) {
     return jadwalKelasList.where((item) => item.hari == day).toList();
   }
 
+  // Set the selected day
   void selectDay(String day) {
     selectedDay.value = day;
   }
 
+  // Format the time from HH:mm:ss to HH:mm
   String formatTime(String time) {
     DateTime parsedTime = DateFormat("HH:mm:ss").parse(time);
     return DateFormat("HH:mm").format(parsedTime);
   }
 
+  // Get the current day of the week in a specific format
   String getCurrentDay() {
     switch (DateTime.now().weekday) {
       case DateTime.monday:
@@ -94,29 +115,7 @@ class JadwalController extends GetxController {
     }
   }
 
-  void selecDay(String day) {
-    selectedDay.value = day;
-  }
-
-  List<JadwalKelasModel> getScheduleDay(String day) {
-    switch (day) {
-      case 'Sen':
-        return senin;
-      case 'Sel':
-        return selasa;
-      case 'Rab':
-        return rabu;
-      case 'Kam':
-        return kamis;
-      case 'Jum':
-        return jumat;
-      case 'Sab':
-        return sabtu;
-      default:
-        return [];
-    }
-  }
-
+  // Fetch biography data for the user
   Future<void> fetchBiografi() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -53,10 +53,12 @@ class MetodePembayaran extends StatelessWidget {
                     {
                       'image': 'lib/assets/images/logos_dana.png',
                       'title': 'Gopay',
+                      'route': '/path_to_dana',
                     },
                     {
                       'image': 'lib/assets/images/logos_qris.png',
                       'title': 'QRIS',
+                      'route': '/path_to_qris',
                       'description': 'Minimal pembayaran tunai Rp 10.000',
                     },
                     {

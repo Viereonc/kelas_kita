@@ -9,7 +9,8 @@ import '../../../themes/FontsStyle.dart';
 class ScanQrAbsensi extends StatelessWidget {
   final MobileScannerController cameraController = MobileScannerController();
   final ValueNotifier<bool> isFlashOn = ValueNotifier<bool>(false);
-  final ScanAbsensiController scanAbsensiController = Get.put(ScanAbsensiController());
+  final ScanAbsensiController scanAbsensiController =
+      Get.put(ScanAbsensiController());
 
   ScanQrAbsensi({super.key});
 
@@ -50,7 +51,8 @@ class ScanQrAbsensi extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             "Pindai Kode QR",
-            style: tsHeader2(screenSize: screenSize).copyWith(color: Colors.white),
+            style:
+                tsHeader2(screenSize: screenSize).copyWith(color: Colors.white),
           ),
         ),
         actions: [
@@ -140,7 +142,8 @@ class ScanQrAbsensi extends StatelessWidget {
 }
 
 class ScannedDataDialog extends StatelessWidget {
-  final ScanAbsensiController scanAbsensiController = Get.put(ScanAbsensiController());
+  final ScanAbsensiController scanAbsensiController =
+      Get.put(ScanAbsensiController());
 
   @override
   Widget build(BuildContext context) {
@@ -161,10 +164,36 @@ class ScannedDataDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Nama: ${data["nama"] ?? 'Tidak tersedia'}'),
-              SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               Text('Kelas: ${data["kelas"] ?? 'Tidak tersedia'}'),
-              SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               Text('Waktu Absen: ${data["waktu_absen"] ?? 'Tidak tersedia'}'),
+              SizedBox(
+                height: 10,
+              ),
+              // Tambahkan mark merah jika telat
+              if (scanAbsensiController.isLate.value)
+                Row(
+                  children: [
+                    Icon(
+                      Icons.warning,
+                      color: Colors.red,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Telat',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
             ],
           );
         }
@@ -175,27 +204,66 @@ class ScannedDataDialog extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {
-                scanAbsensiController.dialogShown.value = false; // Reset the flag
+                scanAbsensiController.dialogShown.value =
+                    false; // Reset the flag
                 Get.back(); // Close dialog
               },
-              child: Text('Batal', style: tsParagraft4(screenSize: screenWidth, color: primeryColorMedium),),
-            ),
-            TextButton(
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                backgroundColor: primeryColorMedium,
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  side: BorderSide.none,
-                ),
+              child: Text(
+                'Batal',
+                style: tsParagraft4(
+                    screenSize: screenWidth, color: primeryColorMedium),
               ),
-              onPressed: () {
-                scanAbsensiController.postAbsensi();
-                scanAbsensiController.dialogShown.value = false; // Reset the flag
-                Get.back(); // Close dialog
-              },
-              child: Text('Post', style: tsParagraft4(screenSize: screenWidth, color: Colors.white),),
+            ),
+            Row(
+              children: [
+                TextButton(
+                  style: ElevatedButton.styleFrom(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                    backgroundColor: Colors.red,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      side: BorderSide.none,
+                    ),
+                  ),
+                  onPressed: () {
+                    scanAbsensiController.isLate.value = true;
+                    scanAbsensiController.postAbsensi();
+                    scanAbsensiController.dialogShown.value = false; 
+                    Get.back(); // Close dialog
+                  },
+                  child: Text(
+                    'Telat',
+                    style: tsParagraft4(
+                        screenSize: screenWidth, color: Colors.white),
+                  ),
+                ),
+                SizedBox(width: screenWidth * 0.03),
+                TextButton(
+                  style: ElevatedButton.styleFrom(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                    backgroundColor: primeryColorMedium,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      side: BorderSide.none,
+                    ),
+                  ),
+                  onPressed: () {
+                    scanAbsensiController.isLate.value = false;
+                    scanAbsensiController.postAbsensi();
+                    scanAbsensiController.dialogShown.value = false; 
+                    Get.back(); // Close dialog
+                  },
+                  child: Text(
+                    'Post',
+                    style: tsParagraft4(
+                        screenSize: screenWidth, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

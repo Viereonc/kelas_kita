@@ -12,8 +12,10 @@ import '../../../data/models/jadwal_kelas_model.dart';
 import '../../widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
 
 class JadwalScreen extends StatelessWidget {
+  // Initialize the JadwalController using GetX
   final JadwalController jadwalController = Get.put(JadwalController());
 
+  // Refresh data method to be called when user pulls to refresh
   Future<void> _refreshData(BuildContext context) async {
     return jadwalController.fetchJadwalPelajaran();
   }
@@ -32,6 +34,8 @@ class JadwalScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: screenHeight * 0.06),
+
+              // Header with navigation buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -58,6 +62,8 @@ class JadwalScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: screenHeight * 0.02),
+
+              // Day selection buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -100,6 +106,8 @@ class JadwalScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: screenHeight * 0.02),
+
+              // Button to change schedule
               InkWell(
                 onTap: () {
                   Navigator.push(
@@ -142,6 +150,8 @@ class JadwalScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: screenHeight * 0.03),
+
+              // Divider line
               Container(
                 margin: EdgeInsets.symmetric(
                   horizontal: screenWidth * 0.05,
@@ -153,6 +163,8 @@ class JadwalScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: screenHeight * 0.02),
+
+              // Schedule display based on selected day
               Obx(() {
                 if (jadwalController.isLoading.value) {
                   return Center(child: CircularProgressIndicator());
@@ -160,7 +172,7 @@ class JadwalScreen extends StatelessWidget {
 
                 String selectedDay = jadwalController.selectedDay.value;
                 List<JadwalKelasModel> scheduleItems =
-                jadwalController.getScheduleForDay(selectedDay);
+                    jadwalController.getScheduleForDay(selectedDay);
 
                 if (scheduleItems.isEmpty) {
                   return Center(
@@ -172,13 +184,15 @@ class JadwalScreen extends StatelessWidget {
                   screenHeight,
                   screenWidth,
                   scheduleItems,
-                  context
+                  context,
                 );
               }),
             ],
           ),
         ),
       ),
+
+      // Floating action button
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         margin: EdgeInsets.only(top: 30),
@@ -200,6 +214,8 @@ class JadwalScreen extends StatelessWidget {
           ),
         ),
       ),
+
+      // Bottom navigation bar based on user status
       bottomNavigationBar: Obx(() {
         if (jadwalController.userStatus.value == 'Wali Kelas') {
           return BottomNavbarGuru();
@@ -210,7 +226,50 @@ class JadwalScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildScheduleContainer(double screenHeight, double screenWidth, List<JadwalKelasModel> scheduleItems, BuildContext context) {
+  // Container for each day's schedule button
+  Widget _buildDayContainer(double screenWidth, double screenHeight, String day,
+      JadwalController controller) {
+    return Obx(() {
+      bool isSelected = controller.selectedDay.value == day;
+      Color containerColor =
+          isSelected ? Color.fromARGB(255, 56, 122, 223) : Colors.white;
+      Color textColor =
+          isSelected ? Colors.white : Color.fromARGB(255, 56, 122, 223);
+
+      return GestureDetector(
+        onTap: () {
+          controller.selectDay(day);
+        },
+        child: Container(
+          width: screenWidth * 0.15,
+          height: screenHeight * 0.085,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(screenHeight * 0.026),
+            color: containerColor,
+            border: Border.all(
+              color: Color.fromARGB(255, 56, 122, 223),
+            ),
+          ),
+          child: Center(
+            child: Text(
+              day,
+              style: TextStyle(
+                fontFamily: 'tsSubHeader1',
+                fontWeight: FontWeight.w600,
+                color: textColor,
+                fontSize: screenHeight * 0.022,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  // Container to display schedule items for the selected day
+  Widget _buildScheduleContainer(double screenHeight, double screenWidth,
+      List<JadwalKelasModel> scheduleItems, BuildContext context) {
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
@@ -221,26 +280,28 @@ class JadwalScreen extends StatelessWidget {
         child: Column(
           children: List.generate(scheduleItems.length, (index) {
             var item = scheduleItems[index];
-            return _buildScheduleItem(
-                screenWidth,
-                screenHeight,
-                item,
-                context
-            );
+            return _buildScheduleItem(screenWidth, screenHeight, item, context);
           }),
         ),
       ),
     );
   }
 
-  Widget _buildScheduleItem(double screenWidth, double screenHeight, JadwalKelasModel item, BuildContext context,) {
+  // Widget to display a single schedule item
+  Widget _buildScheduleItem(
+    double screenWidth,
+    double screenHeight,
+    JadwalKelasModel item,
+    BuildContext context,
+  ) {
     final JadwalController jadwalController = Get.find();
     int absensiCount = item.absensi.length;
     int visibleCount = absensiCount > 3 ? 3 : absensiCount;
     int hiddenCount = absensiCount - 3;
 
     return GestureDetector(
-      onTap: () => _showAbsensiDialog(context, item.absensi),
+      onTap: () =>
+          _showAbsensiDialog(context, item.absensi), // Pass absensi list here
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -318,7 +379,11 @@ class JadwalScreen extends StatelessWidget {
                         SizedBox(height: 3),
                         Row(
                           children: [
-                            Icon(CupertinoIcons.clock, color: Colors.white, size: 19,),
+                            Icon(
+                              CupertinoIcons.clock,
+                              color: Colors.white,
+                              size: 19,
+                            ),
                             SizedBox(width: 5),
                             Text(
                               '${jadwalController.formatTime(item.jamMulai)} - ${jadwalController.formatTime(item.jamSelesai)}',
@@ -340,16 +405,19 @@ class JadwalScreen extends StatelessWidget {
                               // Stack for the first 3 CircleAvatars
                               ...List.generate(
                                 visibleCount,
-                                    (index) {
+                                (index) {
                                   return Positioned(
                                     left: 20.0 * index,
                                     child: Container(
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        border: Border.all(color: Colors.black, width: 0.5),
+                                        border: Border.all(
+                                            color: Colors.black, width: 0.5),
                                       ),
                                       child: CircleAvatar(
-                                        backgroundImage: NetworkImage(baseUrl + storage + item.absensi[index].image),
+                                        backgroundImage: NetworkImage(baseUrl +
+                                            storage +
+                                            item.absensi[index].image),
                                         radius: 13,
                                         backgroundColor: Colors.white,
                                       ),
@@ -360,11 +428,13 @@ class JadwalScreen extends StatelessWidget {
                               // Indicator for hidden items
                               if (hiddenCount > 0)
                                 Positioned(
-                                  left: 20.0 * visibleCount, // Positioned right after the visible avatars
+                                  left: 20.0 *
+                                      visibleCount, // Positioned right after the visible avatars
                                   child: Container(
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black, width: 0.5),
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.5),
                                     ),
                                     child: CircleAvatar(
                                       backgroundColor: Colors.white,
@@ -398,82 +468,75 @@ class JadwalScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDayContainer(double screenWidth, double screenHeight, String day, JadwalController controller) {
-    return Obx(() {
-      bool isSelected = controller.selectedDay.value == day;
-      Color containerColor =
-      isSelected ? Color.fromARGB(255, 56, 122, 223) : Colors.white;
-      Color textColor =
-      isSelected ? Colors.white : Color.fromARGB(255, 56, 122, 223);
-
-      return GestureDetector(
-        onTap: () {
-          controller.selectDay(day);
-        },
-        child: Container(
-          width: screenWidth * 0.15,
-          height: screenHeight * 0.085,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(screenHeight * 0.026),
-            color: containerColor,
-            border: Border.all(
-              color: Color.fromARGB(255, 56, 122, 223),
-            ),
-          ),
-          child: Center(
-            child: Text(
-              day,
-              style: TextStyle(
-                fontFamily: 'tsSubHeader1',
-                fontWeight: FontWeight.w600,
-                color: textColor,
-                fontSize: screenHeight * 0.022,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      );
-    });
-  }
-
-
+  // Show a dialog with list of absensi
   void _showAbsensiDialog(BuildContext context, List<Absensi> absensiList) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          surfaceTintColor: Colors.white,
-          backgroundColor: Colors.white,
-          title: Text('List Absensi'),
-          content: Container(
-            width: double.maxFinite,
-            child: ListView.builder(
+  // Sort the list so that late students appear at the top
+  absensiList.sort((a, b) {
+    if (a.telat == b.telat) {
+      return 0; // if both are the same (both late or both not late), maintain original order
+    }
+    return a.telat == 1 ? -1 : 1; // if a is late and b is not, a should come first
+  });
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('List of Late Students'),
+        content: Container(
+          width: double.maxFinite,
+          child: Obx(() {
+            if (jadwalController.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (absensiList.isEmpty) {
+              return Center(child: Text('No students are late.'));
+            }
+
+            return ListView.builder(
               shrinkWrap: true,
               itemCount: absensiList.length,
               itemBuilder: (BuildContext context, int index) {
                 Absensi absensi = absensiList[index];
                 return ListTile(
                   leading: CircleAvatar(
-                      backgroundImage: NetworkImage(baseUrl + storage + absensi.image),
-                      backgroundColor: Colors.white,
+                    backgroundImage:
+                        NetworkImage(baseUrl + storage + absensi.image),
                   ),
                   title: Text(absensi.nama),
-                  subtitle: Text(absensi.waktuAbsen),
+                  subtitle: RichText(
+                    text: TextSpan(
+                      text: '${absensi.waktuAbsen} ',
+                      style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        if (absensi.telat == 1)
+                          TextSpan(
+                            text: '(Telat)',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red, // Optional: Customize the color
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 );
               },
-            ),
+            );
+          }),
+        ),
+        actions: [
+          TextButton(
+            child: Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
-          actions: [
-            TextButton(
-              child: Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ],
+      );
+    },
+  );
+}
+
 }
