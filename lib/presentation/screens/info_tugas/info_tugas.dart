@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -13,6 +14,8 @@ import '../../themes/FontsStyle.dart';
 class InfoTugasScreen extends StatelessWidget {
   InfoTugasScreen({Key? key}) : super(key: key);
 
+  static const route = '/infotugasscreen';
+
   final InfoTugasController infoTugasController = Get.put(InfoTugasController());
 
   String formatDate(DateTime date) {
@@ -26,6 +29,8 @@ class InfoTugasScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final message = ModalRoute.of(context)?.settings.arguments as RemoteMessage?;
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -69,6 +74,12 @@ class InfoTugasScreen extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
             ),
+            // if (message?.notification?.title != null)
+            //   Text(message!.notification!.title.toString()),
+            // if (message?.notification?.body != null)
+            //   Text(message!.notification!.body.toString()),
+            // if (message?.data != null)
+            //   Text(message!.data.toString()),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () => _refreshData(context), // Trigger refresh action

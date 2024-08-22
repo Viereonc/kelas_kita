@@ -1,4 +1,4 @@
-const baseUrl = 'https://kelaskita.site/';
+const baseUrl = 'https://guru.kelaskita.site/';
 const registerEndpoint = 'api/register';
 const loginEndpoint = 'api/login';
 const loginGoogleEndpoint = 'api/login/google';

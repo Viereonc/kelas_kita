@@ -35,7 +35,7 @@ class SplashController extends GetxController {
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       String? token = await messaging.getToken();
       if (token != null) {
-        print('FCM Token: $token');
+        print('FCM Token Splash Screen: $token');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('fcm_token', token);
       } else {

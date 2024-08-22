@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/kas/kas_controller.dart';
+import 'package:kelas_kita/presentation/screens/kas/widgets/pop_up.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/screens/qr_code_tunai/qr_code_tunai.dart';
@@ -51,7 +52,7 @@ class MetodePembayaran extends StatelessWidget {
                   List<Map<String, dynamic>> items = [
                     {
                       'image': 'lib/assets/images/logos_dana.png',
-                      'title': 'Dana',
+                      'title': 'Gopay',
                     },
                     {
                       'image': 'lib/assets/images/logos_qris.png',
@@ -68,7 +69,8 @@ class MetodePembayaran extends StatelessWidget {
 
                   return InkWell(
                     onTap: () async {
-                      if (item['title'] == 'Dana') {
+                      if (item['title'] == 'Gopay') {
+                        // showGopayPopup(context);
                         final result = await TokenService().getToken();
                         print('Hasil: $result');
 

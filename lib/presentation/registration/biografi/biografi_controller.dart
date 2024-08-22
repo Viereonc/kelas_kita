@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -123,6 +124,18 @@ class BiografiController extends GetxController {
       } else {
         var responseData = await http.Response.fromStream(response);
         var decodedData = json.decode(responseData.body);
+
+        if (decodedData['nis'] != null && decodedData['nis'].contains('The nis has already been taken.')) {
+          // Show Snackbar if NIS is already taken
+          Get.snackbar(
+            'Error',
+            'NIS sudah digunakan. silahkan gunakan NIS lain',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
+
         print('Error: ${response.statusCode}');
         print('Response body: ${decodedData}');
         print('Nama: $nama');

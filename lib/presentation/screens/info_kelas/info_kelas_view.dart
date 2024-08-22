@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,8 @@ import 'detail_info_kelas/detail_info_kelas.dart';
 class InfoKelasScreen extends StatelessWidget {
   InfoKelasScreen({Key? key}) : super(key: key);
 
+  static const route = '/infokelasscreen';
+
   final InfoKelasController infoKelasController = Get.put(InfoKelasController());
 
   Future<void> _refreshData(BuildContext context) async {
@@ -24,6 +27,8 @@ class InfoKelasScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final message = ModalRoute.of(context)?.settings.arguments as RemoteMessage?;
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -61,6 +66,12 @@ class InfoKelasScreen extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
             ),
+            // if (message?.notification?.title != null)
+            //   Text(message!.notification!.title.toString()),
+            // if (message?.notification?.body != null)
+            //   Text(message!.notification!.body.toString()),
+            // if (message?.data != null)
+            //   Text(message!.data.toString()),
             Expanded(
               child: Obx(() {
                 if (infoKelasController.isLoading.value) {
@@ -189,7 +200,7 @@ class InfoKelasScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() {
-        if (infoKelasController.userStatus.value == 'Sekretaris' || infoKelasController.userStatus.value == 'Wali Kelas') {
+        if (infoKelasController.userStatus.value == 'Anggota' || infoKelasController.userStatus.value == 'Wali Kelas') {
           return FloatingActionButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();

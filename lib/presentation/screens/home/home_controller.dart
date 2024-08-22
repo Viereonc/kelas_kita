@@ -87,7 +87,7 @@ class HomeController extends GetxController {
         );
 
         if (response.statusCode == 200) {
-          print('FCM Token posted successfully');
+          print('FCM Token posted successfully ${fcmToken}');
         } else {
           print('Failed to post FCM Token, status code: ${response.statusCode}');
           print('Response body: ${response.body}');
