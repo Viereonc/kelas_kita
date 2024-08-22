@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../themes/Colors.dart';
@@ -19,6 +18,42 @@ class KasScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(screenHeight * 0.07),
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            title: Text(
+              "Kas",
+              style: tsHeader2(screenSize: screenWidth),
+            ),
+            centerTitle: true,
+            leading: Container(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Container(
+                  decoration: BoxDecoration(
+                    color: primeryColorMedium,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                      size: screenWidth * 0.05,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
       body: Obx(() {
         if (kasController.isLoading.value) {
           return Center(
@@ -92,9 +127,7 @@ class KasScreen extends StatelessWidget {
                       screenSize: screenWidth,
                     ),
                   ),
-                ],
-              ),
-            ),               
+                ),
                 Expanded(
                   child: Container(
                     margin: EdgeInsets.only(
@@ -107,7 +140,6 @@ class KasScreen extends StatelessWidget {
                         final tagihan = kasController.tagihanKasList[index];
                         return Column(
                           children: tagihan.jumlah.map((jumlahItem) {
-                            // Format the date
                             String formattedDate = DateFormat('dd MMMM yyyy', 'id_ID').format(jumlahItem.tanggal);
 
                             return Container(
@@ -117,34 +149,18 @@ class KasScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: screenWidth * 0.13,
-                                    height: screenHeight * 0.1,
+                                    width: screenWidth * 0.13, // Atur lebar kotak
+                                    height: screenHeight * 0.075, // Atur tinggi kotak
                                     decoration: BoxDecoration(
-                                      color: Color(0xFF34A853),
-                                      shape: BoxShape.circle,
+                                      color: Colors.green.withOpacity(0.1), // Latar belakang hijau terang mendekati putih
+                                      borderRadius: BorderRadius.circular(12.0), // Membuat sudut membulat (tumpul)
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          CupertinoIcons.plus,
-                                          color: Colors.white,
-                                          size: 15,
-                                        ),
-                                        SizedBox(
-                                          width: 2,
-                                          height: 10,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(bottom: 7),
-                                          child: SvgPicture.asset(
-                                            "lib/assets/icons/he_kas.svg",
-                                            width: screenWidth * 0.033,
-                                            height: screenHeight * 0.033,
-                                          ),
-                                        ),
-                                      ],
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.arrow_upward,
+                                        color: Colors.green, // Ikon berwarna hijau
+                                        size: screenWidth * 0.05, // Sesuaikan ukuran ikon
+                                      ),
                                     ),
                                   ),
                                   SizedBox(width: screenWidth * 0.03),
@@ -162,7 +178,6 @@ class KasScreen extends StatelessWidget {
                                         SizedBox(
                                           height: screenHeight * 0.005,
                                         ),
-                                        // Display the formatted date
                                         Text(
                                           formattedDate,
                                           style: tsParagraft4(
@@ -175,7 +190,6 @@ class KasScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  // Display the dynamic nominal
                                   Text(
                                     "Rp ${jumlahItem.nominal}",
                                     style: tsParagraft3(
