@@ -19,42 +19,6 @@ class KasScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(screenHeight * 0.07),
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-          child: AppBar(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            title: Text(
-              "Kas",
-              style: tsHeader2(screenSize: screenWidth),
-            ),
-            centerTitle: true,
-            leading: Container(
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Container(
-                  decoration: BoxDecoration(
-                    color: primeryColorMedium,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                      size: screenWidth * 0.05,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
       body: Obx(() {
         if (kasController.isLoading.value) {
           return Center(
@@ -128,7 +92,9 @@ class KasScreen extends StatelessWidget {
                       screenSize: screenWidth,
                     ),
                   ),
-                ),
+                ],
+              ),
+            ),               
                 Expanded(
                   child: Container(
                     margin: EdgeInsets.only(
