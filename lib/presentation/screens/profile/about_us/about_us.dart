@@ -12,15 +12,19 @@ class AboutUsScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(66),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: AppBar(
+            backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
             title: Text(
               "About Us",
-              style: tsHeader2(),
+              style: tsHeader2(
+                screenSize: screenWidth,
+              ),
             ),
             centerTitle: true,
             leading: Container(
@@ -63,14 +67,30 @@ class AboutUsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Kelas Kita', style: tsHeader3(),),
-                        Text('KelasKita adalah aplikasi untuk pengelolaan kelas menjadi lebih terstruktur dan teratur. Dengan fitur-fitur seperti pembukuan kas, jadwal piket, jadwal pelajaran, absensi, dan masih banyak lagi, KelasKita dirancang untuk memudahkan dalam mengelola dan mengatur kelas, sehingga guru dan murid  dapat lebih efisien menggunakan waktu mereka untuk fokus pada proses belajar-mengajar dan pencapaian tujuan pembelajaran.', style: tsParagraft4(),),
-                        Text('Tentang Kami', style: tsHeader3(),),
-                        Text('Beberapa hal tentang kami:', style: tsParagraft4(),),
-                        Text('\u2022 Vicko: Backend', style: tsParagraft4(),),
-                        Text('\u2022 Arvia: Frontend', style: tsParagraft4(),),
-                        Text('\u2022 Faris: Frontend', style: tsParagraft4(),),
-                        Text('\u2022 Izal: Frontend', style: tsParagraft4(),),
+                        Text('Kelas Kita', style: tsHeader3(
+                          screenSize: screenWidth,
+                        ),),
+                        Text('KelasKita adalah aplikasi untuk pengelolaan kelas menjadi lebih terstruktur dan teratur. Dengan fitur-fitur seperti pembukuan kas, jadwal piket, jadwal pelajaran, absensi, dan masih banyak lagi, KelasKita dirancang untuk memudahkan dalam mengelola dan mengatur kelas, sehingga guru dan murid  dapat lebih efisien menggunakan waktu mereka untuk fokus pada proses belajar-mengajar dan pencapaian tujuan pembelajaran.', style: tsParagraft4(
+                          screenSize: screenWidth,
+                        ),),
+                        Text('Tentang Kami', style: tsHeader3(
+                          screenSize: screenWidth,
+                        ),),
+                        Text('Beberapa hal tentang kami:', style: tsParagraft4(
+                          screenSize: screenWidth,
+                        ),),
+                        Text('\u2022 Vicko: Backend', style: tsParagraft4(
+                          screenSize: screenWidth,
+                        ),),
+                        Text('\u2022 Arvia: Frontend', style: tsParagraft4(
+                          screenSize: screenWidth,
+                        ),),
+                        Text('\u2022 Faris: Frontend', style: tsParagraft4(
+                          screenSize: screenWidth,
+                        ),),
+                        Text('\u2022 Izal: Frontend', style: tsParagraft4(
+                          screenSize: screenWidth,
+                        ),),
                       ],
                     ),
                   )

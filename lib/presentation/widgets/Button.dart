@@ -9,6 +9,8 @@ class Button extends StatelessWidget {
   // final ShapeBorder shape;
   final BorderSide side;
   final VoidCallback onPressed;
+  final double? height;
+  final double? width;
 
   const Button({
     Key? key,
@@ -19,6 +21,8 @@ class Button extends StatelessWidget {
     // required this.shape,
     required this.side,
     required this.onPressed,
+    this.height,
+    this.width
   }) : super(key: key);
 
   @override
@@ -40,7 +44,7 @@ class Button extends StatelessWidget {
       child: Center(
         child: Text(
           label,
-          style: tsSubHeader4(color: textColor),
+          style: tsSubHeader4(color: textColor, screenSize: screenWidth),
         ),
       ),
     );
@@ -93,7 +97,7 @@ class ButtonLogOut extends StatelessWidget {
               Icon(Icons.logout, size: 32, color: Colors.white,),
               Text(
                 label,
-                style: tsSubHeader3(fontWeight: FontWeight.bold).copyWith(color: Colors.white),
+                style: tsSubHeader3(fontWeight: FontWeight.bold, screenSize: screenWidth).copyWith(color: Colors.white),
               ),
               Icon(Icons.logout, size: 32, color: Color(0xFFFF2D2D),),
             ],

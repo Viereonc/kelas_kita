@@ -42,11 +42,28 @@ dependencies:
   get: ^4.6.5
   dio:
   image_picker: ^1.1.1
+  mobile_scanner: ^5.1.1
+  shared_preferences:
+  iconify:
+  shimmer:
+  timeago:
+  http:
+  qr_flutter:
+  intl:
+  share_plus:
+  google_sign_in:
+  firebase_core:
+  firebase_auth:
+  firebase_messaging:
+  midtrans_sdk:
+  equatable:
+  flutter_dotenv:
+  dartz:
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -75,6 +92,7 @@ flutter:
   assets:
       - lib/assets/images/
       - lib/assets/icons/
+      - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

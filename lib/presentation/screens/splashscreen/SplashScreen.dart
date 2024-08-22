@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/splashscreen/splash_controller.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  SplashScreen({Key? key}) : super(key: key);
+
+  final SplashController splashController = Get.put(SplashController());
 
   @override
   Widget build(BuildContext context) {
@@ -11,12 +14,10 @@ class SplashScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: TweenAnimationBuilder(
           duration: Duration(milliseconds: 1000),
-          onEnd: () {
-            Get.offNamed(Path.ONBOARDING_PAGE);
-          },
           tween: Tween<double>(begin: 0, end: 1),
           builder: (BuildContext context, double value, Widget? child) {
             return AnimatedOpacity(

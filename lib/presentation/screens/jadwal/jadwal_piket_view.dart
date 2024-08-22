@@ -1,261 +1,193 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/jadwal/jadwal_view.dart';
+import 'jadwal_piket_controller.dart';
 
-class JadwalPiketView extends StatelessWidget {
+class JadwalPiket extends StatelessWidget {
+  final JadwalPiketController controller = Get.put(JadwalPiketController());
+
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 65,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 10),
-                  Text(
-                    "Jadwal Piket",
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
+    return GetBuilder<JadwalPiketController>(
+      builder: (controller) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.06),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {},
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Hari-hari dalam seminggu
-          Positioned(
-            top: 120,
-            left: 12,
-            child: _buildDayContainer("Sen"),
-          ),
-          Positioned(
-            top: 120,
-            left: 74,
-            child: _buildDayContainer("Sel", isWhite: false),
-          ),
-          Positioned(
-            top: 120,
-            left: 136,
-            child: _buildDayContainer("Rab"),
-          ),
-          Positioned(
-            top: 120,
-            left: 199,
-            child: _buildDayContainer("Kam"),
-          ),
-          Positioned(
-            top: 120,
-            left: 262,
-            child: _buildDayContainer("Jum"),
-          ),
-          Positioned(
-            top: 120,
-            left: 325,
-            child: _buildDayContainer("Sab"),
-          ),
-
-          // Ganti Jadwal container
-          Positioned(
-            top: 220,
-            left: 12,
-            child: _buildChangeScheduleContainer(screenWidth,
-                context), // Perhatikan penggunaan parameter context
-          ),
-
-          // Black line below "Ganti Jadwal"
-          Positioned(
-            top: 280,
-            left: 12,
-            child: Container(
-              width: screenWidth - 24,
-              height: 1,
-              color: Colors.black.withOpacity(0.2),
-            ),
-          ),
-
-          Positioned(
-            top: 300,
-            left: 12,
-            child: Container(
-              width: 365,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Abid Sontoloyo",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15.0,
+                    Text(
+                      'Maret',
+                      style: TextStyle(
+                        fontFamily: 'tsHeader1',
+                        fontWeight: FontWeight.bold,
+                        fontSize: screenHeight * 0.03,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+                SizedBox(height: screenHeight * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildDayContainer(
+                      screenWidth, screenHeight, 'Sen', controller),
+                    _buildDayContainer(
+                      screenWidth, screenHeight, 'Sel', controller),
+                    _buildDayContainer(
+                      screenWidth, screenHeight, 'Rab', controller),
+                    _buildDayContainer(
+                      screenWidth, screenHeight, 'Kam', controller),
+                    _buildDayContainer(
+                      screenWidth, screenHeight, 'Jum', controller),
+                    _buildDayContainer(
+                      screenWidth, screenHeight, 'Sab', controller),
+                  ],
+                ),
+                SizedBox(height: screenHeight * 0.02),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => JadwalScreen()),
+                    );
+                  },
+                  child: Container(
+                    width: screenWidth * 0.91,
+                    height: screenHeight * 0.037,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(screenHeight * 0.010),
+                      color: Color.fromARGB(255, 56, 122, 223),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: screenWidth * 0.04),
+                          child: Text(
+                            'Ganti Jadwal',
+                            style: TextStyle(
+                              fontFamily: 'tsParagraft1',
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                              fontSize: screenHeight * 0.020,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(screenWidth * 0.02),
+                          child: SvgPicture.asset(
+                            'lib/assets/icons/ep_switch (1).svg',
+                            width: screenWidth * 0.03,
+                            height: screenHeight * 0.03,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          // Container kedua
-          Positioned(
-            top: 350,
-            left: 12,
-            child: Container(
-              width: 365,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Baratha",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15.0,
-                    ),
+                SizedBox(height: screenHeight * 0.03),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.05,
+                    vertical: screenHeight * 0.005),
+                  child: Divider(
+                    color: Colors.grey,
+                    thickness: 0.5,
                   ),
                 ),
-              ),
+                SizedBox(height: screenHeight * 0.03),
+                controller.isLoading.value
+                    ? Center(child: CircularProgressIndicator())
+                    : Column(
+                        children: controller
+                          .getScheduleForDay(controller.selectedDay)
+                          .map((item) {
+                            return Container(
+                              width: screenWidth * 0.91,
+                              height: screenHeight * 0.055,
+                              margin: EdgeInsets.only(bottom: screenHeight * 0.03),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(screenHeight * 0.010),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.25),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(left: screenWidth * 0.04),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    item.nama,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: 'tsParagraft1',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: screenHeight * 0.020,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                      ),
+              ],
             ),
           ),
-
-          Positioned(
-            top: 400,
-            left: 12,
-            child: Container(
-              width: 365,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Adam",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDayContainer(String day, {bool isWhite = true}) {
-    return Container(
-      width: 58,
-      height: 75,
-      decoration: BoxDecoration(
-        color: isWhite ? Colors.white : Color.fromARGB(255, 56, 122, 223),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Color.fromARGB(255, 56, 122, 223),
-          width: 2,
-        ),
-      ),
-      child: Center(
-        child: Text(
-          day,
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-            fontSize: 15.0,
-            color: isWhite ? Colors.black.withOpacity(0.4) : Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildChangeScheduleContainer(
-      double screenWidth, BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => JadwalScreen()),
         );
       },
+    );
+  }
+
+  Widget _buildDayContainer(double screenWidth, double screenHeight, String day,
+      JadwalPiketController controller) {
+    bool isBlue = controller.selectedDay == day;
+
+    return GestureDetector(
+      onTap: () {
+        controller.selectDay(day);
+      },
       child: Container(
-        width: screenWidth - 24,
-        height: 29,
+        width: screenWidth * 0.15,
+        height: screenHeight * 0.085,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 56, 122, 223),
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(22), 
+          color: isBlue ? Color.fromARGB(255, 56, 122, 223) : Colors.white, 
+          border: Border.all(
+            color: isBlue ? Color.fromARGB(255, 56, 122, 223) : Color.fromARGB(255, 56, 122, 223), 
+            width: 1, // Set the stroke widt
+          ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                "Ganti Jadwal Pembelajaran",
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15.0,
-                  color: Colors.white,
-                ),
-              ),
+        child: Center(
+          child: Text(
+            day,
+            style: TextStyle(
+              fontFamily: 'tsParagraft1',
+              fontWeight: FontWeight.bold,
+              color: isBlue ? Colors.white : Color.fromARGB(255, 56, 122, 223),
+              fontSize: screenHeight * 0.020,
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Image.asset(
-                'lib/assets/images/ep_switch.png',
-                width: 20,
-                height: 20,
-                color: Colors.white,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

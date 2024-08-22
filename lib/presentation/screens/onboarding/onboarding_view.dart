@@ -24,8 +24,11 @@ class OnboardingScreen extends StatelessWidget {
             body:
                 'Kelola kelas dengan mudah dengan \n berbagai fitur seperti mengatur struktur \n kelas, mengelola uang kas dan masih banyak fitur lainnya',
             decoration: PageDecoration(
-                titleTextStyle: tsHeader2(),
-                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
+                titleTextStyle: tsHeader2(
+                  screenSize: screenWidth
+                ),
+                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300,
+                screenSize: screenWidth),
                 bodyAlignment: Alignment.center,
                 imagePadding: EdgeInsets.only(top: screenHeight * 0.03),),
             image: Column(
@@ -40,7 +43,9 @@ class OnboardingScreen extends StatelessWidget {
                         _introKey.currentState?.skipToEnd();
                       },
                       child: Text('Skip',
-                          style: tsSubHeader3()),
+                          style: tsSubHeader3(
+                            screenSize: screenWidth
+                          )),
                     ),
                   ),
                 ),
@@ -58,8 +63,10 @@ class OnboardingScreen extends StatelessWidget {
             body:
                 'Memudahkan para guru dan murid \n saat melakukan kegiatan pembelajaran',
             decoration: PageDecoration(
-                titleTextStyle: tsHeader2(),
-                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
+                titleTextStyle: tsHeader2(
+                  screenSize: screenWidth
+                ),
+                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300, screenSize: screenWidth),
                 bodyAlignment: Alignment.center,
                 imagePadding: EdgeInsets.only(top: screenHeight * 0.03)),
             image: Column(
@@ -76,7 +83,7 @@ class OnboardingScreen extends StatelessWidget {
                       child: Container(
                         child: Text(
                           'Skip',
-                          style: tsSubHeader3()
+                          style: tsSubHeader3(screenSize: screenWidth)
                         ),
                       ),
                     ),
@@ -94,8 +101,10 @@ class OnboardingScreen extends StatelessWidget {
             body:
                 'Membuat guru dan bendahara kelas \n jadi lebih mudah saat mengabsen atau \n menagih kas para murid',
             decoration: PageDecoration(
-                titleTextStyle: tsHeader2(),
-                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
+                titleTextStyle: tsHeader2(
+                  screenSize: screenWidth
+                ),
+                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300, screenSize: screenWidth),
                 bodyAlignment: Alignment.center,
                 imageAlignment: Alignment.bottomCenter,
                 imagePadding: EdgeInsets.only(top: screenHeight * 0.03)),
@@ -111,7 +120,9 @@ class OnboardingScreen extends StatelessWidget {
                         _introKey.currentState?.skipToEnd();
                       },
                       child: Text('Skip',
-                          style: tsSubHeader3()),
+                          style: tsSubHeader3(
+                            screenSize: screenWidth
+                          )),
                     ),
                   ),
                 ),
@@ -126,8 +137,10 @@ class OnboardingScreen extends StatelessWidget {
               title: 'Keamanan yang Terpercaya',
               body: 'Keamanan yang teruji dan terpercaya \n serta privasi yang terjamin',
               decoration: PageDecoration(
-                titleTextStyle: tsHeader2(),
-                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300),
+                titleTextStyle: tsHeader2(
+                  screenSize: screenWidth
+                ),
+                bodyTextStyle: tsParagraft3(fontWeight: FontWeight.w300, screenSize: screenWidth),
                 bodyAlignment: Alignment.bottomCenter,
                 imageAlignment: Alignment.bottomCenter,
                 imagePadding: EdgeInsets.only(top: screenHeight * 0),
@@ -155,7 +168,9 @@ class OnboardingScreen extends StatelessWidget {
                         },
                         textColor: Colors.white,
                         backgroundColor: primeryColorMedium,
-                        textStyle: tsHeader3(),
+                        textStyle: tsHeader3(
+                          screenSize: screenWidth
+                        ),
                         side: BorderSide.none,
                       ),
                     ),
@@ -169,7 +184,9 @@ class OnboardingScreen extends StatelessWidget {
                       },
                       textColor: primeryColorMedium,
                       backgroundColor: Colors.white,
-                      textStyle: tsHeader3(),
+                      textStyle: tsHeader3(
+                        screenSize: screenWidth
+                      ),
                       side: BorderSide(color: primeryColorMedium),
                     ),
                   ),

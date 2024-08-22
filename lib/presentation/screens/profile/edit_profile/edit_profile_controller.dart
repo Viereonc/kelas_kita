@@ -1,19 +1,126 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
+
+import '../../../../constants.dart';
+import '../../../../data/models/biografi_model.dart';
 
 class EditProfileController extends GetxController {
-  var ctrEmail = RxString('initial');
-  var ctrPhone = RxString('initial');
-  var ctrAddress = RxString('initial');
-  var ctrBio = RxString('initial');
-  var selectedImagePath = Rx<File?>(null);
+  var isLoading = false.obs;
 
-  ctrEdit(String email, String phoneNumber, String address, String bio, File? imageFile) {
-    ctrEmail.value = email;
-    ctrPhone.value = phoneNumber;
-    ctrAddress.value = address;
-    ctrBio.value = bio;
-    selectedImagePath.value = imageFile;
+  var ctrUsername = TextEditingController();
+  var ctrAddress = TextEditingController();
+  var ctrBio = TextEditingController();
+  var selectedImagePath = Rx<File?>(null);
+  final RxString imageUrl = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchBiografi();
+  }
+
+  Future<void> fetchBiografi() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? userId = prefs.getInt('id_user');
+
+      if (userId != null) {
+        final response = await http.get(
+          Uri.parse('$baseUrl$biodataEndpointGet$userId'),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          var data = json.decode(response.body);
+          ctrUsername.text = data['nama'] ?? '';
+          ctrAddress.text = data['alamat'] ?? '';
+          ctrBio.text = data['bio'] ?? '';
+          imageUrl.value = data['image'];
+
+          // Check if 'id_biodata' is present and convert to int
+          if (data['id_biodata'] != null) {
+            int idBiodata = int.tryParse(data['id_biodata'].toString()) ?? 0;
+            prefs.setInt('id_biodata', idBiodata);
+          }
+
+          print('Successfully loaded biografi data: ${response.statusCode}');
+        } else {
+          print('Failed to load biografi, status code: ${response.statusCode}');
+          throw Exception('Failed to load biografi');
+        }
+      } else {
+        print('User ID is null. Unable to fetch biografi.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
+  }
+
+  Future<void> editProfile(String nama, String alamat, String bio, File? imageFile) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    int? idBiodata = prefs.getInt('id_biodata');
+    int? idUser = prefs.getInt('id_user');
+
+    if (idUser != null && token != null) {
+      var uri = Uri.parse('${baseUrl}api/biodata/$idBiodata');
+      var request = http.MultipartRequest('POST', uri);
+
+      request.headers.addAll(<String, String>{
+        'Authorization': 'Bearer $token',
+      });
+
+      request.fields.addAll(<String, String>{
+        'id_biodata': idBiodata.toString(),
+        'nama': nama,
+        'alamat': alamat,
+        'bio': bio,
+      });
+
+      if (imageFile != null && imageFile.path.isNotEmpty) {
+        final mimeTypeData = lookupMimeType(imageFile.path, headerBytes: [0xFF, 0xD8])?.split('/');
+        if (mimeTypeData != null && mimeTypeData.length == 2) {
+          request.files.add(await http.MultipartFile.fromPath(
+            'image',
+            imageFile.path,
+            contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
+          ));
+        }
+      }
+
+      try {
+        var response = await request.send();
+
+        if (response.statusCode == 200) {
+          var responseData = await http.Response.fromStream(response);
+          try {
+            var decodedData = json.decode(responseData.body);
+            print('Success: ${response.statusCode}');
+            print('Response body: ${decodedData}');
+          } catch (e) {
+            print('Error decoding JSON: $e');
+            print('Response body: ${responseData.body}');
+          }
+        } else {
+          var responseData = await http.Response.fromStream(response);
+          print('Error: ${response.statusCode}');
+          print('Response body: ${responseData.body}');
+        }
+      } catch (e) {
+        print('Error during request: $e');
+      }
+    } else {
+      print('User ID or token is null. Unable to submit profile edit.');
+    }
   }
 }

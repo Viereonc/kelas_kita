@@ -1,20 +1,31 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/notification/notif_controller.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 
+import '../../widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
+
 class NotificationPage extends StatelessWidget {
-  const NotificationPage({super.key});
+  NotificationPage({super.key});
+  static const route = '/notification';
+
+  final NotifController notifController = Get.put(NotifController());
 
   @override
   Widget build(BuildContext context) {
+    final message = ModalRoute.of(context)?.settings.arguments as RemoteMessage?;
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
         child: Column(
@@ -28,7 +39,8 @@ class NotificationPage extends StatelessWidget {
                   Text(
                     'Notification',
                     style: tsParagraft1(
-                      fontWeight: FontWeight.w600
+                      fontWeight: FontWeight.w600,
+                      screenSize: screenWidth
                     )
                   ),
                   SvgPicture.asset(
@@ -43,6 +55,12 @@ class NotificationPage extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
             ),
+            if (message?.notification?.title != null)
+              Text(message!.notification!.title.toString()),
+            if (message?.notification?.body != null)
+              Text(message!.notification!.body.toString()),
+            if (message?.data != null)
+              Text(message!.data.toString()),
             Expanded(
               child: ListView.builder(
                 itemCount: 10,
@@ -72,17 +90,18 @@ class NotificationPage extends StatelessWidget {
                                     Container(
                                       width: screenWidth * 0.5,
                                       child: Text(
-                                        'Tugas CRUD',
+                                        'Tagihan Uang Kas',
                                         style: tsParagraft3(
-                                          fontWeight: FontWeight.w600
+                                          fontWeight: FontWeight.w600,
+                                          screenSize: screenWidth
                                         )
                                       ),
                                     ),
                                     Container(
                                       width: screenWidth * 0.5,
                                       child: Text(
-                                        'Tugas Laravel CRUD dari Fahmi sudah lewat deadline',
-                                        style: tsParagraft5()
+                                        'Tagihan Kas Anda Bulan Ini Belum Lunas (Rp. 10.000.00)',
+                                        style: tsParagraft5(screenSize: screenWidth)
                                       ),
                                     ),
                                   ],
@@ -91,7 +110,9 @@ class NotificationPage extends StatelessWidget {
                             ),
                             Text(
                               '2 hari lalu',
-                              style: tsParagraft5()
+                              style: tsParagraft5(
+                                screenSize: screenWidth
+                              )
                             ),
                           ],
                         ),
@@ -114,7 +135,9 @@ class NotificationPage extends StatelessWidget {
         height: 64,
         width: 64,
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed('/qrcodesiswascreen');
+          },
           backgroundColor: primeryColorMedium,
           elevation: 0,
           shape: RoundedRectangleBorder(
@@ -127,7 +150,13 @@ class NotificationPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavbar(),
+      bottomNavigationBar: Obx(() {
+        if (notifController.userStatus.value == 'Wali Kelas') {
+          return BottomNavbarGuru();
+        } else {
+          return BottomNavbar();
+        }
+      }),
     );
   }
 }
