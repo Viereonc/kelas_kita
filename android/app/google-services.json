@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "675449387691-o82olvmelsui178v3me08bnoqednudhc.apps.googleusercontent.com",
+          "client_id": "675449387691-9ievb1eo5g35t4aansof1hg9top5fv3u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kelas_kita",
+            "certificate_hash": "5afbbee234ab49b946fb115d8cfaae4cdbe76356"
+          }
+        },
+        {
+          "client_id": "675449387691-gm22kjag7dsu9qj9fmlsnsqsurop01ku.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

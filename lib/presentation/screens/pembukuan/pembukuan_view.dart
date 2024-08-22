@@ -131,92 +131,98 @@ class PembukuanView extends StatelessWidget {
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: screenHeight * 0.03),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
+            Container(
+              child: Column(
                 children: [
-                  Container(
-                    width: screenWidth * 0.35,
-                    height: screenHeight * 0.05,
-                    margin: EdgeInsets.only(left: screenWidth * 0.05),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFE8E8E8),
-                      borderRadius: BorderRadius.circular(45.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        DateFormat('MMMM yyyy', 'id_ID').format(DateTime.now()),
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
+                  Padding(
+                    padding: EdgeInsets.only(top: screenHeight * 0.03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: screenWidth * 0.35,
+                          height: screenHeight * 0.05,
+                          margin: EdgeInsets.only(left: screenWidth * 0.05),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFE8E8E8),
+                            borderRadius: BorderRadius.circular(45.0),
+                          ),
+                          child: Center(
+                            child: Text(
+                              DateFormat('MMMM yyyy', 'id_ID').format(DateTime.now()),
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: EdgeInsets.only(right: screenWidth * 0.1),
+                          child: Obx(() {
+                            if (pembukuanKasController.userStatus.value == 'Bendahara' || pembukuanKasController.userStatus.value == 'Wali Kelas') {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    Get.context!,
+                                    MaterialPageRoute(builder: (context) => AddPembukuanKas()),
+                                  );
+                                },
+                                child: Container(
+                                  width: 39,
+                                  height: 39,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 56, 122, 223),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return SizedBox(); // Return an empty container if not authorized
+                            }
+                          }),
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: screenWidth * 0.1),
-                    child: Obx(() {
-                      if (pembukuanKasController.userStatus.value == 'Bendahara' || pembukuanKasController.userStatus.value == 'Wali Kelas') {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              Get.context!,
-                              MaterialPageRoute(builder: (context) => AddPembukuanKas()),
-                            );
-                          },
-                          child: Container(
-                            width: 39,
-                            height: 39,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 56, 122, 223),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      } else {
-                        return SizedBox(); // Return an empty container if not authorized
-                      }
-                    }),
-                  ),
+                  SizedBox(height: screenHeight * 0.03),
+                  Obx(() {
+                    if (pembukuanKasController.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (pembukuanKasController.pembukuanKasList.isEmpty) {
+                      return Center(child: Text('No data available'));
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(), // Prevents ListView from scrolling separately
+                        itemCount: pembukuanKasController.pembukuanKasList.length,
+                        itemBuilder: (context, index) {
+                          final item = pembukuanKasController.pembukuanKasList[index];
+                          return _buildListItem(
+                            item.id,
+                            item.nama,
+                            DateFormat('MMMM d yyyy', 'id_ID').format(item.tanggal),
+                            'Rp ${item.jumlahPengeluaran}',
+                            '',
+                            item.jenis == 'Pemasukan' ? Colors.green : Colors.red,
+                            hasMinusIcon: item.jenis == 'Pengeluaran',
+                            hasIcon: item.jenis == 'Pemasukan',
+                          );
+                        },
+                      );
+                    }
+                  }),
                 ],
               ),
             ),
-            SizedBox(height: screenHeight * 0.03),
-            Obx(() {
-              if (pembukuanKasController.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
-              } else if (pembukuanKasController.pembukuanKasList.isEmpty) {
-                return Center(child: Text('No data available'));
-              } else {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  itemCount: pembukuanKasController.pembukuanKasList.length,
-                  itemBuilder: (context, index) {
-                    final item = pembukuanKasController.pembukuanKasList[index];
-                    return _buildListItem(
-                      item.id,
-                      item.nama,
-                      DateFormat('MMMM d yyyy', 'id_ID').format(item.tanggal),
-                      'Rp ${item.jumlahPengeluaran}',
-                      '',
-                      item.jenis == 'Pemasukan' ? Colors.green : Colors.red,
-                      hasMinusIcon: item.jenis == 'Pengeluaran',
-                      hasIcon: item.jenis == 'Pemasukan',
-                    );
-                  },
-                );
-              }
-            }),
             SizedBox(height: screenHeight * 0.03),
           ],
         ),
@@ -229,7 +235,12 @@ class PembukuanView extends StatelessWidget {
 
     return Obx(() {
       if (pembukuanKasController.isLoading.value) {
-        return Center(child: CircularProgressIndicator(color: primeryColorMedium, backgroundColor: Colors.white,));
+        return Center(
+          child: CircularProgressIndicator(
+            color: primeryColorMedium,
+            backgroundColor: Colors.white,
+          ),
+        );
       } else {
         return RefreshIndicator(
           color: primeryColorMedium,
@@ -240,79 +251,85 @@ class PembukuanView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(top: screenHeight * 0.03, bottom: screenHeight * 0.03),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                Container(
+                  child: Column(
                     children: [
-                      Container(
-                        width: screenWidth * 0.35,
-                        height: screenHeight * 0.05,
-                        margin: EdgeInsets.only(left: screenWidth * 0.05),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFE8E8E8),
-                          borderRadius: BorderRadius.circular(45.0),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Program Kelas',
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
+                      Padding(
+                        padding: EdgeInsets.only(top: screenHeight * 0.03, bottom: screenHeight * 0.03),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: screenWidth * 0.35,
+                              height: screenHeight * 0.05,
+                              margin: EdgeInsets.only(left: screenWidth * 0.05),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFE8E8E8),
+                                borderRadius: BorderRadius.circular(45.0),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Program Kelas',
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Padding(
+                              padding: EdgeInsets.only(right: screenWidth * 0.1),
+                              child: Obx(() {
+                                if (pembukuanKasController.userStatus.value == 'Bendahara' || pembukuanKasController.userStatus.value == 'Wali Kelas') {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        Get.context!,
+                                        MaterialPageRoute(builder: (context) => ProgramKelasView()),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 39,
+                                      height: 39,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 56, 122, 223),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return SizedBox(); // Return an empty container if not authorized
+                                }
+                              }),
+                            ),
+                          ],
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: screenWidth * 0.1,),
-                        child: Obx(() {
-                          if (pembukuanKasController.userStatus.value == 'Bendahara' || pembukuanKasController.userStatus.value == 'Wali Kelas') {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  Get.context!,
-                                  MaterialPageRoute(builder: (context) => ProgramKelasView()),
-                                );
-                              },
-                              child: Container(
-                                width: 39,
-                                height: 39,
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 56, 122, 223),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ),
-                              ),
+                        padding: EdgeInsets.only(right: screenWidth * 0), // Add padding to account for the button
+                        child: Column(
+                          children: pembukuanKasController.programKelasList.map((program) {
+                            return _buildListItem(
+                              program.idProgram,
+                              program.nama,
+                              _formatDate(program.jadwal),
+                              'Rp ${program.jumlah}',
+                              'Mempunyai 80% Kedisiplinan Kas',
+                              Colors.blue,
+                              hasDietPlanIcon: true,
                             );
-                          } else {
-                            return SizedBox(); // Return an empty container if not authorized
-                          }
-                        }),
+                          }).toList(),
+                        ),
                       ),
                     ],
-                  ),
-                ),
-                SingleChildScrollView(
-                  padding: EdgeInsets.only(right: screenWidth * 0.1), // Add padding to account for the button
-                  child: Column(
-                    children: pembukuanKasController.programKelasList.map((program) {
-                      return _buildListItem(
-                        program.idProgram,
-                        program.nama,
-                        _formatDate(program.jadwal),
-                        'Rp ${program.jumlah}',
-                        'Mempunyai 80% Kedisiplinan Kas',
-                        Colors.blue,
-                        hasDietPlanIcon: true,
-                      );
-                    }).toList(),
                   ),
                 ),
               ],
@@ -323,46 +340,7 @@ class PembukuanView extends StatelessWidget {
     });
   }
 
-  Widget _buildDateContainer(String date) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          width: 130,
-          height: 35,
-          margin: EdgeInsets.only(left: 20.0),
-          decoration: BoxDecoration(
-            color: Color(0xFFE8E8E8),
-            borderRadius: BorderRadius.circular(45.0),
-          ),
-          child: Center(
-            child: Text(
-              date,
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildListItem(
-      int index,
-      String title,
-      String date,
-      String amount,
-      String subtitle,
-      Color iconColor, {
-        bool hasIcon = false,
-        bool hasMinusIcon = false,
-        bool hasDietPlanIcon = false,
-      }) {
+  Widget _buildListItem(int index, String title, String date, String amount, String subtitle, Color iconColor, {bool hasIcon = false, bool hasMinusIcon = false, bool hasDietPlanIcon = false,}) {
     Color amountColor = Colors.black;
 
     if (hasIcon) {
@@ -493,15 +471,6 @@ class PembukuanView extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Divider(
-      thickness: 1,
-      color: Color(0xFFE8E8E8),
-      indent: 20,
-      endIndent: 20,
     );
   }
 
