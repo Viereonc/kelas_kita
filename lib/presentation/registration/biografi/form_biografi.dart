@@ -133,7 +133,7 @@ class BiografiView extends StatelessWidget {
                         ),
                         SizedBox(height: screenHeight * 0.025),
                         Container(
-                          height: screenHeight * 0.13,
+                          height: screenHeight * 0.16,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,

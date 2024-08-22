@@ -18,6 +18,7 @@ class HomeScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
 
   Future<void> _refreshData(BuildContext context) async {
+    Get.offNamed('/homescreen');
     try {
       await Future.wait([
         homeController.fetchBiografi(),

@@ -69,11 +69,6 @@ class KasController extends GetxController {
     isLoading.value = false;
   }
 
-  final Map<String, List<String>> paymentHistory = {
-    'Maret 2024': ['Gopay • 14 Maret 2024 08.45 AM', 'Gopay • 14 Maret 2024 08.45 AM', 'Gopay • 14 Maret 2024 08.45 AM', 'Gopay • 14 Maret 2024 08.45 AM',],
-    'April 2024': ['Gopay • 14 Maret 2024 08.45 AM', 'Gopay • 14 Maret 2024 08.45 AM'],
-  };
-
   void openIconButtonpressed (BuildContext context) {
     showModalBottomSheet(context: context, builder: (ctx) => MetodePembayaran());
   }
@@ -87,7 +82,7 @@ class KasController extends GetxController {
       String? biodataIdString = prefs.getString('id_biodata');
       int? biodataId = biodataIdString != null ? int.tryParse(biodataIdString) : null;
 
-      print('biodataId: $biodataId');  // Log the biodataId to check its value
+      print('biodataId: $biodataId');
       if (userId != null) {
         final url = Uri.parse('$baseUrl$tagihanKasUserEndPoint$biodataId');
         print('Requesting URL: $url');

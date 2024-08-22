@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kelas_kita/data/api/firebase_api.dart';
 import 'package:kelas_kita/firebase_options.dart';
+import 'package:kelas_kita/presentation/screens/info_kelas/info_kelas_view.dart';
+import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/notification/notif_page.dart';
 import 'package:kelas_kita/routes/app_pages.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,9 +41,11 @@ class MyApp extends GetMaterialApp {
       initialRoute: AppPages.KAS,
       getPages: AppPages.routes,
       navigatorKey: navigatorKey,
-      routes: {
-        NotificationPage.route: (context) => NotificationPage(),
-      },
+      // routes: {
+      //   NotificationPage.route: (context) => NotificationPage(),
+      //   InfoKelasScreen.route: (context) => InfoKelasScreen(),
+      //   InfoTugasScreen.route: (context) => InfoTugasScreen(),
+      // },
     );
   }
 }

@@ -101,7 +101,16 @@ class KasScreen extends StatelessWidget {
                       bottom: screenHeight * 0.015,
                       top: screenHeight * 0.03,
                     ),
-                    child: ListView.builder(
+                    child: kasController.tagihanKasList.isEmpty
+                        ? Center(
+                      child: Text(
+                        "Tidak ada riwayat kas",
+                        style: tsParagraft3(
+                          fontWeight: FontWeight.w500,
+                          screenSize: screenWidth,
+                        ).copyWith(color: Colors.black),
+                      ),
+                    ) : ListView.builder(
                       itemCount: kasController.tagihanKasList.length,
                       itemBuilder: (context, index) {
                         final tagihan = kasController.tagihanKasList[index];
