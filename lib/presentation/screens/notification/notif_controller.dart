@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/data/models/notif_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +40,9 @@ class NotifController extends GetxController {
       if (response.statusCode == 200) {
         notifList.value = infoNotifModelFromJson(response.body);
         print('Success to fetch notif: ${response.statusCode}');
-        isLoading.value = false;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          isLoading.value = false;
+        });
       } else {
         print('Failed to fetch data: ${response.statusCode}');
       }

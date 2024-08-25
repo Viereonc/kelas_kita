@@ -27,6 +27,7 @@ const payment = 'api/payment';
 const paymentTunai = 'api/kas/';
 const getKasKelas = 'api/kas';
 const getNotif = 'api/notifications/biodata/';
+const getHistoryBayar = 'api/history_pembayaran_kas/';
 
 const pending = 'P';
 const accept = 'A';

@@ -196,7 +196,7 @@ class ScanQrCodeTunaiScreen extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Konfirmasi Pembayaran"),
-          content: Text("Anda akan melakukan pembayaran sebesar Rp $scannedNominal.\nApakah Anda yakin?"),
+          content: Text("Akan melakukan pembayaran sebesar Rp $scannedNominal.\nApakah Anda yakin?"),
           actions: <Widget>[
             TextButton(
               child: Text("Batal"),

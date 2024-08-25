@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/data/models/kas_kelas_model.dart';
+import 'package:kelas_kita/data/models/riwayat_pembayaran_model.dart';
 import 'package:kelas_kita/presentation/screens/kas/kas_view.dart';
 import 'package:kelas_kita/presentation/screens/kas/metode_pembayaran.dart';
 import 'package:midtrans_sdk/midtrans_sdk.dart';
@@ -19,6 +20,7 @@ import 'package:uni_links2/uni_links.dart';
 class KasController extends GetxController {
   RxList<InfoTagihanKasModel> tagihanKasList = <InfoTagihanKasModel>[].obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
+  RxList<InfoHistoryBayarModel> historyBayarList = <InfoHistoryBayarModel>[].obs;
   late final MidtransSDK? midtrans;
   var isLoading = true.obs;
   var userStatus = ''.obs;
@@ -32,7 +34,8 @@ class KasController extends GetxController {
     super.onInit();
     loadLoading();
     fetchBiografi();
-    fetchTagihanKas();
+    // fetchTagihanKas();
+    fetchInfoHistoryBayar();
     _loadBiodataId();
     // _initSdk();
   }
@@ -284,6 +287,32 @@ class KasController extends GetxController {
     } catch (e) {
       print('Error: $e');
       throw Exception('Error E: $e');
+    }
+  }
+
+  void fetchInfoHistoryBayar() async {
+    try {
+      isLoading.value = true;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? idBiodata = prefs.getInt('id_biodata');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl$getHistoryBayar$idBiodata'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        historyBayarList.value = infoHistoryBayarModelFromJson(response.body);
+        print('Success to fetch History Pembayaran: ${response.statusCode}');
+        isLoading.value = false;
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
     }
   }
 

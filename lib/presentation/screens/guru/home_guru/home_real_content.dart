@@ -69,7 +69,7 @@ class RealContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '30 \n Siswa',
+                  '',
                   style: tsParagraft2(screenSize: screenWidth),
                   textAlign: TextAlign.center,
                 ),
