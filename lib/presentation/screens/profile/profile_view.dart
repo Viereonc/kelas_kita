@@ -129,7 +129,7 @@ class ProfileScreen extends StatelessWidget {
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
                               padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-                              width: double.infinity,
+                              width: screenWidth * 0.7,
                               height: screenHeight * 0.13,
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -139,7 +139,7 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
@@ -166,6 +166,7 @@ class ProfileScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
+                                  SizedBox(width: 15,),
                                   Container(
                                     margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                                     child: Column(
@@ -190,20 +191,20 @@ class ProfileScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
-                                        Text("80%", style: tsSubHeader4(screenSize: screenWidth)),
-                                        Text(
-                                          "Pembayaran Kas",
-                                          style: tsSubHeader6(screenSize: screenWidth),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  // Container(
+                                  //   margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                                  //   child: Column(
+                                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  //     children: [
+                                  //       SvgPicture.asset("lib/assets/icons/pe_watch.svg"),
+                                  //       Text("80%", style: tsSubHeader4(screenSize: screenWidth)),
+                                  //       Text(
+                                  //         "Pembayaran Kas",
+                                  //         style: tsSubHeader6(screenSize: screenWidth),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             );
@@ -450,7 +451,11 @@ class ProfileScreen extends StatelessWidget {
         width: 64,
         child: FloatingActionButton(
           onPressed: () {
-            Get.toNamed('/qrcodesiswascreen');
+            if (profileController.userStatus.value == 'Wali Kelas') {
+              Get.toNamed('/qrcodeguruscreen');
+            } else {
+              Get.toNamed('/qrcodesiswascreen');
+            }
           },
           backgroundColor: primeryColorMedium,
           elevation: 0,

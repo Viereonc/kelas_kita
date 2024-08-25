@@ -243,20 +243,20 @@ class LoginView extends StatelessWidget {
         prefs.setString('email', userData['email']);
 
         print('Token: $token');
-        Get.snackbar('Success', 'Sign In Success: ${response.statusCode}', backgroundColor: Colors.green, colorText: Colors.white);
+        Get.snackbar('Success', 'Sign In Success', backgroundColor: Colors.green, colorText: Colors.white);
         print('Login Google Success');
 
         await loginController.fetchBiografi();
 
       } else {
-        Get.snackbar('Error', 'Sign In Failed: ${response.statusCode}');
+        // Get.snackbar('Error', 'Sign In Failed: ${response.statusCode}');
       }
     } on PlatformException catch (e) {
       print('Error signing in with Google: $e');
-      Get.snackbar('Error', 'Sign In Failed - PlatformException');
+      // Get.snackbar('Error', 'Sign In Failed - PlatformException');
     } catch (e) {
       print('Error signing in with Google: $e');
-      Get.snackbar('Error', 'Sign In Failed - General Exception');
+      // Get.snackbar('Error', 'Sign In Failed - General Exception');
     }
   }
 

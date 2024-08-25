@@ -7,6 +7,8 @@ import 'package:kelas_kita/presentation/themes/Backdrop.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 
+import '../home/home_view.dart';
+
 class StrukturKelasScreen extends StatelessWidget {
   StrukturKelasScreen({Key? key}) : super(key: key);
 
@@ -52,7 +54,7 @@ class StrukturKelasScreen extends StatelessWidget {
             leading: Container(
               child: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Get.to(HomeScreen());
                 },
                 icon: Container(
                   decoration: BoxDecoration(

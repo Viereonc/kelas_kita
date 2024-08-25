@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
+import '../home/home_view.dart';
 import 'add_info_kelas/add_info_kelas.dart';
 import 'info_kelas_controller.dart';
 import 'detail_info_kelas/detail_info_kelas.dart';
@@ -48,7 +49,7 @@ class InfoKelasScreen extends StatelessWidget {
               centerTitle: true,
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Get.to(HomeScreen());
                 },
                 icon: Container(
                   decoration: BoxDecoration(
@@ -178,6 +179,15 @@ class InfoKelasScreen extends StatelessWidget {
                                               width: screenWidth * 0.45,
                                               height: screenHeight * 0.15,
                                               fit: BoxFit.cover,
+                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                return Center(
+                                                  child: Icon(
+                                                    Icons.image_not_supported_outlined,
+                                                    color: Colors.grey.shade300,
+                                                    size: screenWidth * 0.3,
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         )
@@ -200,7 +210,7 @@ class InfoKelasScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Obx(() {
-        if (infoKelasController.userStatus.value == 'Anggota' || infoKelasController.userStatus.value == 'Wali Kelas') {
+        if (infoKelasController.userStatus.value == 'Sekretaris' || infoKelasController.userStatus.value == 'Wali Kelas') {
           return FloatingActionButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();

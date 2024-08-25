@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kelas_kita/presentation/screens/kas/kas_controller.dart';
+import 'package:kelas_kita/presentation/screens/kas/kas_view.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class QrCodeTunaiScreen extends StatelessWidget {
+class ScanQrCodeTunaiScreen extends StatelessWidget {
   final MobileScannerController cameraController = MobileScannerController();
   final ValueNotifier<bool> isFlashOn = ValueNotifier<bool>(false);
 
-  QrCodeTunaiScreen({super.key});
+  final KasController kasController = Get.put(KasController());
+
+  ScanQrCodeTunaiScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +66,7 @@ class QrCodeTunaiScreen extends StatelessWidget {
               final Barcode? barcode = barcodeCapture.barcodes.first;
               final String? code = barcode?.rawValue;
               if (code != null) {
-                Navigator.pop(context, code);
+                _handleQRCodeScanned(context, code);
               }
             },
           ),
@@ -169,6 +174,45 @@ class QrCodeTunaiScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _handleQRCodeScanned(BuildContext context, String code) {
+    final parts = code.split('\n');
+    if (parts.length == 3) {
+      final scannedNominal = int.tryParse(parts[1].replaceAll('Nominal: ', ''));
+      final scannedIdBiodata = int.tryParse(parts[2].replaceAll('ID Biodata: ', ''));
+
+      if (scannedNominal != null && scannedIdBiodata != null) {
+        // Show the confirmation dialog
+        _showConfirmationDialog(context, scannedIdBiodata, scannedNominal);
+      }
+    }
+  }
+
+  void _showConfirmationDialog(BuildContext context, int scannedIdBiodata, int scannedNominal) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Konfirmasi Pembayaran"),
+          content: Text("Anda akan melakukan pembayaran sebesar Rp $scannedNominal.\nApakah Anda yakin?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Batal"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            ElevatedButton(
+              child: Text("Konfirmasi"),
+              onPressed: () {
+                kasController.createTransactionTunai(scannedIdBiodata, scannedNominal);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

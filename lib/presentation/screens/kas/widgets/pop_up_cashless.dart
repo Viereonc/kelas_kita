@@ -9,14 +9,18 @@ import 'package:midtrans_sdk/midtrans_sdk.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void showGopayPopup(BuildContext context) async {
+void showCashLessPopup(BuildContext context) async {
   final TextEditingController nominalController = TextEditingController();
   final KasController kasController = Get.put(KasController());
   final int? idKelas = await kasController.getIdKelas();
   final int? idBiodata = await kasController.fetchBiodataId();
-  final String? nama = await kasController.getName();
   double screenHeight = MediaQuery.of(context).size.height;
   double screenWidth = MediaQuery.of(context).size.width;
+
+  if (idKelas == null || idBiodata == null) {
+    Get.snackbar('Error', 'Failed to retrieve necessary data');
+    return;
+  }
 
   showDialog(
     context: context,
@@ -29,7 +33,7 @@ void showGopayPopup(BuildContext context) async {
           child: TextFormField(
             decoration: InputDecoration(
               labelText: 'Nominal',
-              hintText: 'Masukkan jumlah nominal',
+              hintText: 'Masukkan jumlah uang',
               hintStyle: tsParagraft4(screenSize: screenWidth, fontWeight: FontWeight.w400),
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             ),
@@ -61,9 +65,9 @@ void showGopayPopup(BuildContext context) async {
                   print('Nominal: $nominal');
                   print('ID Biodata: $idBiodata');
 
-                  Navigator.of(context).pop();
-                  Get.to(() => QrCodePage(userName: nama ?? '', nominal: nominal, idBiodata: idBiodata ?? 0,));
-                } : null,
+                  kasController.createTransaction(idBiodata, nominal, idKelas);
+                }
+                    : null,
                 child: Text(
                   'Konfirmasi',
                   style: tsParagraft3(screenSize: screenWidth).copyWith(
@@ -78,4 +82,5 @@ void showGopayPopup(BuildContext context) async {
     },
   );
 }
+
 

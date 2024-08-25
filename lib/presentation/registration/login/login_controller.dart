@@ -16,7 +16,6 @@ class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
   var isLoading = false.obs;
 
   Future<void> loginUser(String email, String password) async {
@@ -93,7 +92,7 @@ class LoginController extends GetxController {
           print('JSON Response: $jsonResponse');
 
           var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
-          final name = fetchedData.nama;
+          final name = fetchedData.alamat;
           final role = jsonResponse['role_name'];
 
           if (name != null && name.isNotEmpty) {

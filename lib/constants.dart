@@ -1,4 +1,4 @@
-const baseUrl = 'https://guru.kelaskita.site/';
+const baseUrl = 'https://kelaskita.site/';
 const registerEndpoint = 'api/register';
 const loginEndpoint = 'api/login';
 const loginGoogleEndpoint = 'api/login/google';
@@ -23,6 +23,10 @@ const tagihanKasUserEndPoint = 'api/tagihan_kas/biodata/';
 const getPembukuanKasEndPoint = 'api/pembukuan_kas/kelas/';
 const pembukuanKasEndPoint = 'api/pembukuan_kas/store';
 const fcmTokenPost = 'api/register_fcm';
+const payment = 'api/payment';
+const paymentTunai = 'api/kas/';
+const getKasKelas = 'api/kas';
+const getNotif = 'api/notifications/biodata/';
 
 const pending = 'P';
 const accept = 'A';
