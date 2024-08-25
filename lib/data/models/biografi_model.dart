@@ -18,9 +18,9 @@ class InfoBiografiModel {
   String alamat;
   String image;
   String? bio;
-  Status status;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   RoleName roleName;
   User user;
   Kelas kelas;
@@ -37,8 +37,8 @@ class InfoBiografiModel {
     required this.image,
     this.bio,
     required this.status,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
     required this.roleName,
     required this.user,
     required this.kelas,
@@ -54,11 +54,11 @@ class InfoBiografiModel {
     nis: json["nis"],
     alamat: json["alamat"],
     image: json["image"],
-    bio: json["bio"],
-    status: statusValues.map[json["status"]]!,
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    roleName: roleNameValues.map[json["role_name"]]!,
+    bio: json["bio"] ?? '',
+    status: json["status"],
+    createdAt: json["created_at"] != null ? DateTime.parse(json["created_at"]) : null,
+    updatedAt: json["updated_at"] != null ? DateTime.parse(json["updated_at"]) : null,
+    roleName: roleNameValues.map[json["role_name"]] ?? RoleName.ANGGOTA,
     user: User.fromJson(json["user"]),
     kelas: Kelas.fromJson(json["kelas"]),
     role: Role.fromJson(json["role"]),
@@ -74,9 +74,9 @@ class InfoBiografiModel {
     "alamat": alamat,
     "image": image,
     "bio": bio,
-    "status": statusValues.reverse[status],
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
+    "status": status,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
     "role_name": roleNameValues.reverse[roleName],
     "user": user.toJson(),
     "kelas": kelas.toJson(),
@@ -186,11 +186,15 @@ final roleNameValues = EnumValues({
 });
 
 enum Status {
-  A
+  A,
+  P,
+  D
 }
 
 final statusValues = EnumValues({
-  "A": Status.A
+  "A": Status.A,
+  "P": Status.P,
+  "D": Status.D
 });
 
 class User {
@@ -200,8 +204,8 @@ class User {
   int? nomor;
   String? idGoogle;
   String? fcmToken;
-  DateTime createdAt;
-  DateTime updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   User({
     required this.idUser,
@@ -210,8 +214,8 @@ class User {
     this.nomor,
     this.idGoogle,
     this.fcmToken,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -219,10 +223,10 @@ class User {
     username: json["username"],
     email: json["email"],
     nomor: json["nomor"],
-    idGoogle: json["id_google"],
-    fcmToken: json["fcm_token"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    idGoogle: json["id_google"] ?? '',
+    fcmToken: json["fcm_token"] ?? '',
+    createdAt: json["created_at"] != null ? DateTime.parse(json["created_at"]) : null,
+    updatedAt: json["updated_at"] != null ? DateTime.parse(json["updated_at"]) : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -232,8 +236,8 @@ class User {
     "nomor": nomor,
     "id_google": idGoogle,
     "fcm_token": fcmToken,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
   };
 }
 

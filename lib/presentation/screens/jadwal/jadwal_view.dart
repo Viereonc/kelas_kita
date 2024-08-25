@@ -200,7 +200,11 @@ class JadwalScreen extends StatelessWidget {
         width: 64,
         child: FloatingActionButton(
           onPressed: () {
-            Get.toNamed('/qrcodesiswascreen');
+            if (jadwalController.userStatus.value == 'Wali Kelas') {
+              Get.toNamed('/qrcodeguruscreen');
+            } else {
+              Get.toNamed('/qrcodesiswascreen');
+            }
           },
           backgroundColor: primeryColorMedium,
           elevation: 0,
@@ -482,7 +486,7 @@ class JadwalScreen extends StatelessWidget {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('List of Late Students'),
+        title: Text('Daftar Kehadiran Siswa'),
         content: Container(
           width: double.maxFinite,
           child: Obx(() {
@@ -503,6 +507,7 @@ class JadwalScreen extends StatelessWidget {
                   leading: CircleAvatar(
                     backgroundImage:
                         NetworkImage(baseUrl + storage + absensi.image),
+                    backgroundColor: Colors.white,
                   ),
                   title: Text(absensi.nama),
                   subtitle: RichText(

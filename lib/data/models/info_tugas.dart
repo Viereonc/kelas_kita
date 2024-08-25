@@ -30,16 +30,18 @@ class InfoTugasModel {
     required this.updatedAt,
   });
 
-  factory InfoTugasModel.fromJson(Map<String, dynamic> json) => InfoTugasModel(
-    idTugas: json["id_tugas"],
-    idKelas: json["id_kelas"],
-    nama: json["nama"],
-    guru: json["guru"],
-    deadline: DateTime.parse(json["deadline"]),
-    ketentuan: json["ketentuan"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-  );
+  factory InfoTugasModel.fromJson(Map<String, dynamic> json) {
+    return InfoTugasModel(
+      idTugas: json["id_tugas"] is int ? json["id_tugas"] : int.parse(json["id_tugas"]),
+      idKelas: json["id_kelas"] is int ? json["id_kelas"] : int.parse(json["id_kelas"]),
+      nama: json["nama"],
+      guru: json["guru"],
+      deadline: DateTime.parse(json["deadline"]),
+      ketentuan: json["ketentuan"],
+      createdAt: DateTime.parse(json["created_at"]),
+      updatedAt: DateTime.parse(json["updated_at"]),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     "id_tugas": idTugas,

@@ -61,6 +61,8 @@ dependencies:
   dartz:
   fluttertoast:
   url_launcher:
+  uni_links2:
+  sqflite:
 
 dev_dependencies:
   flutter_test:

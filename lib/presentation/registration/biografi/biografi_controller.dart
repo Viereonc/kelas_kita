@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:image/image.dart' as img;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:kelas_kita/routes/app_routes.dart';
@@ -33,6 +34,18 @@ class BiografiController extends GetxController {
   void onInit() {
     fetchKelas();
     super.onInit();
+  }
+
+  Future<void> convertToJpg(File image) async {
+    final imageBytes = image.readAsBytesSync();
+    final decodedImage = img.decodeImage(imageBytes);
+
+    if (decodedImage != null) {
+      final jpgImage = img.encodeJpg(decodedImage);
+      final jpgFile = File(image.path.replaceAll(RegExp(r'\.\w+$'), '.jpg'));
+      jpgFile.writeAsBytesSync(jpgImage);
+      selectedImagePath.value = jpgFile;
+    }
   }
 
   Future<void> fetchKelas() async {
@@ -94,11 +107,25 @@ class BiografiController extends GetxController {
       });
 
       if (imagePath.isNotEmpty) {
-        request.files.add(await http.MultipartFile.fromPath(
-          'image',
-          imagePath,
-          contentType: MediaType('image', 'jpg'),
-        ));
+        // Check the file extension
+        String extension = imagePath.split('.').last.toLowerCase();
+        if (extension != 'jpg' && extension != 'jpeg') {
+          Get.snackbar(
+            'Error',
+            'Format harus JPG',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+          // Optionally convert to JPG
+          await convertToJpg(File(imagePath));
+        } else {
+          request.files.add(await http.MultipartFile.fromPath(
+            'image',
+            imagePath,
+            contentType: MediaType('image', 'jpg'),
+          ));
+        }
       }
 
       var response = await request.send();
@@ -118,7 +145,7 @@ class BiografiController extends GetxController {
           Get.offNamed(Path.HOME_PAGE);
         } else if (biografiStatus == 'P') {
           Get.offNamed(Path.PENDING_PAGE);
-        } else if (biografiStatus == 'T') {
+        } else if (biografiStatus == 'D') {
           Get.offNamed(Path.BIOGRAFI_PAGE);
         }
       } else {

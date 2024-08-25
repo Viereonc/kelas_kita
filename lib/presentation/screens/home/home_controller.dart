@@ -4,9 +4,11 @@ import 'package:kelas_kita/data/models/tagihan_kas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:kelas_kita/routes/app_routes.dart';
 import '../../../constants.dart';
 import '../../../data/api/firebase_api.dart';
 import '../../../data/models/biografi_model.dart';
+import '../../../data/models/kas_kelas_model.dart';
 import '../../registration/biografi/kelas_model.dart';
 
 class HomeController extends GetxController {
@@ -24,12 +26,14 @@ class HomeController extends GetxController {
   ).obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   RxList<InfoTagihanKasModel> tagihanKasList = <InfoTagihanKasModel>[].obs;
+  RxList<InfoKasKelasModel> kasKelasList = <InfoKasKelasModel>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     fetchBiografi();
     fetchTagihanKas();
+    fetchInformasiKasKelas();
     postFcmToken();
     FirebaseApi().initNotifications();
     Future.delayed(Duration(seconds: 4), () {
@@ -48,11 +52,11 @@ class HomeController extends GetxController {
     userName.value = nama;
   }
 
-  Future<void> saveIdBiodata(int id_biodata) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('id_biodata', id_biodata.toString());
-    idBiodata.value = id_biodata.toString();
-  }
+  // Future<void> saveIdBiodata(int id_biodata) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('id_biodata', id_biodata.toString());
+  //   idBiodata.value = id_biodata.toString();
+  // }
 
   Future<void> refreshHome() async {
     isLoading.value = true;
@@ -100,11 +104,40 @@ class HomeController extends GetxController {
     }
   }
 
+  void fetchInformasiKasKelas() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? idKelas = prefs.getInt('id_kelas');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl$getKasKelas'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        kasKelasList.value = infoKasKelasModelFromJson(response.body);
+        isLoading.value = false;
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
   Future<void> fetchBiografi() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
       int? userId = prefs.getInt('id_user');
+
+      if(userId == null) {
+        Get.offNamed(Path.ONBOARDING_PAGE);
+        return;
+      }
 
       if (userId != null) {
         final response = await http.get(
@@ -125,9 +158,28 @@ class HomeController extends GetxController {
           prefs.setInt('id_user', userId);
           prefs.setString('isLoginGoogle', 'true');
           prefs.setString('userName', fetchedData.nama ?? '');
+          prefs.setString('nama', fetchedData.nama ?? '');
+          prefs.setInt('nis', fetchedData.nis);
+          prefs.setString('alamat', fetchedData.alamat ?? '');
+          prefs.setInt('id_kelas', fetchedData.idKelas);
+          prefs.setInt('id_biodata', fetchedData.idBiodata);
+          prefs.setString('email', fetchedData.user?.email ?? '');
+          prefs.setInt('id_user', fetchedData.idUser);
+          prefs.setString('id_google', fetchedData.user?.idGoogle ?? '');
 
-          await saveIdBiodata(fetchedData.idBiodata ?? 0);
+          // await saveIdBiodata(fetchedData.idBiodata ?? 0);
           userStatus.value = fetchedData.role.nama.toString();
+
+          if (fetchedData.status == "P") {
+            Get.offNamed(Path.PENDING_PAGE);
+          } else if (fetchedData.status == "A") {
+            final role = fetchedData.roleName?.toString();
+            if (role == 'RoleName.WALI_KELAS') {
+              Get.offNamed(Path.HOMEGURU_PAGE);
+            } else {
+              Get.offNamed(Path.HOME_PAGE);
+            }
+          }
 
           print('Successfully loaded biografi data: ${biografiList.length}');
         } else {
@@ -152,7 +204,12 @@ class HomeController extends GetxController {
       String? biodataIdString = prefs.getString('id_biodata');
       int? biodataId = biodataIdString != null ? int.tryParse(biodataIdString) : null;
 
-      print('biodataId: $biodataId');  // Log the biodataId to check its value
+      if(userId == null) {
+        Get.offNamed(Path.ONBOARDING_PAGE);
+        return;
+      }
+
+      print('biodataId: $biodataId');
       if (userId != null) {
         final url = Uri.parse('$baseUrl$tagihanKasUserEndPoint$biodataId');
         print('Requesting URL: $url');

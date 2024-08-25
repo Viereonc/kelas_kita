@@ -153,7 +153,36 @@ class BiografiView extends StatelessWidget {
                                 future: biografiController.fetchKelas(),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return SizedBox();
+                                    return Container(
+                                      padding: EdgeInsets.only(left: 10, right: 10),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.black.withOpacity(0.4),
+                                          width: 1.5,
+                                        ),
+                                        borderRadius: BorderRadius.circular(5.0),
+                                      ),
+                                      child: DropdownButtonFormField<String?>(
+                                        dropdownColor: Colors.white,
+                                        value: biografiController.selectedKelas.value.nama.isNotEmpty ? biografiController.selectedKelas.value.nama : null,
+                                        items: biografiController.kelasList.map((KelasModel kelas) {
+                                          return DropdownMenuItem<String>(
+                                            value: kelas.idKelas.toString(),
+                                            child: Text(kelas.nama),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? value) {
+                                          if (value != null) {
+                                            print('Selected value: $value');
+                                            biografiController.idKelas.value = value;
+                                          }
+                                        },
+                                        decoration: InputDecoration(
+                                          hintText: 'Pilih Kelas',
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                    );
                                   } else if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   } else {
@@ -168,7 +197,7 @@ class BiografiView extends StatelessWidget {
                                         ),
                                         borderRadius: BorderRadius.circular(5.0),
                                       ),
-                                      child: DropdownButtonFormField<String>(
+                                      child: DropdownButtonFormField<String?>(
                                         dropdownColor: Colors.white,
                                         value: biografiController.selectedKelas.value.nama.isNotEmpty ? biografiController.selectedKelas.value.nama : null,
                                         items: biografiController.kelasList.map((KelasModel kelas) {

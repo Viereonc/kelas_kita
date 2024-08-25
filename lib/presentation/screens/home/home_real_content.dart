@@ -60,13 +60,13 @@ class RealContent extends StatelessWidget {
                     Text(
                       homeController.biografiList.isNotEmpty
                           ? 'Total Kas Kelas ${homeController.biografiList[0].kelas.nama}'
-                          : 'Total Kas Kelas Tidak Ditemukan',
+                          : 'Total Kas Kelas Tidak Ada',
                       style: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.white),
                     ),
                     Padding(padding: EdgeInsets.only(top: screenHeight * 0.01)),
                     Text(
-                      homeController.tagihanKasList.isNotEmpty
-                          ? 'Rp ${homeController.tagihanKasList[0].totalKas ?? 0}'
+                      homeController.kasKelasList.isNotEmpty
+                          ? 'Rp ${homeController.kasKelasList[0].nominal}'
                           : 'Rp 0',
                       style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white),
                     ),

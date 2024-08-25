@@ -67,6 +67,15 @@ class DetailInfoKelas extends StatelessWidget {
                         width: double.infinity,
                         height: screenHeight * 0.23,
                         fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                          return Center(
+                            child: Icon(
+                              Icons.image_not_supported_outlined,
+                              color: Colors.grey.shade300,
+                              size: screenWidth * 0.3,
+                            ),
+                          );
+                        },
                       ),
                     )
                         : SizedBox(

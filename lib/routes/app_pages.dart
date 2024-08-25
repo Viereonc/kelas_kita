@@ -140,7 +140,7 @@ class AppPages {
         transition: Transition.noTransition),
     GetPage(
         name: Path.QRCODETUNAI,
-        page: () => QrCodeTunaiScreen(),
+        page: () => ScanQrCodeTunaiScreen(),
         transition: Transition.noTransition),
   ];
 }

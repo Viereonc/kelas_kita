@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:kelas_kita/data/models/notif_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,13 +10,42 @@ import '../../../data/models/biografi_model.dart';
 
 class NotifController extends GetxController {
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
+  RxList<InfoNotifModel> notifList = <InfoNotifModel>[].obs;
   var userStatus = ''.obs;
+  var isLoading = true.obs;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     fetchBiografi();
+    fetchInfoNotif();
+  }
+
+  void fetchInfoNotif() async {
+    try {
+      isLoading.value = true;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      int? idBiodata = prefs.getInt('id_biodata');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl$getNotif$idBiodata'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        notifList.value = infoNotifModelFromJson(response.body);
+        print('Success to fetch notif: ${response.statusCode}');
+        isLoading.value = false;
+      } else {
+        print('Failed to fetch data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
   }
 
   Future<void> fetchBiografi() async {

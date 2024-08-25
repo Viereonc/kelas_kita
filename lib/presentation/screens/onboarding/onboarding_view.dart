@@ -150,8 +150,6 @@ class OnboardingScreen extends StatelessWidget {
                 child: Image.asset(
                   'lib/assets/images/ob_security.png',
                   fit: BoxFit.cover,
-                  height: screenHeight * 0.7,
-                  width: screenWidth * 0.8,
                 ),
               ),
               footer: Column(
@@ -159,7 +157,7 @@ class OnboardingScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: screenHeight * 0.03, left: screenWidth * 0.1, right: screenWidth * 0.1),
+                    margin: EdgeInsets.only(bottom: screenHeight * 0.02, left: screenWidth * 0.1, right: screenWidth * 0.1),
                     child: Container(
                       child: Button(
                         label: 'Login',

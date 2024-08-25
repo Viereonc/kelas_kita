@@ -1,11 +1,15 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:kelas_kita/main.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas.dart';
 
 import '../../presentation/screens/info_kelas/info_kelas_view.dart';
+import '../../presentation/screens/notification/notif_controller.dart';
 import '../../presentation/screens/notification/notif_page.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
+
   print('Title : ${message.notification!.title}');
   print('Body : ${message.notification!.body}');
   print('payload : ${message.data}');
@@ -17,7 +21,9 @@ class FirebaseApi {
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
 
+
     final title = message.notification?.title ?? '';
+    final body = message.notification?.body ?? '';
 
     if (title.contains('Informasi Kelas')) {
       navigatorKey.currentState?.pushNamed(InfoKelasScreen.route, arguments: message);
@@ -45,6 +51,8 @@ class FirebaseApi {
     final fCMToken = await firebaseMessaging.getToken();
     print('Token : $fCMToken');
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+    FirebaseMessaging.onMessage.listen(handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
     initPushNotifications();
   }
 }

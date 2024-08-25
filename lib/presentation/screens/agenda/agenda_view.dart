@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
+import '../home/home_view.dart';
 import 'add_agenda/add_agenda_view.dart';
 import 'agenda_controller.dart';
 import 'detail_agenda/detail_agenda.dart';
@@ -89,7 +90,7 @@ class AgendaScreen extends StatelessWidget {
                 leading: Container(
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Get.to(HomeScreen());
                     },
                     icon: Container(
                       decoration: BoxDecoration(

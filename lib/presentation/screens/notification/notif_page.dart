@@ -1,14 +1,11 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/notification/notif_controller.dart';
-import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
+import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
+import 'package:timeago/timeago.dart' as timeago; // Import timeago for time formatting
 
-import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
-
+import '../../widgets/BottomNavigationBar/BottomNavigationBar.dart';
 import '../../widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -17,10 +14,12 @@ class NotificationPage extends StatelessWidget {
 
   final NotifController notifController = Get.put(NotifController());
 
+  Future<void> _refreshData(BuildContext context) async {
+    return notifController.fetchInfoNotif();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final message = ModalRoute.of(context)?.settings.arguments as RemoteMessage?;
-
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -40,13 +39,8 @@ class NotificationPage extends StatelessWidget {
                     'Notification',
                     style: tsParagraft1(
                       fontWeight: FontWeight.w600,
-                      screenSize: screenWidth
-                    )
-                  ),
-                  SvgPicture.asset(
-                    "lib/assets/icons/adjusments.svg",
-                    width: screenWidth * 0.08,
-                    height: screenWidth * 0.08
+                      screenSize: screenWidth,
+                    ),
                   ),
                 ],
               ),
@@ -55,76 +49,95 @@ class NotificationPage extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
             ),
-            if (message?.notification?.title != null)
-              Text(message!.notification!.title.toString()),
-            if (message?.notification?.body != null)
-              Text(message!.notification!.body.toString()),
-            if (message?.data != null)
-              Text(message!.data.toString()),
             Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+              child: Obx(() {
+                if (notifController.isLoading.value) {
+                  return Center(child: CircularProgressIndicator()); // Loading indicator
+                } else if (notifController.notifList.isEmpty) {
+                  return Center(child: Text("No notifications available."));
+                } else {
+                  // Sort the notifications by time (assuming newest first)
+                  notifController.notifList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+                  return RefreshIndicator(
+                    onRefresh: () => _refreshData(context),
+                    child: ListView.builder(
+                      itemCount: notifController.notifList.length,
+                      itemBuilder: (context, index) {
+                        final notif = notifController.notifList[index];
+
+                        timeago.setLocaleMessages('id', timeago.IdMessages());
+                        final createdAt = notif.createdAt;
+                        final timeAgo = timeago.format(createdAt, locale: 'id');
+
+                        return Column(
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: screenWidth * 0.03),
-                                  child: SvgPicture.asset(
-                                    "lib/assets/icons/task.svg",
-                                    width: screenWidth * 0.12,
-                                    height: screenWidth * 0.12
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.only(right: screenWidth * 0.03),
+                                          child: Container(
+                                              padding: EdgeInsets.all(15),
+                                              margin: EdgeInsets.only(right: 5),
+                                              decoration: BoxDecoration(
+                                                  color: primeryColorMedium,
+                                                  shape: BoxShape.circle
+                                              ),
+                                              child: Icon(Icons.notifications, color: Colors.white,)
+                                          )
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: screenWidth * 0.5,
+                                            child: Text(
+                                                notif.title,
+                                                style: tsParagraft3(
+                                                    fontWeight: FontWeight.w600,
+                                                    screenSize: screenWidth
+                                                )
+                                            ),
+                                          ),
+                                          SizedBox(height: 5,),
+                                          Container(
+                                            width: screenWidth * 0.5,
+                                            child: Text(
+                                                notif.message,
+                                                style: tsParagraft5(screenSize: screenWidth)
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: screenWidth * 0.5,
-                                      child: Text(
-                                        'Tagihan Uang Kas',
-                                        style: tsParagraft3(
-                                          fontWeight: FontWeight.w600,
-                                          screenSize: screenWidth
-                                        )
-                                      ),
+                                  Text(
+                                    timeAgo,
+                                    style: tsParagraft5(
+                                      screenSize: screenWidth,
                                     ),
-                                    Container(
-                                      width: screenWidth * 0.5,
-                                      child: Text(
-                                        'Tagihan Kas Anda Bulan Ini Belum Lunas (Rp. 10.000.00)',
-                                        style: tsParagraft5(screenSize: screenWidth)
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              '2 hari lalu',
-                              style: tsParagraft5(
-                                screenSize: screenWidth
-                              )
+                            Divider(
+                              color: Colors.grey,
+                              thickness: 0.5,
                             ),
                           ],
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.grey,
-                        thickness: 0.5,
-                      ),
-                    ],
+                        );
+                      },
+                    ),
                   );
-                },
-              ),
+                }
+              }),
             ),
           ],
         ),
@@ -136,13 +149,17 @@ class NotificationPage extends StatelessWidget {
         width: 64,
         child: FloatingActionButton(
           onPressed: () {
-            Get.toNamed('/qrcodesiswascreen');
+            if (notifController.userStatus.value == 'Wali Kelas') {
+              Get.toNamed('/qrcodeguruscreen');
+            } else {
+              Get.toNamed('/qrcodesiswascreen');
+            }
           },
           backgroundColor: primeryColorMedium,
           elevation: 0,
           shape: RoundedRectangleBorder(
             side: BorderSide(width: 3, color: Colors.white),
-            borderRadius: BorderRadius.circular(30)
+            borderRadius: BorderRadius.circular(30),
           ),
           child: Icon(
             Icons.qr_code,

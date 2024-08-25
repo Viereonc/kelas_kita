@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:kelas_kita/presentation/screens/home/home_view.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/add_info_tugas/add_info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +53,7 @@ class InfoTugasScreen extends StatelessWidget {
                 leading: Container(
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Get.to(HomeScreen());
                     },
                     icon: Container(
                       decoration: BoxDecoration(

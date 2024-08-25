@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import '../../../data/models/biografi_model.dart';
 
 class SplashController extends GetxController {
-
   @override
   void onInit() {
     super.onInit();
@@ -50,8 +49,14 @@ class SplashController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
+      // String? status = prefs.getString('status');
       int? userId = prefs.getInt('id_user');
       int? nis = prefs.getInt('nis');
+
+      if(userId == null) {
+        Get.offNamed(Path.ONBOARDING_PAGE);
+        return;
+      }
 
       if (nis != null && nis > 0) {
         final role = prefs.getString('role_name');
@@ -63,7 +68,7 @@ class SplashController extends GetxController {
         return;
       }
 
-      if (userId != null) {
+      if (userId != null && token != null) {
         final response = await http.get(
           Uri.parse('$baseUrl$biodataEndpointGet$userId'),
           headers: <String, String>{
@@ -75,27 +80,33 @@ class SplashController extends GetxController {
           var jsonResponse = json.decode(response.body);
           InfoBiografiModel biografiModel = InfoBiografiModel.fromJson(jsonResponse);
 
-          if (biografiModel != null) {
-            prefs.setString('nama', biografiModel.nama ?? '');
-            prefs.setInt('nis', biografiModel.nis);
-            prefs.setString('alamat', biografiModel.alamat ?? '');
-            prefs.setInt('id_kelas', biografiModel.idKelas);
-            prefs.setInt('id_biodata', biografiModel.idBiodata);
-            prefs.setString('email', biografiModel.user.email ?? '');
-            prefs.setInt('id_user', biografiModel.idUser);
-            prefs.setInt('id_biodata', biografiModel.idBiodata);
-            prefs.setString('id_google', biografiModel.user.idGoogle ?? '');
-            prefs.setString('status', biografiModel.status.toString());
-            prefs.setString('role_name', biografiModel.roleName.toString());
-
-            print('ID Biodata: ${biografiModel.idBiodata}');
-
-            final role = biografiModel.roleName.toString();
+          if (biografiModel.status == "P") {
+            Get.offNamed(Path.PENDING_PAGE);
+          } else if (biografiModel.status == "A") {
+            final role = biografiModel.roleName?.toString();
             if (role == 'RoleName.WALI_KELAS') {
               Get.offNamed(Path.HOMEGURU_PAGE);
             } else {
               Get.offNamed(Path.HOME_PAGE);
             }
+          }
+
+          if (biografiModel != null) {
+            // prefs.setString('nama', biografiModel.nama ?? '');
+            // prefs.setInt('nis', biografiModel.nis);
+            // prefs.setString('alamat', biografiModel.alamat ?? '');
+            // prefs.setInt('id_kelas', biografiModel.idKelas);
+            // prefs.setInt('id_biodata', biografiModel.idBiodata);
+            // prefs.setString('email', biografiModel.user?.email ?? '');
+            // prefs.setInt('id_user', biografiModel.idUser);
+            // prefs.setString('id_google', biografiModel.user?.idGoogle ?? '');
+            prefs.setString('status', biografiModel.status);
+            prefs.setString('role_name', biografiModel.roleName?.toString() ?? '');
+
+            print('ID Biodata: ${biografiModel.idBiodata}');
+
+            print('Status : ${biografiModel.status}');
+
           } else {
             print('Biografi data is null');
             Get.offNamed(Path.BIOGRAFI_PAGE);
@@ -105,7 +116,7 @@ class SplashController extends GetxController {
           Get.offNamed(Path.BIOGRAFI_PAGE);
         }
       } else {
-        print('User ID is null. Unable to fetch biografi.');
+        print('User ID or token is null. Unable to fetch biografi.');
         Get.offNamed(Path.BIOGRAFI_PAGE);
       }
     } catch (e) {
