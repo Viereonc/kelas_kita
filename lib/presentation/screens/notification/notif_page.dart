@@ -9,7 +9,8 @@ import '../../widgets/BottomNavigationBar/BottomNavigationBar.dart';
 import '../../widgets/BottomNavigationBarGuru/BottomNavigationBar.dart';
 
 class NotificationPage extends StatelessWidget {
-  NotificationPage({super.key});
+  NotificationPage({super.key}) {}
+
   static const route = '/notification';
 
   final NotifController notifController = Get.put(NotifController());
@@ -50,94 +51,85 @@ class NotificationPage extends StatelessWidget {
               thickness: 0.5,
             ),
             Expanded(
-              child: Obx(() {
-                if (notifController.isLoading.value) {
-                  return Center(child: CircularProgressIndicator()); // Loading indicator
-                } else if (notifController.notifList.isEmpty) {
-                  return Center(child: Text("No notifications available."));
-                } else {
-                  // Sort the notifications by time (assuming newest first)
-                  notifController.notifList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+              child: Obx(() => notifController.isLoading.value
+                  ? Center(child: CircularProgressIndicator())
+                  : notifController.notifList.isEmpty
+                  ? Center(child: Text("No notifications available."))
+                  : RefreshIndicator(
+                onRefresh: () => _refreshData(context),
+                child: ListView.builder(
+                  itemCount: notifController.notifList.length,
+                  itemBuilder: (context, index) {
+                    final notif = notifController.notifList[index];
+                    final createdAt = notif.createdAt;
+                    final timeAgo = timeago.format(createdAt);
 
-                  return RefreshIndicator(
-                    onRefresh: () => _refreshData(context),
-                    child: ListView.builder(
-                      itemCount: notifController.notifList.length,
-                      itemBuilder: (context, index) {
-                        final notif = notifController.notifList[index];
-
-                        timeago.setLocaleMessages('id', timeago.IdMessages());
-                        final createdAt = notif.createdAt;
-                        final timeAgo = timeago.format(createdAt, locale: 'id');
-
-                        return Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                    return Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
+                                  Container(
+                                      margin: EdgeInsets.only(right: screenWidth * 0.03),
+                                      child: Container(
+                                          padding: EdgeInsets.all(15),
+                                          margin: EdgeInsets.only(right: 5),
+                                          decoration: BoxDecoration(
+                                              color: primeryColorMedium,
+                                              shape: BoxShape.circle
+                                          ),
+                                          child: Icon(Icons.notifications, color: Colors.white,)
+                                      )
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                          margin: EdgeInsets.only(right: screenWidth * 0.03),
-                                          child: Container(
-                                              padding: EdgeInsets.all(15),
-                                              margin: EdgeInsets.only(right: 5),
-                                              decoration: BoxDecoration(
-                                                  color: primeryColorMedium,
-                                                  shape: BoxShape.circle
-                                              ),
-                                              child: Icon(Icons.notifications, color: Colors.white,)
-                                          )
+                                        width: screenWidth * 0.5,
+                                        child: Text(
+                                            notif.title,
+                                            style: tsParagraft3(
+                                                fontWeight: FontWeight.w600,
+                                                screenSize: screenWidth
+                                            )
+                                        ),
                                       ),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: screenWidth * 0.5,
-                                            child: Text(
-                                                notif.title,
-                                                style: tsParagraft3(
-                                                    fontWeight: FontWeight.w600,
-                                                    screenSize: screenWidth
-                                                )
-                                            ),
-                                          ),
-                                          SizedBox(height: 5,),
-                                          Container(
-                                            width: screenWidth * 0.5,
-                                            child: Text(
-                                                notif.message,
-                                                style: tsParagraft5(screenSize: screenWidth)
-                                            ),
-                                          ),
-                                        ],
+                                      SizedBox(height: 5,),
+                                      Container(
+                                        width: screenWidth * 0.5,
+                                        child: Text(
+                                            notif.message,
+                                            style: tsParagraft5(screenSize: screenWidth)
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  Text(
-                                    timeAgo,
-                                    style: tsParagraft5(
-                                      screenSize: screenWidth,
-                                    ),
-                                  ),
                                 ],
                               ),
-                            ),
-                            Divider(
-                              color: Colors.grey,
-                              thickness: 0.5,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                }
-              }),
+                              // Text(
+                              //   timeAgo,
+                              //   style: tsParagraft5(
+                              //     screenSize: screenWidth,
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                        Divider(
+                          color: Colors.grey,
+                          thickness: 0.5,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              )),
             ),
           ],
         ),

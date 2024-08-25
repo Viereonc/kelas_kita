@@ -14,6 +14,10 @@ class KasScreen extends StatelessWidget {
 
   final KasController kasController = Get.put(KasController());
 
+  Future<void> _refreshData(BuildContext context) async {
+    return kasController.fetchInfoHistoryBayar();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -138,110 +142,110 @@ class KasScreen extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        bottom: screenHeight * 0.015,
-                        top: screenHeight * 0.03,
-                      ),
-                      child: kasController.tagihanKasList.isEmpty
-                          ? Center(
-                        child: Text(
-                          "Tidak ada riwayat kas",
-                          style: tsParagraft3(
-                            fontWeight: FontWeight.w500,
-                            screenSize: screenWidth,
-                          ).copyWith(color: Colors.black),
-                        ),
-                      ) : ListView.builder(
-                        itemCount: kasController.tagihanKasList.length,
-                        itemBuilder: (context, index) {
-                          final tagihan = kasController.tagihanKasList[index];
-                          return Column(
-                            children: tagihan.jumlah.map((jumlahItem) {
-                              // Format the date
-                              String formattedDate = DateFormat('dd MMMM yyyy', 'id_ID').format(jumlahItem.tanggal);
+                    child: Obx(() {
+                      if (kasController.historyBayarList.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "Tidak ada riwayat kas",
+                            style: tsParagraft3(
+                              fontWeight: FontWeight.w500,
+                              screenSize: screenWidth,
+                            ).copyWith(color: Colors.black),
+                          ),
+                        );
+                      }
 
-                              return Container(
-                                margin: EdgeInsets.only(bottom: screenHeight * 0.015),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      width: screenWidth * 0.13,
-                                      height: screenHeight * 0.1,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFF34A853),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            CupertinoIcons.plus,
-                                            color: Colors.white,
-                                            size: 15,
+                      return RefreshIndicator(
+                        onRefresh: () => _refreshData(context),
+                        child: ListView.builder(
+                          itemCount: kasController.historyBayarList.length,
+                          itemBuilder: (context, index) {
+                            final tagihan = kasController.historyBayarList[index];
+                            final createdAtDate = DateTime.parse(tagihan.createdAt.toString());
+                            final formattedDate = DateFormat('dd MMMM yyyy', 'id_ID').format(createdAtDate);
+
+                            return Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: screenHeight * 0.015),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          width: screenWidth * 0.13,
+                                          height: screenHeight * 0.1,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFF34A853),
+                                            shape: BoxShape.circle,
                                           ),
-                                          SizedBox(
-                                            width: 2,
-                                            height: 10,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                CupertinoIcons.plus,
+                                                color: Colors.white,
+                                                size: 15,
+                                              ),
+                                              SizedBox(
+                                                width: 2,
+                                                height: 10,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(bottom: 7),
+                                                child: SvgPicture.asset(
+                                                  "lib/assets/icons/he_kas.svg",
+                                                  width: screenWidth * 0.033,
+                                                  height: screenHeight * 0.033,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(bottom: 7),
-                                            child: SvgPicture.asset(
-                                              "lib/assets/icons/he_kas.svg",
-                                              width: screenWidth * 0.033,
-                                              height: screenHeight * 0.033,
-                                            ),
+                                        ),
+                                        SizedBox(width: screenWidth * 0.03),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Kas Mingguan",
+                                                style: tsParagraft3(
+                                                  fontWeight: FontWeight.w600,
+                                                  screenSize: screenWidth,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: screenHeight * 0.005,
+                                              ),
+                                              Text(
+                                                formattedDate,
+                                                style: tsParagraft4(
+                                                  fontWeight: FontWeight.w500,
+                                                  screenSize: screenWidth * 0.8,
+                                                ).copyWith(
+                                                  color: Colors.grey.withOpacity(0.9),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Text(
+                                          "Rp ${tagihan.nominal}",
+                                          style: tsParagraft3(
+                                            fontWeight: FontWeight.w600,
+                                            screenSize: screenWidth * 0.9,
+                                          ).copyWith(color: Color(0xFF34A853)),
+                                        )
+                                      ],
                                     ),
-                                    SizedBox(width: screenWidth * 0.03),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Kas Mingguan",
-                                            style: tsParagraft3(
-                                              fontWeight: FontWeight.w600,
-                                              screenSize: screenWidth,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: screenHeight * 0.005,
-                                          ),
-                                          // Display the formatted date
-                                          Text(
-                                            formattedDate,
-                                            style: tsParagraft4(
-                                              fontWeight: FontWeight.w500,
-                                              screenSize: screenWidth * 0.8,
-                                            ).copyWith(
-                                              color: Colors.grey.withOpacity(0.9),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    // Display the dynamic nominal
-                                    Text(
-                                      "Rp ${jumlahItem.nominal}",
-                                      style: tsParagraft3(
-                                        fontWeight: FontWeight.w600,
-                                        screenSize: screenWidth * 0.9,
-                                      ).copyWith(color: Color(0xFF34A853)),
-                                    )
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          );
-                        },
-                      ),
-                    ),
+                                  )
+                                ]
+                            );
+                          },
+                        ),
+                      );
+                    }),
                   ),
                   Button(
                       label: "Bayar Kas",
