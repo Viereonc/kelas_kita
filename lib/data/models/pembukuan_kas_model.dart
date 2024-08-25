@@ -30,12 +30,12 @@ class PembukuanKasModel {
   factory PembukuanKasModel.fromJson(Map<String, dynamic> json) => PembukuanKasModel(
     id: json["id"],
     idKelas: json["id_kelas"],
-    nama: json["nama"],
+    nama: json["nama"] ?? '',
     jenis: json["jenis"],
     jumlahPengeluaran: json["jumlah_pengeluaran"],
     tanggal: DateTime.parse(json["tanggal"]),
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    createdAt: DateTime.parse(json["created_at"] ?? DateTime.now().toIso8601String()),
+    updatedAt: DateTime.parse(json["updated_at"] ?? DateTime.now().toIso8601String()),
     kelas: Kelas.fromJson(json["kelas"]),
   );
 

@@ -78,8 +78,7 @@ class ProfileScreen extends StatelessWidget {
                                 color: Colors.grey[300],
                               ),
                             ),
-                          )
-                              : ClipOval(
+                          ) : ClipOval(
                             child: Container(
                               width: screenWidth * 0.33,
                               height: screenWidth * 0.33,
@@ -87,14 +86,21 @@ class ProfileScreen extends StatelessWidget {
                                   ? Image.network(
                                 profileController.profileImageUrl.value,
                                 fit: BoxFit.cover,
-                              )
-                                  : SvgPicture.asset(
-                                "libassets/images/example.svg",
-                                fit: BoxFit.cover,
-                                color: Colors.red,
+                                errorBuilder: (context, error, stackTrace) {
+                                  // Fallback if the network image fails to load
+                                  return Icon(
+                                    Icons.image_not_supported,
+                                    size: screenWidth * 0.2,
+                                    color: Colors.grey,
+                                  );
+                                },
+                              ) : Icon(
+                                Icons.image_not_supported,
+                                size: screenWidth * 0.2,
+                                color: Colors.grey,
+                                ),
                               ),
-                            ),
-                          ))
+                            ))
                           ]),
                       ),
                     ],
