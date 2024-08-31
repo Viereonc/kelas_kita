@@ -31,8 +31,8 @@ class KelasModel {
     idBiodata: json["id_biodata"],
     nama: json["nama"],
     jumlahKas: json["jumlah_kas"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
+    createdAt: json["created_at"] ?? DateTime.now().toIso8601String(),
+    updatedAt: json["updated_at"] ?? DateTime.now().toIso8601String(),
   );
 
   Map<String, dynamic> toJson() => {

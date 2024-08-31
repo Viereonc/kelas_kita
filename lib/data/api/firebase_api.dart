@@ -21,7 +21,6 @@ class FirebaseApi {
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
 
-
     final title = message.notification?.title ?? '';
     final body = message.notification?.body ?? '';
 

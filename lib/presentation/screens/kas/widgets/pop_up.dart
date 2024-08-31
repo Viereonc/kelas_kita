@@ -61,6 +61,7 @@ void showGopayPopup(BuildContext context) async {
                   print('Nominal: $nominal');
                   print('ID Biodata: $idBiodata');
 
+                  nominalController.clear();
                   Navigator.of(context).pop();
                   Get.to(() => QrCodePage(userName: nama ?? '', nominal: nominal, idBiodata: idBiodata ?? 0,));
                 } : null,

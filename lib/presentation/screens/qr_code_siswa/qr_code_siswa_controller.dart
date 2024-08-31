@@ -13,9 +13,13 @@ import '../../../data/models/jadwal_kelas_model.dart';
 class QrCodeSiswaController extends GetxController {
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   RxList<JadwalKelasModel> jadwalKelasList = <JadwalKelasModel>[].obs;
+  RxList<int> attendedLessons = <int>[].obs;
   RxString selectedPelajaran = ''.obs;
   RxString selectedIdPelajaran = ''.obs;
+  // RxString selectedGuru = ''.obs;
+  RxString selectedMapelPelajaran = ''.obs;
   RxString qrData = ''.obs;
+  RxString userName = ''.obs;
   Timer? _timer;
 
   @override
@@ -24,12 +28,45 @@ class QrCodeSiswaController extends GetxController {
     fetchBiografi();
     fetchJadwalPelajaran();
     _startQrCodeTimer();
+    loadUserName();
   }
 
   @override
   void onClose() {
     _timer?.cancel();
     super.onClose();
+  }
+
+  bool isAlreadyAttended(int idPelajaran) {
+    return attendedLessons.contains(idPelajaran);
+  }
+
+  void markAsAttended(int idPelajaran) {
+    if (!attendedLessons.contains(idPelajaran)) {
+      attendedLessons.add(idPelajaran);
+    }
+  }
+
+  Future<void> loadUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userName.value = prefs.getString('nama') ?? '';
+  }
+
+  Future<void> saveUserName(String nama) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('nama', nama);
+    userName.value = nama;
+  }
+
+  Future<int?> fetchBiodataId() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int? biodataId = prefs.getInt('id_biodata');
+      return biodataId;
+    } catch (e) {
+      print('Error fetching id_biodata: $e');
+      return null;
+    }
   }
 
   Future<void> fetchJadwalPelajaran() async {
@@ -95,20 +132,23 @@ class QrCodeSiswaController extends GetxController {
     }
   }
 
-  void setSelectedPelajaran(String pelajaran, int idPelajaran) {
+  void setSelectedPelajaran(String pelajaran, int idPelajaran, String guru) {
     selectedPelajaran.value = pelajaran;
     selectedIdPelajaran.value = idPelajaran.toString();
+    // selectedMapelPelajaran.value = hariMapel;
     _generateQrCode();
   }
 
   void _generateQrCode() {
     final biografi = biografiList.isNotEmpty ? biografiList.first : null;
+    final pelajaran = jadwalKelasList.isNotEmpty ? jadwalKelasList.first : null;
     final data = 'Pelajaran: ${selectedPelajaran.value}, '
         'Nama: ${biografi?.nama ?? 'N/A'}, '
         'Nama Kelas: ${biografi?.kelas.nama ?? 'N/A'}, '
         'Waktu Absen: ${DateTime.now().toIso8601String()}, '
         'ID Biodata: ${biografi?.idBiodata ?? 'N/A'}, '
         'ID Pelajaran: ${selectedIdPelajaran.value}';
+        'Guru: ${pelajaran?.guru ?? 'N/A'}';
     qrData.value = data;
   }
 

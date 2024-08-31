@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/jadwal/jadwal_view.dart';
+import '../../themes/FontsStyle.dart';
 import 'jadwal_piket_controller.dart';
 
 class JadwalPiket extends StatelessWidget {
@@ -19,27 +20,10 @@ class JadwalPiket extends StatelessWidget {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: screenHeight * 0.06),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {},
-                    ),
-                    Text(
-                      'Maret',
-                      style: TextStyle(
-                        fontFamily: 'tsHeader1',
-                        fontWeight: FontWeight.bold,
-                        fontSize: screenHeight * 0.03,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.arrow_forward_ios),
-                      onPressed: () {},
-                    ),
-                  ],
+                SizedBox(height: screenHeight * 0.02),
+                Text(
+                    'Jadwal Piket',
+                    style: tsHeader3(screenSize: screenWidth)
                 ),
                 SizedBox(height: screenHeight * 0.02),
                 Row(
@@ -80,7 +64,7 @@ class JadwalPiket extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(left: screenWidth * 0.04),
                           child: Text(
-                            'Ganti Jadwal',
+                            'Beralih Jadwal Pelajaran',
                             style: TextStyle(
                               fontFamily: 'tsParagraft1',
                               fontWeight: FontWeight.w500,

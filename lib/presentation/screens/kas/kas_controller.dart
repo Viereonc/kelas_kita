@@ -150,7 +150,7 @@ class KasController extends GetxController {
         if (await canLaunchUrl(Uri.parse(midtransUrl))) {
           await launchUrl(
             Uri.parse(midtransUrl),
-            mode: LaunchMode.externalApplication,
+            mode: LaunchMode.inAppBrowserView,
           );
           midtrans?.setUIKitCustomSetting(skipCustomerDetailsPages: true);
           midtrans!.setTransactionFinishedCallback((result) {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -183,10 +184,7 @@ class BiografiView extends StatelessWidget {
                                         ),
                                       ),
                                     );
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
                                   } else {
-                                    // Bangun dropdown setelah data dimuat
                                     print('List of classes: ${biografiController.kelasList}');
                                     return Container(
                                       padding: EdgeInsets.only(left: 10, right: 10),
@@ -237,6 +235,17 @@ class BiografiView extends StatelessWidget {
                           hint: 'NIS',
                           hintDescription: 'Isi dengan NIS Anda',
                           screenWidth: screenWidth,
+                          textInputType: TextInputType.number,
+                          inputFormatter: FilteringTextInputFormatter.digitsOnly,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'NIS tidak boleh kosong';
+                            }
+                            if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                              return 'Masukkan NIS yang valid';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: screenHeight * 0.025),
                         buildFormField(
@@ -352,6 +361,10 @@ class BiografiView extends StatelessWidget {
     required String hint,
     required String hintDescription,
     required double screenWidth,
+    TextInputType? textInputType,
+    TextInputFormatter? inputFormatter,
+    void Function(String)? onChanged,
+    String? Function(String?)? validator,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,7 +388,16 @@ class BiografiView extends StatelessWidget {
           width: double.infinity,
           height: screenWidth * 0.1,
           child: TextFormField(
+            onChanged: onChanged,
+            validator: validator,
             controller: controller,
+            keyboardType: label == "NIS"
+                ? TextInputType.phone
+                : TextInputType.text,
+            inputFormatters: label == "NIS"
+                ? <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly,
+            ] : null,
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TextStyle(

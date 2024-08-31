@@ -96,7 +96,7 @@ class LoginController extends GetxController {
           final role = jsonResponse['role_name'];
 
           if (name != null && name.isNotEmpty) {
-            if (role == 'Wali Kelas') {
+            if (role == 'Wali Kelas' || role == 'Guru') {
               Get.offNamed(Path.HOMEGURU_PAGE);
             } else {
               Get.offNamed(Path.HOME_PAGE);

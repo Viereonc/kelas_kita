@@ -10,14 +10,19 @@ class ScanAbsensiController extends GetxController {
   var isLoading = false.obs;
   var scannedData = {}.obs;
   var dialogShown = false.obs;
-  var isLate = false.obs; // Tambahan untuk menandai siswa yang telat
+  var isLate = false.obs;
 
-  // Method untuk menetapkan data yang telah discan
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+  }
+
   void setScannedData(String code) {
     final data = parseScannedData(code);
     if (data != null) {
       scannedData.value = data;
-      isLate.value = false; // Reset status telat saat data baru dimasukkan
+      isLate.value = false;
       if (!dialogShown.value) {
         dialogShown.value = true;
         Get.dialog(ScannedDataDialog());
@@ -25,7 +30,6 @@ class ScanAbsensiController extends GetxController {
     }
   }
 
-  // Method untuk mengirim data absensi
   Future<void> postAbsensi() async {
     if (scannedData.isEmpty) {
       print("No data to post");

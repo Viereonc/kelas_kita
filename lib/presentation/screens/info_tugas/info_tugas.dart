@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:kelas_kita/presentation/screens/guru/home_guru/home_guru_view.dart';
 import 'package:kelas_kita/presentation/screens/home/home_view.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/add_info_tugas/add_info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas_controller.dart';
@@ -53,7 +54,11 @@ class InfoTugasScreen extends StatelessWidget {
                 leading: Container(
                   child: IconButton(
                     onPressed: () {
-                      Get.to(HomeScreen());
+                      if (infoTugasController.userStatus.value == 'Wali Kelas'|| infoTugasController.userStatus.value == 'Guru') {
+                        Get.to(HomeScreenGuru());
+                      } else {
+                        Get.to(HomeScreen());
+                      }
                     },
                     icon: Container(
                       decoration: BoxDecoration(

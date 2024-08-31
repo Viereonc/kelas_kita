@@ -12,6 +12,10 @@ class QrCodeSiswaScreen extends StatelessWidget {
 
   final QrCodeSiswaController qrCodeSiswaController = Get.put(QrCodeSiswaController());
 
+  Future<void> _refreshData() async {
+    await qrCodeSiswaController.fetchJadwalPelajaran();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -144,22 +148,54 @@ class QrCodeSiswaScreen extends StatelessWidget {
                                 content: Obx(() {
                                   return SizedBox(
                                     width: double.maxFinite,
-                                    height: 100,
-                                    child: ListView.builder(
-                                      itemCount: qrCodeSiswaController.jadwalKelasList.length,
-                                      itemBuilder: (context, index) {
-                                        final pelajaran = qrCodeSiswaController.jadwalKelasList[index];
-                                        return ListTile(
-                                          title: Text(pelajaran.namaPelajaran),
-                                          onTap: () {
-                                            qrCodeSiswaController.setSelectedPelajaran(
-                                              pelajaran.namaPelajaran,
-                                              pelajaran.idPelajaran,
-                                            );
-                                            Navigator.pop(context);
-                                          },
-                                        );
-                                      },
+                                    height: screenHeight * 0.5,
+                                    child: RefreshIndicator(
+                                      onRefresh: _refreshData,
+                                      child: ListView.builder(
+                                        itemCount: qrCodeSiswaController.jadwalKelasList.length,
+                                        itemBuilder: (context, index) {
+                                          final pelajaran = qrCodeSiswaController.jadwalKelasList[index];
+
+                                          return ListTile(
+                                            title: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Text(pelajaran.namaPelajaran),
+                                                Obx(() {
+                                                  final pelajaran = qrCodeSiswaController.jadwalKelasList[index];
+                                                  if (pelajaran.absensi.isNotEmpty) {
+                                                    final namaSiswa = qrCodeSiswaController.userName.value;
+                                                    final sudahTerabsen = pelajaran.absensi.any((absen) {
+                                                      print("Checking absen: ${absen.nama} against ${pelajaran.namaPelajaran}");
+                                                      return absen.nama == namaSiswa;
+                                                    });
+
+                                                    return Text(
+                                                      sudahTerabsen ? "(Sudah terabsen)" : "",
+                                                      style: TextStyle(fontSize: 14, color: Colors.red),
+                                                    );
+                                                  } else {
+                                                    return Text(
+                                                      "",
+                                                      style: TextStyle(fontSize: 14, color: Colors.red),
+                                                    );
+                                                  }
+                                                }),
+                                              ],
+                                            ),
+                                            subtitle: Text(pelajaran.hari),
+                                            onTap: () {
+                                              qrCodeSiswaController.setSelectedPelajaran(
+                                                pelajaran.namaPelajaran,
+                                                pelajaran.idPelajaran,
+                                                pelajaran.guru
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                          );
+                                        },
+                                      ),
                                     ),
                                   );
                                 }),

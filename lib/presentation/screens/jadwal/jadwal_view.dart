@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:kelas_kita/presentation/screens/jadwal/jadwal_controller.dart';
 import 'package:kelas_kita/presentation/screens/jadwal/jadwal_piket_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
+import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
 
 import '../../../constants.dart';
@@ -33,37 +34,12 @@ class JadwalScreen extends StatelessWidget {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              SizedBox(height: screenHeight * 0.06),
-
-              // Header with navigation buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      // Handle back arrow press
-                    },
-                  ),
-                  Text(
-                    'Maret',
-                    style: TextStyle(
-                      fontFamily: 'tsHeader1',
-                      fontWeight: FontWeight.bold,
-                      fontSize: screenHeight * 0.03,
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.arrow_forward_ios),
-                    onPressed: () {
-                      // Handle forward arrow press
-                    },
-                  ),
-                ],
+              SizedBox(height: screenHeight * 0.02),
+              Text(
+                'Jadwal Pelajaran',
+                style: tsHeader3(screenSize: screenWidth)
               ),
               SizedBox(height: screenHeight * 0.02),
-
-              // Day selection buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -128,7 +104,7 @@ class JadwalScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(left: screenWidth * 0.04),
                         child: Text(
-                          'Ganti Jadwal',
+                          'Beralih Jadwal Piket',
                           style: TextStyle(
                             fontFamily: 'tsParagraft1',
                             fontWeight: FontWeight.w500,
@@ -495,7 +471,7 @@ class JadwalScreen extends StatelessWidget {
             }
 
             if (absensiList.isEmpty) {
-              return Center(child: Text('No students are late.'));
+              return Center(child: Text('Tidak ada daftar kehadiran'));
             }
 
             return ListView.builder(

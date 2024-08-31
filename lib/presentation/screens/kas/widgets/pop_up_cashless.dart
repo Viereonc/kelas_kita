@@ -66,8 +66,12 @@ void showCashLessPopup(BuildContext context) async {
                   print('ID Biodata: $idBiodata');
 
                   kasController.createTransaction(idBiodata, nominal, idKelas);
-                }
-                    : null,
+
+                  nominalController.clear();
+
+                  Navigator.of(context).pop();
+
+                } : null,
                 child: Text(
                   'Konfirmasi',
                   style: tsParagraft3(screenSize: screenWidth).copyWith(

@@ -34,8 +34,8 @@ class InfoKasKelasModel {
     idBiodata: json["id_biodata"],
     nomorRekening: json["nomor_rekening"],
     nominal: json["nominal"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    createdAt: DateTime.parse(json["created_at"] ?? DateTime.now().toIso8601String()),
+    updatedAt: DateTime.parse(json["updated_at"] ?? DateTime.now().toIso8601String()),
   );
 
   Map<String, dynamic> toJson() => {

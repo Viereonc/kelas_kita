@@ -84,7 +84,7 @@ class SplashController extends GetxController {
             Get.offNamed(Path.PENDING_PAGE);
           } else if (biografiModel.status == "A") {
             final role = biografiModel.roleName?.toString();
-            if (role == 'RoleName.WALI_KELAS') {
+            if (role == 'RoleName.WALI_KELAS' || role == 'RoleName.GURU') {
               Get.offNamed(Path.HOMEGURU_PAGE);
             } else {
               Get.offNamed(Path.HOME_PAGE);

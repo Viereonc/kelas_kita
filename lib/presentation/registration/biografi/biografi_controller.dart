@@ -150,10 +150,11 @@ class BiografiController extends GetxController {
         }
       } else {
         var responseData = await http.Response.fromStream(response);
+        print('Response status: ${response.statusCode}');
+        print('Response body: ${responseData.body}');
         var decodedData = json.decode(responseData.body);
 
         if (decodedData['nis'] != null && decodedData['nis'].contains('The nis has already been taken.')) {
-          // Show Snackbar if NIS is already taken
           Get.snackbar(
             'Error',
             'NIS sudah digunakan. silahkan gunakan NIS lain',
