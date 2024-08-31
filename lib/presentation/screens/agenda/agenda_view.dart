@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
+import '../guru/home_guru/home_guru_view.dart';
 import '../home/home_view.dart';
 import 'add_agenda/add_agenda_view.dart';
 import 'agenda_controller.dart';
@@ -90,7 +91,11 @@ class AgendaScreen extends StatelessWidget {
                 leading: Container(
                   child: IconButton(
                     onPressed: () {
-                      Get.to(HomeScreen());
+                      if (agendaController.userStatus.value == 'Wali Kelas'|| agendaController.userStatus.value == 'Guru') {
+                        Get.to(HomeScreenGuru());
+                      } else {
+                        Get.to(HomeScreen());
+                      }
                     },
                     icon: Container(
                       decoration: BoxDecoration(

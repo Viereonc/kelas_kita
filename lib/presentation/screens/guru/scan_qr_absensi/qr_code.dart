@@ -258,9 +258,9 @@ class ScannedDataDialog extends StatelessWidget {
                     Get.back(); // Close dialog
                   },
                   child: Text(
-                    'Post',
+                    'Terima',
                     style: tsParagraft4(
-                        screenSize: screenWidth, color: Colors.white),
+                        screenSize: screenWidth * 1, color: Colors.white),
                   ),
                 ),
               ],

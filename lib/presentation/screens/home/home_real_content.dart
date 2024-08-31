@@ -57,19 +57,18 @@ class RealContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      homeController.biografiList.isNotEmpty
-                          ? 'Total Kas Kelas ${homeController.biografiList[0].kelas.nama}'
-                          : 'Total Kas Kelas Tidak Ada',
-                      style: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.white),
+                    Obx(() =>
+                        Text(
+                          homeController.biografiList.isNotEmpty
+                              ? 'Total Kas Kelas ${homeController.biografiList[0].kelas.nama}'
+                              : 'Total Kas Kelas Tidak Ada',
+                          style: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.white),
+                        ),
                     ),
                     Padding(padding: EdgeInsets.only(top: screenHeight * 0.01)),
-                    Text(
-                      homeController.kasKelasList.isNotEmpty
-                          ? 'Rp ${homeController.kasKelasList[0].nominal}'
-                          : 'Rp 0',
+                    Obx(() => Text('Rp ${homeController.totalKas.value}',
                       style: tsHeader2(screenSize: screenWidth).copyWith(color: Colors.white),
-                    ),
+                    ),)
                   ],
                 ),
               ],

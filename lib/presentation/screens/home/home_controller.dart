@@ -16,6 +16,8 @@ class HomeController extends GetxController {
   RxString userName = ''.obs;
   RxString idBiodata = ''.obs;
   var userStatus = ''.obs;
+  var namaKelas = ''.obs;
+  var totalKas = 0.obs;
   var selectedKelas = KelasModel(
       idKelas: 0,
       nama: '',
@@ -34,6 +36,7 @@ class HomeController extends GetxController {
     fetchBiografi();
     fetchTagihanKas();
     fetchInformasiKasKelas();
+    loadKasKelas();
     postFcmToken();
     FirebaseApi().initNotifications();
     Future.delayed(Duration(seconds: 4), () {
@@ -52,15 +55,32 @@ class HomeController extends GetxController {
     userName.value = nama;
   }
 
-  // Future<void> saveIdBiodata(int id_biodata) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setString('id_biodata', id_biodata.toString());
-  //   idBiodata.value = id_biodata.toString();
-  // }
+  Future<void> loadNamaKelas() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    namaKelas.value = prefs.getString('nama') ?? '';
+  }
+
+  Future<void> saveNamaKelas(String kelas) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('nama', kelas);
+    namaKelas.value = kelas;
+  }
+
+  Future<void> loadKasKelas() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    totalKas.value = prefs.getInt('nominal') ?? 0;
+  }
+
+  Future<void> saveKasKelas(int kasKelas) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('nominal', kasKelas);
+    totalKas.value = kasKelas;
+  }
 
   Future<void> refreshHome() async {
     isLoading.value = true;
     await loadUserName();
+    await loadKasKelas();
     await Future.delayed(Duration(seconds: 2));
     isLoading.value = false;
   }
@@ -118,13 +138,25 @@ class HomeController extends GetxController {
       );
 
       if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        print('JSON Response: $jsonResponse');
+
         kasKelasList.value = infoKasKelasModelFromJson(response.body);
+
+        if (kasKelasList.isNotEmpty) {
+          var fetchedData = kasKelasList[0];
+          print('Fetched nominal value: ${fetchedData.nominal}');
+          await saveKasKelas(fetchedData.nominal ?? 0);
+        } else {
+          print('Kas Kelas list is empty.');
+        }
+
         isLoading.value = false;
       } else {
-        print('Failed to fetch data: ${response.statusCode}');
+        print('Failed to fetch data Info Kas Kelas: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching data: $e');
+      print('Error fetching data Info Kas Kelas: $e');
     }
   }
 
@@ -159,7 +191,7 @@ class HomeController extends GetxController {
           prefs.setString('isLoginGoogle', 'true');
           prefs.setString('userName', fetchedData.nama ?? '');
           prefs.setString('nama', fetchedData.nama ?? '');
-          prefs.setInt('nis', fetchedData.nis);
+          prefs.setInt('nis', fetchedData.nis ?? 0);
           prefs.setString('alamat', fetchedData.alamat ?? '');
           prefs.setInt('id_kelas', fetchedData.idKelas);
           prefs.setInt('id_biodata', fetchedData.idBiodata);

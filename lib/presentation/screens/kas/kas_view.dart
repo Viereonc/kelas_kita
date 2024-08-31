@@ -109,6 +109,7 @@ class KasScreen extends StatelessWidget {
                                         screenSize: screenWidth,
                                       ).copyWith(color: Colors.white),
                                     ),
+                                    SizedBox(height: 5,),
                                     Text(
                                       'Rp ${kasController.tagihanKasList
                                           .isNotEmpty
@@ -133,12 +134,22 @@ class KasScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: 10, horizontal: screenWidth * 0.01),
-                    child: Text(
-                      "Riwayat Pembayaran Kas",
-                      style: tsSubHeader3(
-                        fontWeight: FontWeight.bold,
-                        screenSize: screenWidth,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Riwayat Pembayaran Kas",
+                          style: tsSubHeader3(
+                            fontWeight: FontWeight.bold,
+                            screenSize: screenWidth,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.refresh, color: Colors.black.withOpacity(0.5)), // Refresh icon
+                          onPressed: () => _refreshData(context), // Calls the _refreshData method
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(

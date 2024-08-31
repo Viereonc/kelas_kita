@@ -69,6 +69,13 @@ class MetodePembayaran extends StatelessWidget {
                   });
                 }
 
+                if (kasController.userStatus.value == 'Bendahara') {
+                  items.add({
+                    'image': 'lib/assets/icons/cash.png',
+                    'title': 'QR Bendahara',
+                  });
+                }
+
                 return ListView.separated(
                   itemBuilder: (context, index) {
                     final item = items[index];
@@ -88,6 +95,8 @@ class MetodePembayaran extends StatelessWidget {
                           } else {
                             showGopayPopup(context);
                           }
+                        } else if (item['title'] == 'QR Bendahara') {
+                          showGopayPopup(context);
                         }
                       },
                       child: ListTile(

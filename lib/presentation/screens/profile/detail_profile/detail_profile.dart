@@ -86,6 +86,14 @@ class DetailProfileScreen extends StatelessWidget {
                                   width: screenWidth * 0.28,
                                   height: screenWidth * 0.27,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    // Fallback if the network image fails to load
+                                    return Icon(
+                                      Icons.image_not_supported,
+                                      size: screenWidth * 0.2,
+                                      color: Colors.grey,
+                                    );
+                                  },
                                 )
                                     : Center(
                                   child: SvgPicture.asset(

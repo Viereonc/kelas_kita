@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
+import '../guru/home_guru/home_guru_view.dart';
 import '../home/home_view.dart';
 import 'add_info_kelas/add_info_kelas.dart';
 import 'info_kelas_controller.dart';
@@ -49,7 +50,11 @@ class InfoKelasScreen extends StatelessWidget {
               centerTitle: true,
               leading: IconButton(
                 onPressed: () {
-                  Get.to(HomeScreen());
+                  if (infoKelasController.userStatus.value == 'Wali Kelas'|| infoKelasController.userStatus.value == 'Guru') {
+                    Get.to(HomeScreenGuru());
+                  } else {
+                    Get.to(HomeScreen());
+                  }
                 },
                 icon: Container(
                   decoration: BoxDecoration(
