@@ -8,13 +8,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../../constants.dart';
-import '../../../data/models/biografi_model.dart';
 
 class AgendaController extends GetxController {
   RxList<InfoAgendaModel> agendaList = <InfoAgendaModel>[].obs;
-  RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
+  RxList<InfoAgendaModel> filteredAgendaList = <InfoAgendaModel>[].obs;
   var isLoading = true.obs;
-  var userStatus = ''.obs;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
@@ -23,44 +21,6 @@ class AgendaController extends GetxController {
   void onInit() {
     super.onInit();
     getAgendas();
-    fetchBiografi();
-  }
-
-  Future<void> fetchBiografi() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('token');
-      int? userId = prefs.getInt('id_user');
-
-      if (userId != null) {
-        final response = await http.get(
-          Uri.parse('$baseUrl$biodataEndpointGet$userId'),
-          headers: <String, String>{
-            'Authorization': 'Bearer $token',
-          },
-        );
-
-        if (response.statusCode == 200) {
-          var jsonResponse = json.decode(response.body);
-          print('JSON Response: $jsonResponse');
-
-          var fetchedData = InfoBiografiModel.fromJson(jsonResponse);
-          biografiList.value = [fetchedData];
-
-          userStatus.value = fetchedData.role.nama.toString();
-
-          print('Successfully loaded biografi data: ${biografiList.length}');
-        } else {
-          print('Failed to load biografi, status code: ${response.statusCode}');
-          throw Exception('Failed to load biografi');
-        }
-      } else {
-        print('User ID is null. Unable to fetch biografi.');
-      }
-    } catch (e) {
-      print('Error: $e');
-      throw Exception('Error: $e');
-    }
   }
 
   Future<void> getAgendas() async {
@@ -83,6 +43,7 @@ class AgendaController extends GetxController {
             .map((data) => InfoAgendaModel.fromJson(data))
             .toList();
         agendaList.value = fetchedData;
+        filteredAgendaList.value = agendaList;
         isLoading.value = false;
 
         print('Agendas fetched successfully');
@@ -147,6 +108,7 @@ class AgendaController extends GetxController {
       if (response.statusCode == 200) {
         print('Agenda deleted successfully');
         agendaList.removeAt(index); // Remove from local list
+        filteredAgendaList.value = agendaList;
       } else {
         print('Failed to delete agenda: ${response.body}');
       }
@@ -156,9 +118,10 @@ class AgendaController extends GetxController {
   }
 
   void openIconButtonpressed(BuildContext context, int index, String title, String content) {
+    int originalIndex = getOriginalIndex(index);
     showModalBottomSheet(
       context: context,
-      builder: (ctx) => OptionEditDeleteAgenda(index: index, title: title, content: content),
+      builder: (ctx) => OptionEditDeleteAgenda(index: originalIndex, title: title, content: content),
     );
   }
 
@@ -201,6 +164,7 @@ class AgendaController extends GetxController {
       if (response.statusCode == 200) {
         print('Agenda updated successfully');
         agendaList[index] = InfoAgendaModel.fromJson(json.decode(response.body));
+        filteredAgendaList.value = agendaList;
       } else {
         print('Failed to update agenda: ${response.body}');
       }
@@ -209,5 +173,21 @@ class AgendaController extends GetxController {
     }
   }
 
-}
+  // Method to get original index
+  int getOriginalIndex(int displayedIndex) {
+    int originalIndex = agendaList.length - 1 - displayedIndex;
+    return originalIndex;
+  }
 
+  // New method to handle search
+  void searchAgenda(String query) {
+    if (query.isEmpty) {
+      filteredAgendaList.value = agendaList;
+    } else {
+      filteredAgendaList.value = agendaList.where((agenda) {
+        return agenda.judul.toLowerCase().contains(query.toLowerCase()) ||
+            agenda.isi.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
+  }
+}

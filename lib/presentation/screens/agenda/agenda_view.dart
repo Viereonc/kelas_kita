@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
-import '../guru/home_guru/home_guru_view.dart';
-import '../home/home_view.dart';
 import 'add_agenda/add_agenda_view.dart';
 import 'agenda_controller.dart';
 import 'detail_agenda/detail_agenda.dart';
@@ -13,6 +11,7 @@ class AgendaScreen extends StatelessWidget {
   AgendaScreen({Key? key}) : super(key: key);
 
   final AgendaController agendaController = Get.put(AgendaController());
+  final TextEditingController searchController = TextEditingController();
 
   String _getMonthName(int month) {
     switch (month) {
@@ -91,11 +90,7 @@ class AgendaScreen extends StatelessWidget {
                 leading: Container(
                   child: IconButton(
                     onPressed: () {
-                      if (agendaController.userStatus.value == 'Wali Kelas'|| agendaController.userStatus.value == 'Guru') {
-                        Get.to(HomeScreenGuru());
-                      } else {
-                        Get.to(HomeScreen());
-                      }
+                      Navigator.pop(context);
                     },
                     icon: Container(
                       decoration: BoxDecoration(
@@ -117,6 +112,35 @@ class AgendaScreen extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
             ),
+            Container(
+              height: 40, // Smaller height for the search box
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  labelText: 'Search',
+                  labelStyle: TextStyle(color: Colors.grey), // Color of the label
+                  prefixIcon: Icon(Icons.search, color: Colors.grey), // Icon inside the box
+                  filled: true, // Background fill
+                  fillColor: Colors.white, // Background color
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                    borderSide: BorderSide.none, // No border
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0), // Rounded corners when enabled
+                    borderSide: BorderSide(color: Colors.grey, width: 1.0), // Border color when enabled
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0), // Rounded corners when focused
+                    borderSide: BorderSide(color: primeryColorMedium, width: 2.0), // Border color when focused
+                  ),
+                  contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0), // Adjust padding for smaller height
+                ),
+                onChanged: (value) {
+                  agendaController.searchAgenda(value);
+                },
+              ),
+            ),
             Expanded(
               child: Obx(() {
                 if (agendaController.isLoading.value) {
@@ -125,7 +149,7 @@ class AgendaScreen extends StatelessWidget {
                   );
                 } else {
                   return ListView.separated(
-                    itemCount: agendaController.agendaList.length,
+                    itemCount: agendaController.filteredAgendaList.length,
                     separatorBuilder: (BuildContext context, int index) {
                       return Divider(
                         color: Colors.grey,
@@ -133,7 +157,7 @@ class AgendaScreen extends StatelessWidget {
                       );
                     },
                     itemBuilder: (BuildContext context, int index) {
-                      final agenda = agendaController.agendaList[index];
+                      final agenda = agendaController.filteredAgendaList.reversed.toList()[index];
                       DateTime lastEdited = agenda.updatedAt; // Use updatedAt for last edited
 
                       return GestureDetector(
@@ -184,7 +208,7 @@ class AgendaScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Container(
-                                  width: screenWidth * 0.5,
+                                  width: screenWidth * 0.5, // Control the width to limit text overflow
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,14 +216,16 @@ class AgendaScreen extends StatelessWidget {
                                       Text(
                                         agenda.judul,
                                         style: tsHeader3(
-                                            screenSize: screenWidth
+                                          screenSize: screenWidth,
                                         ),
+                                        maxLines: 1, // Restrict to 1 line
+                                        overflow: TextOverflow.ellipsis, // Add ellipsis for overflow
                                       ),
                                       SizedBox(height: 5,),
                                       Text(
                                         agenda.isi,
                                         style: tsParagraft4(
-                                            screenSize: screenWidth
+                                          screenSize: screenWidth,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
