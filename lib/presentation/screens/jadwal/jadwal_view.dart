@@ -7,6 +7,7 @@ import 'package:kelas_kita/presentation/screens/jadwal/jadwal_piket_view.dart';
 import 'package:kelas_kita/presentation/themes/Colors.dart';
 import 'package:kelas_kita/presentation/themes/FontsStyle.dart';
 import 'package:kelas_kita/presentation/widgets/BottomNavigationBar/BottomNavigationBar.dart';
+import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 import '../../../data/models/jadwal_kelas_model.dart';
@@ -80,50 +81,6 @@ class JadwalScreen extends StatelessWidget {
                     jadwalController,
                   ),
                 ],
-              ),
-              SizedBox(height: screenHeight * 0.02),
-
-              // Button to change schedule
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => JadwalPiket()),
-                  );
-                },
-                child: Container(
-                  width: screenWidth * 0.91,
-                  height: screenHeight * 0.037,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(screenHeight * 0.010),
-                    color: Color.fromARGB(255, 56, 122, 223),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: screenWidth * 0.04),
-                        child: Text(
-                          'Beralih Jadwal Piket',
-                          style: TextStyle(
-                            fontFamily: 'tsParagraft1',
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                            fontSize: screenHeight * 0.018,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(screenWidth * 0.02),
-                        child: SvgPicture.asset(
-                          'lib/assets/icons/ep_switch (1).svg',
-                          width: screenWidth * 0.03,
-                          height: screenHeight * 0.03,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ),
               SizedBox(height: screenHeight * 0.03),
 

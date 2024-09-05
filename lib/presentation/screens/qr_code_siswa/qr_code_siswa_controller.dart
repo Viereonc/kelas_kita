@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:kelas_kita/data/models/jadwal_piket_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,6 +30,7 @@ class QrCodeSiswaController extends GetxController {
     fetchJadwalPelajaran();
     _startQrCodeTimer();
     loadUserName();
+    _generateQrCodeForCurrentTime();
   }
 
   @override
@@ -39,6 +41,36 @@ class QrCodeSiswaController extends GetxController {
 
   bool isAlreadyAttended(int idPelajaran) {
     return attendedLessons.contains(idPelajaran);
+  }
+
+  void _generateQrCodeForCurrentTime() {
+    final now = DateTime.now();
+    final currentHour = now.hour.toString().padLeft(2, '0');
+    final currentMinute = now.minute.toString().padLeft(2, '0');
+    final currentTime = '$currentHour:$currentMinute';
+
+    if (jadwalKelasList.isNotEmpty) {
+      final pelajaran = jadwalKelasList.firstWhere(
+        (jadwal) => jadwal.jamMulai.compareTo(currentTime) <= 0 &&
+                    jadwal.jamSelesai.compareTo(currentTime) >= 0,
+        orElse: () => JadwalKelasModel(
+          idPelajaran: 0,
+          namaPelajaran: 'N/A',
+          hari: 'N/A',
+          jamMulai: '00:00',
+          jamSelesai: '00:00',
+          kelas: '',
+          guru: '',
+          absensi: [],
+        ),
+      );
+
+      selectedPelajaran.value = pelajaran.namaPelajaran;
+      selectedIdPelajaran.value = pelajaran.idPelajaran.toString();
+      _generateQrCode();
+    } else {
+      print('jadwalKelasList is empty');
+    }
   }
 
   void markAsAttended(int idPelajaran) {
@@ -86,6 +118,7 @@ class QrCodeSiswaController extends GetxController {
         if (response.statusCode == 200) {
           var fetchedData = jadwalKelasModelFromJson(response.body);
           jadwalKelasList.value = fetchedData;
+          _generateQrCodeForCurrentTime(); // Generate QR code after fetching data
         } else {
           print('Failed to fetch data: ${response.statusCode}');
         }
@@ -135,27 +168,39 @@ class QrCodeSiswaController extends GetxController {
   void setSelectedPelajaran(String pelajaran, int idPelajaran, String guru) {
     selectedPelajaran.value = pelajaran;
     selectedIdPelajaran.value = idPelajaran.toString();
-    // selectedMapelPelajaran.value = hariMapel;
     _generateQrCode();
   }
 
   void _generateQrCode() {
     final biografi = biografiList.isNotEmpty ? biografiList.first : null;
-    final pelajaran = jadwalKelasList.isNotEmpty ? jadwalKelasList.first : null;
+    final pelajaran = jadwalKelasList.isNotEmpty ? jadwalKelasList.firstWhere(
+        (jadwal) => jadwal.idPelajaran.toString() == selectedIdPelajaran.value,
+        orElse: () => JadwalKelasModel(
+          idPelajaran: 0,
+          namaPelajaran: 'N/A',
+          hari: 'N/A',
+          jamMulai: '00:00',
+          jamSelesai: '00:00',
+          kelas: '',
+          guru: '',
+          absensi: [],
+        ),
+    ) : null;
+
     final data = 'Pelajaran: ${selectedPelajaran.value}, '
         'Nama: ${biografi?.nama ?? 'N/A'}, '
         'Nama Kelas: ${biografi?.kelas.nama ?? 'N/A'}, '
         'Waktu Absen: ${DateTime.now().toIso8601String()}, '
         'ID Biodata: ${biografi?.idBiodata ?? 'N/A'}, '
-        'ID Pelajaran: ${selectedIdPelajaran.value}';
+        'ID Pelajaran: ${selectedIdPelajaran.value}, '
         'Guru: ${pelajaran?.guru ?? 'N/A'}';
     qrData.value = data;
   }
 
   void _startQrCodeTimer() {
     _timer = Timer.periodic(Duration(seconds: 7), (timer) {
-      if (selectedPelajaran.value.isNotEmpty) {
-        _generateQrCode();
+      if (jadwalKelasList.isNotEmpty) {
+        _generateQrCodeForCurrentTime();
       }
     });
   }
