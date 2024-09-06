@@ -285,36 +285,40 @@ class EditInfoTugasScreen extends StatelessWidget {
                               fit: StackFit.expand,
                               children: [
                                 Visibility(
-                                  visible: isDocument,
-                                  child: Center(
-                                    child: fileTypeWidget(selectedFile?.path ?? filePath),
-                                  ),
-                                ),
-
-                                Visibility(
-                                  visible: isImage,
+                                  visible: fileUrl.isNotEmpty,
                                   child: selectedFile != null
+                                      ? (isImage
                                       ? Image.file(
-                                    File(selectedFile.path),
+                                    File(selectedFile!.path),
                                     fit: BoxFit.cover,
                                   )
-                                      : Container(),
-                                ),
-
-                                Visibility(
-                                  visible: !isImage && !isDocument && (filePath.contains('http') || filePath.contains('https')),
-                                  child: Image.network(
+                                      : Center(
+                                    child: fileTypeWidget(selectedFile!.path),
+                                  ))
+                                      : (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg') || filePath.endsWith('.png') // Jika file dari URL bertipe image
+                                      ? Image.network(
                                     filePath,
                                     fit: BoxFit.cover,
-                                  ),
+                                  )
+                                      : Center(
+                                    child: fileTypeWidget(filePath), // Jika file dari URL adalah dokumen
+                                  )),
                                 ),
-
-                                Visibility(
-                                  visible: !isImage && !isDocument && !(filePath.contains('http') || filePath.contains('https')),
-                                  child: Center(
-                                    child: fileTypeWidget(filePath),
+                                if (selectedFile == null && fileUrl.isEmpty) // Jika tidak ada file yang dipilih atau URL
+                                  Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          size: 40,
+                                          color: Colors.grey,
+                                        ),
+                                        SizedBox(height: 10,),
+                                        Text('Tambahkan File ataupun Gambar')
+                                      ],
+                                    ),
                                   ),
-                                ),
                               ],
                             ),
                           ),

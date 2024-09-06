@@ -292,7 +292,7 @@ class AddInfoTugas extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
+                margin: EdgeInsets.symmetric(vertical:  screenHeight * 0.03),
                 child: Button(
                   label: "Unggah Tugas",
                   textStyle: tsSubHeader4(screenSize: screenWidth),
