@@ -43,48 +43,6 @@ class JadwalPiket extends StatelessWidget {
                       screenWidth, screenHeight, 'Sab', controller),
                   ],
                 ),
-                SizedBox(height: screenHeight * 0.02),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => JadwalScreen()),
-                    );
-                  },
-                  child: Container(
-                    width: screenWidth * 0.91,
-                    height: screenHeight * 0.037,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(screenHeight * 0.010),
-                      color: Color.fromARGB(255, 56, 122, 223),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: screenWidth * 0.04),
-                          child: Text(
-                            'Beralih Jadwal Pelajaran',
-                            style: TextStyle(
-                              fontFamily: 'tsParagraft1',
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              fontSize: screenHeight * 0.020,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(screenWidth * 0.02),
-                          child: SvgPicture.asset(
-                            'lib/assets/icons/ep_switch (1).svg',
-                            width: screenWidth * 0.03,
-                            height: screenHeight * 0.03,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 SizedBox(height: screenHeight * 0.03),
                 Container(
                   margin: EdgeInsets.symmetric(
@@ -159,7 +117,7 @@ class JadwalPiket extends StatelessWidget {
           color: isBlue ? Color.fromARGB(255, 56, 122, 223) : Colors.white, 
           border: Border.all(
             color: isBlue ? Color.fromARGB(255, 56, 122, 223) : Color.fromARGB(255, 56, 122, 223), 
-            width: 1, // Set the stroke widt
+            width: 1, // Set the stroke width
           ),
         ),
         child: Center(
