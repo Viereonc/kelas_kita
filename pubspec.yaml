@@ -63,6 +63,8 @@ dependencies:
   url_launcher:
   uni_links2:
   sqflite:
+  file_picker:
+  open_file:
   win32:
 
 dev_dependencies:

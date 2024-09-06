@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../../../../data/models/info_tugas.dart';
 import '../../../themes/Colors.dart';
@@ -20,6 +25,24 @@ class AddInfoTugas extends StatelessWidget {
 
   final ValueNotifier<String?> selectedGuru = ValueNotifier<String?>(null);
   final List<String> guruList = ["Pak Aji", "Pak Dwi", "Pak Fahmi", "Pak Agus"];
+
+  Future<void> _getImageFromGallery() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', 'xls', 'xlsx'],
+    );
+
+    if (result != null) {
+      infoTugasController.selectedFilePath.value = File(result.files.single.path!);
+    } else {
+      Get.snackbar(
+        'Error',
+        'Tidak ada file yang dipilih',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -206,22 +229,64 @@ class AddInfoTugas extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Container(
+                      height: screenWidth * 0.12,
                       margin: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-                      child: TextField(
+                      child: TextFormField(
                         controller: ketentuanTugasController,
                         decoration: InputDecoration(
                           hintText: "Ketentuan Tugas",
                           hintStyle: tsParagraft4(screenSize: screenWidth).copyWith(color: Colors.grey),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
                             borderSide: BorderSide(
                               color: Colors.grey,
                               width: 1.0,
                             ),
                           ),
                         ),
-                        style: tsParagraft4(screenSize: screenWidth),
                       ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Tambahkan File",
+                      style: tsSubHeader4(screenSize: screenWidth, fontWeight: FontWeight.bold),
+                    ),
+                    GestureDetector(
+                      onTap: _getImageFromGallery,
+                      child: Obx(() => Container(
+                        margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                        height: screenHeight * 0.2,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: infoTugasController.selectedFilePath.value != null
+                            ? (['jpg', 'jpeg', 'png'].contains(
+                            infoTugasController.selectedFilePath.value!.path.split('.').last))
+                            ? Image.file(
+                          infoTugasController.selectedFilePath.value!,
+                          fit: BoxFit.cover,
+                          height: screenHeight * 0.15,
+                        )
+                            : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "File: ${infoTugasController.selectedFilePath.value!.path.split('/').last}",
+                            style: TextStyle(color: Colors.black),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                            : Center(
+                          child: SvgPicture.asset("lib/assets/icons/pe_camera.svg"),
+                        ),
+                        width: double.infinity,
+                      )),
                     ),
                   ],
                 ),
@@ -266,6 +331,7 @@ class AddInfoTugas extends StatelessWidget {
                           guruPemberiTugas,
                           deadlineTugas,
                           ketentuanTugasController.text,
+                          infoTugasController.selectedFilePath.value,
                           idKelas,
                           token,
                         );

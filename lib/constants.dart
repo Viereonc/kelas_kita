@@ -10,6 +10,7 @@ const strukturKelasGuruEndpointGet = 'api/biodata';
 const infoKelasEndpoint = 'api/informasi_kelas/store';
 const infoGetKelasEndpoint = 'api/informasi_kelas/kelas/';
 const storage = 'storage/';
+const storageInfoTugas = 'storage/tugas_file/';
 const infoTugasEndPoint = 'api/tugas/store';
 const infoGetTugasEndPoint = 'api/tugas/';
 const getJadwalKelasEndPoint = 'api/jadwal_pelajaran/kelas/';

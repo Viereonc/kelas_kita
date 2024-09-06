@@ -121,160 +121,85 @@ class RealIcons extends StatelessWidget {
       margin: EdgeInsets.only(right: screenWidth * 0.03, left: screenWidth * 0.03, top: screenHeight * 0.05),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                width: screenWidth * 0.15,
-                height: screenWidth * 0.15,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(13),
-                  color: Color(0xFF41BEBE),
-                ),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Path.INFOKELAS_PAGE);
-                    },
-                    child: SvgPicture.asset(
-                      "lib/assets/icons/he_info_kelas.svg",
-                      width: screenWidth * 0.05,
-                      height: screenHeight * 0.05,
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                'Info Kelas',
-                style: tsSubHeader5(
-                    fontWeight: FontWeight.bold, screenSize: screenWidth),
-              ),
-            ],
+          _buildColumn(
+            screenWidth: screenWidth,
+            screenHeight: screenHeight,
+            color: Color(0xFF41BEBE),
+            svgAsset: "lib/assets/icons/he_info_kelas.svg",
+            text: 'Info Kelas',
+            onTap:  () {Get.toNamed(Path.INFOKELAS_PAGE);},
           ),
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                width: screenWidth * 0.15,
-                height: screenWidth * 0.15,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(13),
-                  color: Color(0xFFFF844F),
-                ),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Path.INFOTUGAS_PAGE);
-                    },
-                    child: SvgPicture.asset(
-                      "lib/assets/icons/he_info_tugas.svg",
-                      width: screenWidth * 0.05,
-                      height: screenHeight * 0.05,
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                'Info Tugas',
-                style: tsSubHeader5(
-                    fontWeight: FontWeight.bold, screenSize: screenWidth),
-              ),
-            ],
+          _buildColumn(
+            screenWidth: screenWidth,
+            screenHeight: screenHeight,
+            color: Color(0xFFFF844F),
+            svgAsset: "lib/assets/icons/he_info_tugas.svg",
+            text: 'Info Tugas',
+            onTap:  () {Get.toNamed(Path.INFOTUGAS_PAGE);},
           ),
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                width: screenWidth * 0.15,
-                height: screenWidth * 0.15,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(13),
-                  color: Color(0xFF3EB67B),
-                ),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Path.KAS_PAGE);
-                    },
-                    child: SvgPicture.asset(
-                      "lib/assets/icons/he_kas.svg",
-                      width: screenWidth * 0.05,
-                      height: screenHeight * 0.05,
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                'Kas',
-                style: tsSubHeader5(
-                    fontWeight: FontWeight.bold, screenSize: screenWidth),
-              ),
-            ],
+          _buildColumn(
+            screenWidth: screenWidth,
+            screenHeight: screenHeight,
+            color: Color(0xFF3EB67B),
+            svgAsset: "lib/assets/icons/he_kas.svg",
+            text: 'Kas',
+            onTap:  () {Get.toNamed(Path.KAS_PAGE);},
           ),
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                width: screenWidth * 0.15,
-                height: screenWidth * 0.15,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(13),
-                  color: Color(0xFFFFBF43),
-                ),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Path.AGENDA_PAGE);
-                    },
-                    child: SvgPicture.asset(
-                      "lib/assets/icons/he_note.svg",
-                      width: screenWidth * 0.05,
-                      height: screenHeight * 0.05,
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                'Note',
-                style: tsSubHeader5(
-                    fontWeight: FontWeight.bold, screenSize: screenWidth),
-              ),
-            ],
+          _buildColumn(
+            screenWidth: screenWidth,
+            screenHeight: screenHeight,
+            color: Color(0xFFFFBF43),
+            svgAsset: "lib/assets/icons/he_note.svg",
+            text: 'Note',
+            onTap:  () {Get.toNamed(Path.AGENDA_PAGE);},
           ),
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                width: screenWidth * 0.15,
-                height: screenWidth * 0.15,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(13),
-                  color: Color(0xFF5675E3),
-                ),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Path.STRUKTURKELAS_PAGE);
-                    },
-                    child: SvgPicture.asset(
-                      "lib/assets/icons/he_struktur.svg",
-                      width: screenWidth * 0.05,
-                      height: screenHeight * 0.05,
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                'Struktur',
-                style: tsSubHeader5(
-                    fontWeight: FontWeight.bold, screenSize: screenWidth),
-              ),
-            ],
+          _buildColumn(
+            screenWidth: screenWidth,
+            screenHeight: screenHeight,
+            color: Color(0xFF5675E3),
+            svgAsset: "lib/assets/icons/he_struktur.svg",
+            text: 'Anggota \n Kelas',
+            onTap:  () {Get.toNamed(Path.STRUKTURKELAS_PAGE);},
           ),
         ],
       ),
     );
   }
+}
+
+Widget _buildColumn({required double screenWidth, required double screenHeight, required Color color, required String svgAsset, required String text, required VoidCallback onTap,}) {
+  return Column(
+    children: [
+      Container(
+        margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+        width: screenWidth * 0.15,
+        height: screenWidth * 0.15,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(13),
+          color: color,
+        ),
+        child: Center(
+          child: GestureDetector(
+            onTap: onTap,
+            child: SvgPicture.asset(
+              svgAsset,
+              width: screenWidth * 0.05,
+              height: screenHeight * 0.05,
+            ),
+          ),
+        ),
+      ),
+      Container(
+        height: screenHeight * 0.05, // Sesuaikan tinggi tetap untuk teks
+        child: Text(
+          text,
+          style: tsSubHeader5(fontWeight: FontWeight.bold, screenSize: screenWidth),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    ],
+  );
 }
 
