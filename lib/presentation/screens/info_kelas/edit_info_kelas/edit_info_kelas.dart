@@ -7,7 +7,7 @@ import '../../../themes/FontsStyle.dart';
 import '../../../widgets/Button.dart';
 import 'package:get/get.dart';
 import '../info_kelas_controller.dart';
-import 'edit_info_kelas_controller.dart';
+import 'package:kelas_kita/routes/app_routes.dart';
 
 class EditInfoKelasScreen extends StatelessWidget {
   final String description;
@@ -17,7 +17,7 @@ class EditInfoKelasScreen extends StatelessWidget {
 
   EditInfoKelasScreen({Key? key, required this.description, required this.imagePath, required this.index, required this.idInformasiKelas}) : super(key: key);
 
-  final EditInfoKelasController editInfoKelasController = Get.put(EditInfoKelasController());
+  final InfoKelasController editInfoKelasController = Get.put(InfoKelasController());
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class EditInfoKelasScreen extends StatelessWidget {
                 centerTitle: true,
                 leading: IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Get.back();
                   },
                   icon: Container(
                     decoration: BoxDecoration(
@@ -129,12 +129,9 @@ class EditInfoKelasScreen extends StatelessWidget {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       String? token = prefs.getString('token');
 
-                      // Access the InfoKelasController instance
                       final infoKelasController = Get.find<InfoKelasController>();
 
-                      // Ensure biografiList is not empty before accessing it
                       if (infoKelasController.biografiList.isNotEmpty) {
-                        // Get idKelas from the first item in biografiList
                         String idKelas = infoKelasController.biografiList[0].idKelas.toString();
 
                         if (token != null && idKelas.isNotEmpty) {
@@ -147,7 +144,8 @@ class EditInfoKelasScreen extends StatelessWidget {
                               idInformasiKelas
                           );
                           editInfoKelasController.selectedImagePath.value = null;
-                          Navigator.pop(context);
+                          editInfoKelasController.refresh();
+                          Get.toNamed(Path.INFOKELAS_PAGE);
                         } else {
                           print('Token or idKelas not found');
                         }

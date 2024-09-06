@@ -11,9 +11,10 @@ class OptionEditDeleteInfoTugas extends StatelessWidget {
   final String? guruPemberiTugas;
   final String? deadlineTugas;
   final String? ketentuanTugas;
+  final String? file;
   final int idTugas;
 
-  const OptionEditDeleteInfoTugas({Key? key, required this.index, required this.namaTugas, required this.guruPemberiTugas, required this.deadlineTugas, required this.ketentuanTugas, required this.idTugas}) : super(key: key);
+  const OptionEditDeleteInfoTugas({Key? key, required this.index, required this.namaTugas, required this.guruPemberiTugas, required this.deadlineTugas, required this.ketentuanTugas, required this.file, required this.idTugas}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +97,7 @@ class OptionEditDeleteInfoTugas extends StatelessWidget {
                               guruPemberiTugas: guruPemberiTugas ?? "",
                               deadlineTugas: deadlineTugas ?? "",
                               ketentuanTugas: ketentuanTugas ?? "",
+                              file: file ?? "",
                               idTugas: idTugas,
                             ),
                           ),

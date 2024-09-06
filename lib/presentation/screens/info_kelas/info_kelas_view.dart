@@ -23,13 +23,12 @@ class InfoKelasScreen extends StatelessWidget {
 
   final InfoKelasController infoKelasController = Get.put(InfoKelasController());
 
-  Future<void> _refreshData(BuildContext context) async {
+  Future<void> refreshData(BuildContext context) async {
     return infoKelasController.fetchInformasiKelas();
   }
 
   @override
   Widget build(BuildContext context) {
-    final message = ModalRoute.of(context)?.settings.arguments as RemoteMessage?;
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -72,20 +71,14 @@ class InfoKelasScreen extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
             ),
-            // if (message?.notification?.title != null)
-            //   Text(message!.notification!.title.toString()),
-            // if (message?.notification?.body != null)
-            //   Text(message!.notification!.body.toString()),
-            // if (message?.data != null)
-            //   Text(message!.data.toString()),
             Expanded(
               child: Obx(() {
                 if (infoKelasController.isLoading.value) {
-                  return buildShimmer();
+                  return Center(child: CircularProgressIndicator(color: Colors.blue,));
                 } else {
                   final reversedList = infoKelasController.infoKelasList.reversed.toList();
                   return RefreshIndicator(
-                    onRefresh: () => _refreshData(context),
+                    onRefresh: () => refreshData(context),
                     child: ListView.separated(
                       itemCount: reversedList.length,
                       separatorBuilder: (BuildContext context, int index) {
@@ -222,7 +215,6 @@ class InfoKelasScreen extends StatelessWidget {
               String? token = prefs.getString('token');
               String idKelas = "1";
               if (token != null) {
-                infoKelasController.isLoading.value = true;
                 final result = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddInfoKelas()),
@@ -233,9 +225,7 @@ class InfoKelasScreen extends StatelessWidget {
                     result["description"],
                     idKelas,
                     token,
-                  ).then((_) {
-                    infoKelasController.isLoading.value = false;
-                  });
+                  );
                 }
               } else {
                 print('Token not found');

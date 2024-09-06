@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
 import '../info_kelas_controller.dart';
+import 'package:kelas_kita/routes/app_routes.dart';
 
 class AddInfoKelas extends StatelessWidget {
   AddInfoKelas({Key? key}) : super(key: key);
@@ -47,7 +48,7 @@ class AddInfoKelas extends StatelessWidget {
                 centerTitle: true,
                 leading: IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Get.back();
                   },
                   icon: Container(
                     decoration: BoxDecoration(
@@ -90,8 +91,7 @@ class AddInfoKelas extends StatelessWidget {
                                 ? DecorationImage(
                               image: FileImage(infoKelasController.selectedImagePath.value!),
                               fit: BoxFit.cover,
-                            )
-                                : null,
+                            ) : null,
                           ),
                           child: infoKelasController.selectedImagePath.value == null
                               ? Container(

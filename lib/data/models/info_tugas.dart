@@ -16,6 +16,7 @@ class InfoTugasModel {
   String guru;
   DateTime deadline;
   String ketentuan;
+  String? file;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -26,6 +27,7 @@ class InfoTugasModel {
     required this.guru,
     required this.deadline,
     required this.ketentuan,
+    this.file,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -38,6 +40,7 @@ class InfoTugasModel {
       guru: json["guru"],
       deadline: DateTime.parse(json["deadline"]),
       ketentuan: json["ketentuan"],
+      file: json["file"],
       createdAt: DateTime.parse(json["created_at"]),
       updatedAt: DateTime.parse(json["updated_at"]),
     );
@@ -50,6 +53,7 @@ class InfoTugasModel {
     "guru": guru,
     "deadline": "${deadline.year.toString().padLeft(4, '0')}-${deadline.month.toString().padLeft(2, '0')}-${deadline.day.toString().padLeft(2, '0')}",
     "ketentuan": ketentuan,
+    "file": file,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };

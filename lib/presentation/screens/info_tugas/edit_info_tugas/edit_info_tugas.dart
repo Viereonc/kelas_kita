@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
-import 'package:kelas_kita/presentation/screens/info_tugas/edit_info_tugas/edit_info_tugas_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart' as path;
 
+import '../../../../constants.dart';
 import '../../../../data/models/info_tugas.dart';
 import '../../../themes/Colors.dart';
 import '../../../themes/FontsStyle.dart';
@@ -17,15 +21,37 @@ class EditInfoTugasScreen extends StatelessWidget {
   final String guruPemberiTugas;
   final String deadlineTugas;
   final String ketentuanTugas;
+  final String file;
   final int idTugas;
 
-  EditInfoTugasScreen({Key? key, required this.index, required this.namaTugas, required this.guruPemberiTugas, required this.deadlineTugas, required this.ketentuanTugas, required this.idTugas}) : super(key: key);
+  EditInfoTugasScreen({Key? key, required this.index, required this.namaTugas, required this.guruPemberiTugas, required this.deadlineTugas, required this.ketentuanTugas, required this.file, required this.idTugas}) : super(key: key);
 
-  final EditInfoTugasController editInfoTugasController = Get.put(EditInfoTugasController());
+  final InfoTugasController editInfoTugasController = Get.put(InfoTugasController());
+
+  Widget fileTypeWidget(String filePath) {
+    final extension = path.extension(filePath).toLowerCase();
+
+    if (extension == '.pdf') {
+      return Icon(Icons.picture_as_pdf, size: 80, color: Colors.red);
+    } else if (extension == '.doc' || extension == '.docx') {
+      return Icon(Icons.description, size: 80, color: Colors.blue);
+    } else if (extension == '.xls' || extension == '.xlsx') {
+      return Icon(Icons.table_chart, size: 80, color: Colors.green);
+    } else if (extension == '.ppt' || extension == '.pptx') {
+      return Icon(Icons.slideshow, size: 80, color: Colors.orange);
+    } else if (['.jpg', '.jpeg', '.png'].contains(extension)) {
+      return Image.file(
+        File(filePath),
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Icon(Icons.insert_drive_file, size: 80, color: Colors.grey);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    editInfoTugasController.initializeValues(namaTugas, guruPemberiTugas, deadlineTugas, ketentuanTugas);
+    editInfoTugasController.initializeValues(namaTugas, guruPemberiTugas, deadlineTugas, ketentuanTugas, file);
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -231,6 +257,74 @@ class EditInfoTugasScreen extends StatelessWidget {
                 ),
               ),
               Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Edit File",
+                      style: tsSubHeader4(screenSize: screenWidth, fontWeight: FontWeight.bold),
+                    ),
+                    GestureDetector(
+                      onTap: () => editInfoTugasController.getImageFromGallery(),
+                      child: Obx(() {
+                        var selectedFile = editInfoTugasController.selectedFilePath.value;
+                        var fileUrl = editInfoTugasController.fileUrl.value ?? '';
+                        var filePath = selectedFile?.path ?? (baseUrl + storage + fileUrl);
+
+                        bool isImage = selectedFile != null && ['.jpg', '.jpeg', '.png'].contains(path.extension(selectedFile.path).toLowerCase());
+                        bool isDocument = selectedFile != null && ['.pdf', '.doc', '.docx', '.xls', '.xlsx'].contains(path.extension(selectedFile.path).toLowerCase());
+
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                            height: screenHeight * 0.2,
+                            width: double.infinity,
+                            color: Colors.grey.shade200,
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Visibility(
+                                  visible: isDocument,
+                                  child: Center(
+                                    child: fileTypeWidget(selectedFile?.path ?? filePath),
+                                  ),
+                                ),
+
+                                Visibility(
+                                  visible: isImage,
+                                  child: selectedFile != null
+                                      ? Image.file(
+                                    File(selectedFile.path),
+                                    fit: BoxFit.cover,
+                                  )
+                                      : Container(),
+                                ),
+
+                                Visibility(
+                                  visible: !isImage && !isDocument && (filePath.contains('http') || filePath.contains('https')),
+                                  child: Image.network(
+                                    filePath,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+
+                                Visibility(
+                                  visible: !isImage && !isDocument && !(filePath.contains('http') || filePath.contains('https')),
+                                  child: Center(
+                                    child: fileTypeWidget(filePath),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
                 margin: EdgeInsets.symmetric(vertical: screenHeight * 0.03),
                 child: Button(
                   label: "Edit Info Tugas",
@@ -258,10 +352,12 @@ class EditInfoTugasScreen extends StatelessWidget {
                           editInfoTugasController.selectedGuru.value!,
                           editInfoTugasController.deadlineTugasController.text,
                           editInfoTugasController.ketentuanTugasController.text,
+                          editInfoTugasController.selectedFilePath.value,
                           idKelas,
                           token,
                           idTugas,
                         );
+                        editInfoTugasController.fetchInformasiTugas();
                         Navigator.pop(context);
                       } else {
                         print('Token not found');

@@ -8,8 +8,11 @@ import 'package:kelas_kita/presentation/screens/home/home_view.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/add_info_tugas/add_info_tugas.dart';
 import 'package:kelas_kita/presentation/screens/info_tugas/info_tugas_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart' as path;
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:kelas_kita/data/models/info_tugas.dart';
+import '../../../constants.dart';
 import '../../themes/Colors.dart';
 import '../../themes/FontsStyle.dart';
 
@@ -27,6 +30,14 @@ class InfoTugasScreen extends StatelessWidget {
 
   Future<void> _refreshData(BuildContext context) async {
     return infoTugasController.fetchInformasiTugas();
+  }
+
+  Future<void> _openFile(String fileUrl) async {
+    final urlFile = baseUrl + storage + fileUrl;
+    print("Trying to open URL: $urlFile");
+
+    final Uri uri = Uri.parse(urlFile);
+    await launchUrl(uri, mode: LaunchMode.inAppBrowserView);
   }
 
   @override
@@ -54,7 +65,7 @@ class InfoTugasScreen extends StatelessWidget {
                 leading: Container(
                   child: IconButton(
                     onPressed: () {
-                      if (infoTugasController.userStatus.value == 'Wali Kelas'|| infoTugasController.userStatus.value == 'Guru') {
+                      if (infoTugasController.userStatus.value == 'Wali Kelas' || infoTugasController.userStatus.value == 'Guru') {
                         Get.to(HomeScreenGuru());
                       } else {
                         Get.to(HomeScreen());
@@ -66,9 +77,7 @@ class InfoTugasScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Center(
-                        child: Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white,
-                        ),
+                        child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
                       ),
                     ),
                   ),
@@ -76,33 +85,50 @@ class InfoTugasScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: screenHeight * 0.01),
-            Divider(
-              color: Colors.grey,
-              thickness: 0.5,
-            ),
-            // if (message?.notification?.title != null)
-            //   Text(message!.notification!.title.toString()),
-            // if (message?.notification?.body != null)
-            //   Text(message!.notification!.body.toString()),
-            // if (message?.data != null)
-            //   Text(message!.data.toString()),
+            Divider(color: Colors.grey, thickness: 0.5),
             Expanded(
               child: RefreshIndicator(
-                onRefresh: () => _refreshData(context), // Trigger refresh action
+                onRefresh: () => _refreshData(context),
                 color: primeryColorMedium,
                 backgroundColor: Colors.white,
                 child: Obx(() {
                   if (infoTugasController.isLoading.value) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return Center(child: CircularProgressIndicator());
                   } else {
                     final reversedList = infoTugasController.infoTugasList.reversed.toList();
+                    IconData getFileIcon(String? file) {
+                      if (file == null || file.isEmpty) return Icons.insert_drive_file; // Default icon
+
+                      String extension = path.extension(file).toLowerCase(); // Get the file extension
+
+                      switch (extension) {
+                        case '.jpg':
+                        case '.jpeg':
+                        case '.png':
+                        case '.gif':
+                          return Icons.image;
+                        case '.pdf':
+                          return Icons.picture_as_pdf;
+                        case '.doc':
+                        case '.docx':
+                          return Icons.description; // Word document icon
+                        case '.xls':
+                        case '.xlsx':
+                          return Icons.table_chart; // Excel icon
+                        case '.ppt':
+                        case '.pptx':
+                          return Icons.slideshow; // PowerPoint icon
+                        default:
+                          return Icons.insert_drive_file; // Default icon for other file types
+                      }
+                    }
                     return ListView.builder(
                       physics: AlwaysScrollableScrollPhysics(),
                       itemCount: reversedList.length,
                       itemBuilder: (BuildContext context, int index) {
                         final infoTugas = reversedList[index];
+                        final fileUrl = infoTugas.file ?? '';
+                        final isFileAvailable = fileUrl.isNotEmpty;
 
                         return GestureDetector(
                           onLongPress: infoTugasController.userStatus.value == 'Sekretaris' || infoTugasController.userStatus.value == 'Wali Kelas' ? () {
@@ -110,8 +136,9 @@ class InfoTugasScreen extends StatelessWidget {
                             final guruPemberiTugas = infoTugas.guru;
                             final deadlineTugas = infoTugas.deadline;
                             final ketentuanTugas = infoTugas.ketentuan;
+                            final file = infoTugas.file ?? '';
                             final idTugas = infoTugas.idTugas;
-                            infoTugasController.openIconButtonpressed(context, index, namaTugas, guruPemberiTugas, deadlineTugas.toString(), ketentuanTugas, idTugas);
+                            infoTugasController.openIconButtonpressed(context, index, namaTugas, guruPemberiTugas, deadlineTugas.toString(), ketentuanTugas, file, idTugas);
                           } : null,
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01, vertical: screenHeight * 0.015),
@@ -120,10 +147,7 @@ class InfoTugasScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
                                 color: Colors.transparent,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                ),
+                                border: Border.all(color: Colors.black, width: 1.0),
                               ),
                               height: screenHeight * 0.17,
                               child: Column(
@@ -135,9 +159,31 @@ class InfoTugasScreen extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          infoTugas.nama,
-                                          style: tsSubHeader3(screenSize: screenWidth),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              infoTugas.nama,
+                                              style: tsSubHeader3(screenSize: screenWidth, fontWeight: FontWeight.w600),
+                                            ),
+                                            if (isFileAvailable)
+                                              Row(
+                                                children: [
+                                                  IconButton(
+                                                    icon: Icon(Icons.open_in_new, color: Colors.grey),
+                                                    onPressed: () async {
+                                                      await _openFile(fileUrl);
+                                                    },
+                                                  ),
+                                                  if (infoTugas.file != null && infoTugas.file!.isNotEmpty)
+                                                    Icon(
+                                                      getFileIcon(baseUrl + storage + infoTugas.file!),
+                                                      color: Colors.blue,
+                                                    ),
+                                                ],
+                                              )
+                                          ],
                                         ),
                                         Text(
                                           "Ketentuan : " + infoTugas.ketentuan,
@@ -201,6 +247,7 @@ class InfoTugasScreen extends StatelessWidget {
                     result["guruPemberiTugas"],
                     result["deadlineTugas"],
                     result["ketentuanTugas"],
+                    result["file"],
                     idKelas.toString(),
                     token!
                 );

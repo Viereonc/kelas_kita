@@ -63,6 +63,8 @@ dependencies:
   url_launcher:
   uni_links2:
   sqflite:
+  file_picker:
+  open_file:
 
 dev_dependencies:
   flutter_test:

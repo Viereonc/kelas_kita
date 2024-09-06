@@ -1,22 +1,26 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:kelas_kita/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/models/biografi_model.dart';
 import 'info_kelas_model.dart';
 import 'option_edit_delete.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class InfoKelasController extends GetxController {
   RxList<InfoKelasModel> infoKelasList = <InfoKelasModel>[].obs;
   RxList<InfoBiografiModel> biografiList = <InfoBiografiModel>[].obs;
   var isLoading = true.obs;
   var selectedImagePath = Rx<File?>(null);
+  var imageUrl = ''.obs;
   var userStatus = ''.obs;
+  var isRefresh = false.obs;
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   void onInit() {
@@ -25,7 +29,13 @@ class InfoKelasController extends GetxController {
     fetchBiografi();
   }
 
-  void fetchInformasiKelas() async {
+  Future<void> refresh() async {
+    isRefresh(true);
+    await fetchInformasiKelas();
+    isRefresh(false);
+  }
+
+  Future<void> fetchInformasiKelas() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
@@ -38,8 +48,9 @@ class InfoKelasController extends GetxController {
         },
       );
 
-      if (response.statusCode == 200) {
-        infoKelasList.value = infoKelasModelFromJson(response.body);
+      if (response.statusCode == 200 || response.statusCode == 500) {
+        final List<dynamic> data = jsonDecode(response.body);
+        infoKelasList.value = data.map((item) => InfoKelasModel.fromJson(item)).toList();
         print('Data fetched successfully: ${infoKelasList.length} items');
       } else {
         print('Failed to fetch data: ${response.statusCode}');
@@ -63,6 +74,15 @@ class InfoKelasController extends GetxController {
       );
     } else {
       print('ID di luar batas');
+    }
+  }
+
+  Future<void> getImageFromGallery() async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      selectedImagePath.value = File(pickedFile.path);
     }
   }
 
@@ -128,6 +148,61 @@ class InfoKelasController extends GetxController {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<void> editInfoKelas(int index, File? imageFile, String description, String idKelas, String token, int idInformasiKelas) async {
+    final DateTime currentTime = DateTime.now();
+
+    String imagePath = imageFile?.path ?? imageUrl.value;
+
+    InfoKelasModel updatedInfoKelas = InfoKelasModel(
+      idInformasiKelas: idInformasiKelas,
+      idKelas: int.parse(idKelas),
+      image: imagePath,
+      pengumuman: description,
+      createdAt: currentTime,
+      updatedAt: currentTime,
+    );
+
+    var url = Uri.parse('${baseUrl}api/informasi_kelas/${idInformasiKelas}');
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    var request = http.MultipartRequest('POST', url)
+      ..headers.addAll(headers)
+      ..fields['id_informasi_kelas'] = updatedInfoKelas.idInformasiKelas.toString()
+      ..fields['id_kelas'] = idKelas
+      ..fields['pengumuman'] = description;
+
+    if (imageFile != null) {
+      request.files.add(await http.MultipartFile.fromPath('image', updatedInfoKelas.image));
+    }
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200 || response.statusCode == 500) {
+        print('Info kelas berhasil diedit : ${response.statusCode}');
+        await fetchInformasiKelas();
+        infoKelasList.value[index] = updatedInfoKelas;
+        infoKelasList.refresh();
+        Get.snackbar('Pesan', 'Berhasil di edit');
+        update();
+      } else {
+        print('Gagal mengedit info kelas: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  void initializeValues(String description, String imagePath, int index, int idInformasiKelas) {
+    print(idInformasiKelas);
+    print(description);
+    print(imagePath);
+    if (imagePath.isNotEmpty) {
+      imageUrl.value = imagePath;
+    }
+    descriptionController.text = description;
   }
 
   Future<void> fetchBiografi() async {

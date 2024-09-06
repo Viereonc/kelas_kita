@@ -147,14 +147,7 @@ class RealIcons extends StatelessWidget {
     );
   }
 
-  Widget _buildColumn({
-    required double screenWidth,
-    required double screenHeight,
-    required Color color,
-    required String svgAsset,
-    required String text,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildColumn({required double screenWidth, required double screenHeight, required Color color, required String svgAsset, required String text, required VoidCallback onTap,}) {
     return Column(
       children: [
         Container(
