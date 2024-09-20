@@ -183,6 +183,7 @@ class InfoTugasScreen extends StatelessWidget {
                                                     ),
                                                 ],
                                               )
+                                            else SizedBox(width: 30),
                                           ],
                                         ),
                                         Text(

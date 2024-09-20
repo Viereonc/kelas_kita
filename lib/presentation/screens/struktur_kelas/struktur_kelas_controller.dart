@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:kelas_kita/data/models/biografi_model.dart';
 import 'package:kelas_kita/data/models/struktur_kelas_model.dart';
@@ -45,17 +46,18 @@ class StrukturKelasController extends GetxController{
 
           infoStrukturKelasList.value = fetchedData;
           print('Data fetched successfully: ${infoStrukturKelasList.length} items');
-
         } else {
           print('Failed to fetch data: ${response.statusCode}');
         }
       } else {
         print('id_kelas is null');
       }
-    } catch (e) {
+    } catch (e, stacktrace) {
       print('Error fetching data: $e');
+      debugPrintStack(stackTrace: stacktrace);  // This will print the full stack trace
     } finally {
       isLoading.value = false;
     }
   }
+
 }
