@@ -70,6 +70,16 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons:
+  flutter_app_name:
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/assets/icons/logo.png"
+
+flutter_app_name:
+  name: "KelasKita"
   
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -81,7 +91,7 @@ dev_dependencies:
   flutter_native_splash: ^2.0.1+1
 flutter_native_splash: 
   color: "#ffffff"
-  images: assets/icons/logo.png
+  images: lib/assets/icons/logo.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

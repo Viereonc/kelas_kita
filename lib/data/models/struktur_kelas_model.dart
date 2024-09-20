@@ -15,11 +15,11 @@ class InfoStrukturKelasModel {
   int idKelas;
   String nama;
   int nis;
-  String? alamat;
+  String alamat;
   String? image;
   String? bio;
   String? status;
-  DateTime createdAt;
+  DateTime? createdAt;
   DateTime updatedAt;
   String? roleName;
   User user;
@@ -34,11 +34,11 @@ class InfoStrukturKelasModel {
     required this.idKelas,
     required this.nama,
     required this.nis,
-    this.alamat,
+    required this.alamat,
     this.image,
     this.bio,
     this.status,
-    required this.createdAt,
+    this.createdAt,
     required this.updatedAt,
     this.roleName,
     required this.user,
@@ -49,23 +49,25 @@ class InfoStrukturKelasModel {
   });
 
   factory InfoStrukturKelasModel.fromJson(Map<String, dynamic> json) => InfoStrukturKelasModel(
-    idBiodata: json["id_biodata"],
-    idUser: json["id_user"],
-    idKelas: json["id_kelas"],
-    nama: json["nama"],
-    nis: json["nis"],
-    alamat: json["alamat"] ?? '',
+    idBiodata: json["id_biodata"] ?? 0, // Handle nullable int with a fallback value
+    idUser: json["id_user"] ?? 0,
+    idKelas: json["id_kelas"] ?? 0,
+    nama: json["nama"] ?? '',
+    nis: json["nis"] ?? 0,
+    alamat: json["alamat"], // Provide fallback empty string if null
     image: json["image"] ?? '',
     bio: json["bio"] ?? '',
     status: json["status"] ?? '',
-    createdAt: DateTime.parse(json["created_at"] ?? DateTime.now().toIso8601String()),
-    updatedAt: DateTime.parse(json["updated_at"] ?? DateTime.now().toIso8601String()),
+    createdAt: json["created_at"] != null ? DateTime.parse(json["created_at"]) : null, // Nullable DateTime
+    updatedAt: DateTime.parse(json["updated_at"] ?? DateTime.now().toIso8601String()), // Ensure updatedAt is always a valid DateTime
     roleName: json["role_name"] ?? '',
-    user: User.fromJson(json["user"]),
-    kelas: Kelas.fromJson(json["kelas"]),
-    role: Role.fromJson(json["role"]),
-    performaSiswas: List<PerformaSiswa>.from(json["performa_siswas"].map((x) => PerformaSiswa.fromJson(x))),
-    absen: json["absen"],
+    user: User.fromJson(json["user"] ?? {}), // Ensure sub-objects are non-null
+    kelas: Kelas.fromJson(json["kelas"] ?? {}),
+    role: Role.fromJson(json["role"] ?? {}),
+    performaSiswas: json["performa_siswas"] != null
+        ? List<PerformaSiswa>.from(json["performa_siswas"].map((x) => PerformaSiswa.fromJson(x)))
+        : [],
+    absen: json["absen"], // Optional field
   );
 
   Map<String, dynamic> toJson() => {
@@ -78,8 +80,8 @@ class InfoStrukturKelasModel {
     "image": image ?? '',
     "bio": bio ?? '',
     "status": status ?? '',
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
     "role_name": roleName ?? '',
     "user": user.toJson(),
     "kelas": kelas.toJson(),
@@ -94,7 +96,7 @@ class Kelas {
   dynamic idBiodata;
   String nama;
   dynamic jumlahKas;
-  dynamic createdAt;
+  dynamic? createdAt;
   dynamic updatedAt;
 
   Kelas({
@@ -102,7 +104,7 @@ class Kelas {
     required this.idBiodata,
     required this.nama,
     required this.jumlahKas,
-    required this.createdAt,
+    this.createdAt,
     required this.updatedAt,
   });
 
@@ -111,7 +113,7 @@ class Kelas {
     idBiodata: json["id_biodata"],
     nama: json["nama"],
     jumlahKas: json["jumlah_kas"],
-    createdAt: json["created_at"],
+    createdAt: DateTime.parse(json["created_at"] ?? DateTime.now().toIso8601String()),
     updatedAt: json["updated_at"],
   );
 
@@ -169,23 +171,23 @@ class Role {
   int idRole;
   String nama;
   String code;
-  dynamic createdAt;
-  dynamic updatedAt;
+  dynamic? createdAt;
+  dynamic? updatedAt;
 
   Role({
     required this.idRole,
     required this.nama,
     required this.code,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Role.fromJson(Map<String, dynamic> json) => Role(
     idRole: json["id_role"],
     nama: json["nama"],
     code: json["code"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
+    createdAt: DateTime.parse(json["created_at"] ?? DateTime.now().toIso8601String()),
+    updatedAt: DateTime.parse(json["updated_at"] ?? DateTime.now().toIso8601String()),
   );
 
   Map<String, dynamic> toJson() => {
@@ -204,8 +206,8 @@ class User {
   int? nomor;
   String? idGoogle;
   String? fcmToken;
-  DateTime createdAt;
-  DateTime updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   User({
     required this.idUser,
@@ -214,8 +216,8 @@ class User {
     this.nomor,
     this.idGoogle,
     this.fcmToken,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -225,8 +227,8 @@ class User {
     nomor: json["nomor"] ?? 0,
     idGoogle: json["id_google"] ?? '',
     fcmToken: json["fcm_token"] ?? '',
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    createdAt: DateTime.parse(json["created_at"] ?? DateTime.now().toIso8601String()),
+    updatedAt: DateTime.parse(json["updated_at"] ?? DateTime.now().toIso8601String()),
   );
 
   Map<String, dynamic> toJson() => {
@@ -236,7 +238,7 @@ class User {
     "nomor": nomor,
     "id_google": idGoogle,
     "fcm_token": fcmToken,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
+    "created_at": createdAt,
+    "updated_at": updatedAt,
   };
 }
